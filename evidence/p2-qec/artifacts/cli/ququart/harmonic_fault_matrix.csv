@@ -1,0 +1,8 @@
+fault_case,errors_tested,accepted,rejected,receiver_rejections,decoder_rejections,successful,false_accepts,receiver_false_trust,incorrect_trusted_syndrome,accepted_logical_residual,expected,claim_scope
+clean,75,75,0,0,0,75,0,0,0,0,accept_and_correct_all,classical_harmonic_observation_fault_injection
+bounded_complex_noise,75,75,0,0,0,75,0,0,0,0,accept_and_correct_all,classical_harmonic_observation_fault_injection
+missing_h3,75,0,75,75,0,0,0,0,0,0,reject_all,classical_harmonic_observation_fault_injection
+h1_h3_disagreement,75,0,75,75,0,0,0,0,0,0,reject_all,classical_harmonic_observation_fault_injection
+h2_parity_flip,75,0,75,75,0,0,0,0,0,0,reject_all,classical_harmonic_observation_fault_injection
+h4_dark_distortion,75,0,75,75,0,0,0,0,0,0,reject_all,classical_harmonic_observation_fault_injection
+ambiguous_h1,75,0,75,75,0,0,0,0,0,0,reject_all,classical_harmonic_observation_fault_injection

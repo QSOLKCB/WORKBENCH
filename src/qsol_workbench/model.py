@@ -87,6 +87,8 @@ class Plan:
     stdin: str | None = None
     result_kind: str = "json"
     expected_operation: str | None = None
+    expected_schema: str | None = None
+    success_field: str | None = None
 
 
 @dataclass
@@ -98,8 +100,11 @@ class Action:
     backend: dict
     build: object
     effect: str = "local-compute"
+    output: dict | None = None
 
     def public(self):
         spec = {"id": self.id, "title": self.title, "description": self.description,
                 "fields": self.fields, "backend": self.backend, "effect": self.effect}
+        if self.output is not None:
+            spec["output"] = self.output
         return {**spec, "schema_sha256": digest(spec)}

@@ -1,0 +1,85 @@
+"""Offline verification of retained real-P2 evidence, including resealed errors."""
+from copy import deepcopy
+from pathlib import Path
+import shutil
+import sys
+import tempfile
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+from qec_acceptance import digest, read_json, seal, write_json
+from qec_p2_acceptance import verify_evidence
+
+EVIDENCE = ROOT / 'evidence/p2-qec'
+
+
+class P2EvidenceTests(unittest.TestCase):
+    def test_retained_three_operation_real_gate(self):
+        comparison = verify_evidence(EVIDENCE)
+        self.assertEqual(comparison['ququart']['artifact_count_per_mode'], 15)
+        self.assertEqual(comparison['qutrit']['artifact_count_per_mode'], 13)
+        self.assertTrue(all(result['byte_identical'] for result in comparison.values()))
+
+    def test_resealed_identity_receipt_and_browser_errors_are_rejected(self):
+        changes = [
+            ('qec-source.json', lambda value: value.update(commit='0' * 40)),
+            ('environment.json', lambda value: value['packages']['scipy'].update(version='0.0')),
+            ('descriptor.json', lambda value: value.update(protocol='qec-capabilities/99')),
+            ('validation/cli.json', lambda value: value.update(passed=False)),
+            ('browser.json', lambda value: value.update(engine='Node DOM fixture')),
+            ('browser.json', lambda value: value['runs'][0]['view'].update(hidden=True)),
+            ('browser.json', lambda value: value['runs'][0]['view'].update(text='Artifact manifest (backend-reported)')),
+            ('summary.json', lambda value: value.update(comparison={})),
+            ('commands/contract-tests.json', lambda value: value.update(exit_code=1)),
+            ('commands/direct-qutrit-benchmark.json', lambda value: value.update(exit_code=1)),
+        ]
+        for name, mutate in changes:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                target = Path(directory) / 'evidence'
+                shutil.copytree(EVIDENCE, target)
+                value = deepcopy(read_json(target / name)); mutate(value)
+                write_json(target / name, value); seal(target)
+                with self.assertRaises(ValueError):
+                    verify_evidence(target)
+
+    def test_rehashed_run_cannot_claim_a_different_invocation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / 'evidence'
+            shutil.copytree(EVIDENCE, target)
+            path = target / 'runs/cli-qutrit-benchmark.json'
+            record = read_json(path)
+            record['execution']['argv'][-1] = '--stress-limit=9'
+            record.pop('record_sha256'); record['record_sha256'] = digest(record)
+            write_json(path, record)
+            write_json(target / 'store' / (record['id'] + '.json'), record)
+            command = read_json(target / 'commands/cli-qutrit-benchmark.json')
+            write_json(target / command['stdout'], record)
+            seal(target)
+            with self.assertRaisesRegex(ValueError, 'argv/cwd'):
+                verify_evidence(target)
+
+    def test_resealed_json_format_changes_do_not_claim_byte_parity(self):
+        for name in ('artifacts/cli/qutrit/benchmark_manifest.json', 'validation/cli.json'):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                target = Path(directory) / 'evidence'
+                shutil.copytree(EVIDENCE, target)
+                with (target / name).open('a') as handle:
+                    handle.write('\n')
+                seal(target)
+                with self.assertRaisesRegex(ValueError, 'bytes differ|receipts differ'):
+                    verify_evidence(target)
+
+    def test_artifact_and_unlisted_file_mutations_are_rejected(self):
+        for name in ('artifacts/browser/qutrit/deterministic_stress_corpus.csv', 'unlisted.txt'):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                target = Path(directory) / 'evidence'
+                shutil.copytree(EVIDENCE, target)
+                with (target / name).open('a') as handle:
+                    handle.write('changed\n')
+                with self.assertRaisesRegex(ValueError, 'checksum|Incomplete'):
+                    verify_evidence(target)
+
+
+if __name__ == '__main__':
+    unittest.main()

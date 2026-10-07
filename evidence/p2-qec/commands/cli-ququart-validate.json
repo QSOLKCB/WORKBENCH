@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/workbench.py",
+    "--config",
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/config.json",
+    "--store",
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/store",
+    "--timeout",
+    "180",
+    "run",
+    "qec.ququart.validate",
+    "--params",
+    "{\"claims\": \"/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart/report_claims.json\", \"evidence\": \"/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart\", \"output\": \"/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/validation/cli.json\"}"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "exit_code": 0,
+  "duration_seconds": 0.3219,
+  "stdout": "commands/cli-ququart-validate.stdout",
+  "stderr": "commands/cli-ququart-validate.stderr"
+}

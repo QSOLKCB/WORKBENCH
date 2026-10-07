@@ -1,0 +1,1 @@
+{"channels":["lane0_only","lane1_only"],"claim":"The packed construction is exactly symmetric under exchange of the two encoded-qubit lanes for the declared single-lane channels.","rows_compared":6,"schema":"qec.ququart-lane-symmetry.v1","sha256":"a9073805c2c3d85c5b37824b3d2462b400d8e71be723739fcc96cf92539bfca7","weight_enumerators_equal":true}

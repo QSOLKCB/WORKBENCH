@@ -1,0 +1,42 @@
+name: P2 QEC descriptors
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  descriptors:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: QSOLKCB/QEC
+          ref: 51dd1ae9fe00a142af4b39a38c46deba2f8aca45
+          path: .workbench/qec
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned descriptor-capable QEC wheel
+        run: |
+          python -m venv .workbench/qec-venv
+          .workbench/qec-venv/bin/python -m pip install --require-hashes --only-binary=:all: --no-deps -r examples/qec-p1-requirements.txt
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/qec-wheels" .workbench/qec
+          .workbench/qec-venv/bin/python -m pip install --no-index --no-deps --find-links "$RUNNER_TEMP/qec-wheels" qec==173.0.0
+          .workbench/qec-venv/bin/python -m pip check
+      - name: Real three-operation direct, CLI and browser parity
+        run: |
+          python tools/qec_p2_acceptance.py --qec-root .workbench/qec --python .workbench/qec-venv/bin/python --browser-bin /usr/bin/google-chrome --output "$RUNNER_TEMP/p2-qec"
+          python tools/qec_p2_acceptance.py --verify "$RUNNER_TEMP/p2-qec"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p2-real-qec-descriptor-evidence
+          path: ${{ runner.temp }}/p2-qec
+          if-no-files-found: warn

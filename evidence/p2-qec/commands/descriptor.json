@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
+    "-m",
+    "qec.capabilities"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
+  "exit_code": 0,
+  "duration_seconds": 0.032,
+  "stdout": "commands/descriptor.stdout",
+  "stderr": "commands/descriptor.stderr"
+}

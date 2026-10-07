@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
+    "-c",
+    "import hashlib,importlib.metadata as m,json,platform,sys\nimport qec\nfrom pathlib import Path\nroot=Path(qec.__file__).parent\npackages={name:{'version':m.version(name)} for name in ('qec','numpy','scipy')}\nprint(json.dumps({'executable':sys.executable,'python':sys.version,'prefix':sys.prefix,'base_prefix':sys.base_prefix,\n 'platform':platform.platform(),'architecture':platform.machine(),'packages':packages,\n 'module_files':{p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*.py'))}}))\n"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
+  "exit_code": 0,
+  "duration_seconds": 0.1348,
+  "stdout": "commands/environment.stdout",
+  "stderr": "commands/environment.stderr"
+}

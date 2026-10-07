@@ -34,6 +34,8 @@ Repository baseline additions: Apache-2.0 licensing, `qsol-workbench` package id
 
 ## P2 — Replace fragile discovery with backend-owned descriptors
 
+**Implemented and locally validated:** backend-owned `qec-capabilities/1`, shared QEC parser declarations, explicit legacy compatibility, ququart validation and qutrit benchmark, generic result views, refresh/stale/unsupported regressions and installed-QEC three-interface parity. See [P2 setup and evidence](QEC_DESCRIPTORS.md).
+
 The argparse probe proves the concept, but `_actions` is an internal interface and imports can have startup costs/side effects. Add an explicit export path in QEC, preferably generated from the same typed command declarations that construct its parser.
 
 **Work:**

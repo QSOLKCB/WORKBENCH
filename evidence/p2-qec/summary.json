@@ -1,0 +1,33 @@
+{
+  "protocol": "qsol-workbench-p2/1",
+  "status": "passed",
+  "qec_commit": "51dd1ae9fe00a142af4b39a38c46deba2f8aca45",
+  "modes": [
+    "direct",
+    "cli",
+    "browser"
+  ],
+  "output_directory": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run",
+  "qec_root": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
+  "started_at": "2026-10-07T11:48:29.109207+00:00",
+  "claim_scope": "Integration acceptance with small trial counts; no new scientific, hardware or quantum-advantage claim.",
+  "comparison": {
+    "ququart": {
+      "byte_identical": true,
+      "artifact_count_per_mode": 15,
+      "manifest_sha256": "9a35c3e5f45241ef8aa9cfcb63c2f07f52e013a4df3a6e422ee7d9c8697609ab",
+      "normalized_fields": []
+    },
+    "qutrit": {
+      "byte_identical": true,
+      "artifact_count_per_mode": 13,
+      "manifest_sha256": "602a78d45a0770d2219ced2c4e6591af2270338a282d5fbb072cb9dcffa43fce",
+      "normalized_fields": []
+    },
+    "validation": {
+      "byte_identical": true,
+      "receipt_sha256": "bb95e276af93e05629fd5f953a3fa59ace9bceb6cac9940c899371c949d9d359"
+    }
+  },
+  "finished_at": "2026-10-07T11:49:00.967481+00:00"
+}

@@ -1,0 +1,61 @@
+{
+  "engine": "Chromium 153.0.8010.0",
+  "status": "passed",
+  "transport": "real Chromium DOM form submission",
+  "runs": [
+    {
+      "case": "ququart-benchmark",
+      "action": "qec.ququart.benchmark",
+      "id": "96a18faf830c4cc99adbe4ed4ab12922",
+      "status": "succeeded",
+      "expected_status": "succeeded",
+      "parameters": {
+        "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/browser/ququart",
+        "trials": 40,
+        "harmonic_trials": 30,
+        "seed": 31,
+        "error_rates": "0.001,0.01"
+      },
+      "schema_sha256": "3f82efff27d948c687e2e822f92afbb116a7bd73818e7cad8113cc2f4a9370db",
+      "view": {
+        "hidden": false,
+        "text": "Artifact manifest (backend-reported)\n/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/browser/ququart\n\nclaim_validation.json\n  SHA-256: 83bd1c46b53426062cc23fcdf276ad57f8ea4a52f9fbe6c7ec45541d6f2059c0\nexact_channel_fer.csv\n  SHA-256: db89cb3ea0c28ea8dd2b758e1eb0f2c61a2d6dac2d4c19c0205a87b163037fab\nexact_channel_weight_enumerator.csv\n  SHA-256: c432f048c4464a9a88038f73c0e36d13fa33d15caebb00f5bde02640e9be77b7\nexact_fer_curve.csv\n  SHA-256: f93a811d13747fe4bd7e2d8747b298ad808da14ce813db58b0ee42f53dce2477\nexact_weight_enumerator.csv\n  SHA-256: f273cd3ea0a43357ff0c979a109042451ca5926643490b164b5ab742b869551d\nharmonic_end_to_end.csv\n  SHA-256: 272491bf32a7ccdb85a00a8ad1de04f7728c7ca0ed048d92fa2f5214a627b2b7\nharmonic_fault_matrix.csv\n  SHA-256: f80c63ec6b2b2a73262836b2a9291acbd3162602bf70f1d86eff95389197822c\nlane_symmetry_certificate.json\n  SHA-256: 18c63cf377a08eab0755c76abba5098647b1c6d1f54e6cbfd9efa1d4251e6f70\nmethodology.json\n  SHA-256: 08c8ade9b912b69e156cf8308e03e332de623ea4abd1645918c881304710fa4c\nmonte_carlo_fer.csv\n  SHA-256: c0b5cba6aeb5380ceacf54b47526c9bcb9277a66e35be73b2761ee1ce2472787\nqbraid_replication_receipt.json\n  SHA-256: e00da1746a942ec233ab7f1568865f65b72ac9937d9cc8e3fb4f12e89f1ba04e\nreceiver_operating_curve.csv\n  SHA-256: f7e0f7bca5aa23ee48adc58c8f62e9414f0e482eebe09ca18df4154977423f95\nreport_claims.json\n  SHA-256: 48026cf3157da8db8c1988b5279bcfdc0dd1bf94fda75494aa878c72ac19cede\nreport.js\n  SHA-256: f4455b980f8cc4579a16e128eaa2015e0d21e98dadc0a7b4c247ac66d4cfe886"
+      }
+    },
+    {
+      "case": "ququart-validate",
+      "action": "qec.ququart.validate",
+      "id": "643f9a838ee04f6c9e3be3932300a364",
+      "status": "succeeded",
+      "expected_status": "succeeded",
+      "parameters": {
+        "claims": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart/report_claims.json",
+        "evidence": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart",
+        "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/validation/browser.json"
+      },
+      "schema_sha256": "5f633921b29d972c35a30f99940648e83790745b0fb968c1d03ff4e427fbceaf",
+      "view": {
+        "hidden": false,
+        "text": "Validation passed\n{\n  \"checks\": {\n    \"artifact_matches_require_full_sha256\": true,\n    \"controlled_curve_language\": true,\n    \"false_accept_claims_match\": true,\n    \"hardware_contract_enforced\": true,\n    \"lane_symmetry_claim_matches\": true,\n    \"numeric_claims_match\": true,\n    \"test_claim_requires_receipt\": true,\n    \"threshold_claim_permitted\": false\n  },\n  \"claims_sha256\": \"50760af9ec4b8ff0b815435aae4af82e3bc353b11c22304c1f5fe364647ab2c0\",\n  \"facts_sha256\": \"39d5129a7c10a87b49307bf4d6e3e3140e8ccd83aa3cbd6acd75a21d5313229a\",\n  \"passed\": true,\n  \"schema\": \"qec.ququart-report-claim-validation.v1\",\n  \"sha256\": \"bb95e276af93e05629fd5f953a3fa59ace9bceb6cac9940c899371c949d9d359\"\n}"
+      }
+    },
+    {
+      "case": "qutrit-benchmark",
+      "action": "qec.qutrit.benchmark",
+      "id": "eb41c2dec52248b59782f5d9720681ec",
+      "status": "succeeded",
+      "expected_status": "succeeded",
+      "parameters": {
+        "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/browser/qutrit",
+        "v3_baseline": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv",
+        "stress_limit": 8
+      },
+      "schema_sha256": "35b8cfc577107acff8a83f924da2e2efa823e8d8bbcfc6588f0fbd6219c9483a",
+      "view": {
+        "hidden": false,
+        "text": "Artifact manifest (backend-reported)\n/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/browser/qutrit\n\ndecoded_logical_error_long.csv\n  SHA-256: f8e6994951b7e0147d08ac7f20c820a9d032d1a71f1d59d8a22a3263d338f520\ndecoded_logical_error_wide.csv\n  SHA-256: 5ca8fa737dbfbcf2388d5dd5aa04a0a53bbd349ab1fd26e275b19f21a7c94e77\ndeterministic_stress_corpus.csv\n  SHA-256: a181fc235e153597a8e6fe6d3463ecf3ca5831b6c94e4163a8c112385d125197\nguaranteed_radius_tail_long.csv\n  SHA-256: adaa00361a6d9453335bfc434042cc6e42fb330b1d61684e749c1612a63c8702\nguaranteed_radius_tail_wide.csv\n  SHA-256: a3f8c2a962737423d70c8cc5b1c3d2f83b203aa1024bbcc382f6520daffaf1be\nharmonic_fault_injection.csv\n  SHA-256: 5f453ecd2a5ed095b75723f04f5aa7762d8698bf0fb0e2a213138cea71d356cf\nhistorical_v3_baseline.csv\n  SHA-256: 80f1f74ad02c2ac7fdaf5e6a6df1611f55df3f4294cc11edfc889f5d7fe41b0a\nmethodology.json\n  SHA-256: 090e76056f286c687c2e7f2342967e44f92e8b2e0f5df2cb4b7b63c9e9d9708d\npublished_evidence.csv\n  SHA-256: b044a04c61e495cdacce95d3353e8424d9a2bfc47609c8e1bd6045c2b1e4c9d7\nresearch_watch.csv\n  SHA-256: cc2e6612f813903f6836031fb3a57cd42190b24440cad867b76a5b442d48682d\nv3_numeric_deltas.csv\n  SHA-256: f65daa8a01ea7d5e942078bbc62708a1222c0502c87e3b2440ecad3625a8d157\nv3_overlay.csv\n  SHA-256: 1884ef9d7080f83df3ffa6de2b0723a56aca48b97d6f63c6fb3f84d63547bd20"
+      }
+    }
+  ],
+  "exceptions": []
+}

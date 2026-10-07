@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
+    "-m",
+    "qec.benchmark.qutrit_battery.cli",
+    "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/qutrit",
+    "--v3-baseline=/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv",
+    "--stress-limit=8"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
+  "exit_code": 0,
+  "duration_seconds": 7.4837,
+  "stdout": "commands/direct-qutrit-benchmark.stdout",
+  "stderr": "commands/direct-qutrit-benchmark.stderr"
+}

@@ -58,6 +58,7 @@ Copy `examples/config.json` to a local configuration file. Enable `qec` and set:
 {
   "qec": {
     "enabled": true,
+    "discovery": "descriptor",
     "python": "/absolute/path/to/QEC/.venv/bin/python",
     "cwd": "/absolute/path/to/QEC"
   }
@@ -74,9 +75,11 @@ python3 workbench.py --config local.json --timeout 600 run qec.ququart.benchmark
 
 Small trial counts here are a connectivity smoke check, not meaningful research evidence. QEC's own backend determines computation, validation, and artifact meaning.
 
-Only the existing ququart evidence battery is mapped in this prototype. The adapter imports `qec.benchmark.ququart_battery.cli.parser()` inside the selected environment and exports supported arguments. Supported new scalar options appear after **Refresh connections**, or on the next startup. Unsupported parser shapes make the action unavailable with an error; they are not silently omitted. QEC's parser remains responsible for richer domain constraints.
+The native adapter consumes QEC's public `qec-capabilities/1` export and exposes the ququart benchmark, ququart report validator and qutrit benchmark. See [P2 setup and acceptance](QEC_DESCRIPTORS.md) for the pinned descriptor-capable QEC source and companion PR. Supported scalar options appear after **Refresh connections** or restart. Unsupported descriptors make the connection unavailable with an error. QEC retains scientific and artifact semantics.
 
-The connection records Python executable, package version (or `unpackaged-checkout`), module path, module source hash, and working directory. The hash covers the CLI module, not the entire backend or its dependencies. QEC output paths are interpreted by QEC; choose a separate output directory for each experiment to avoid backend-defined overwrites.
+The connection records the interpreter, owning distribution version (or `unpackaged-checkout`), cwd, descriptor digest and provider/declaration/command source hashes. This is not a complete environment fingerprint. Relative input/output paths use QEC's configured cwd. Choose a separate output directory per benchmark. The browser displays backend-reported artifact names/hashes and validation receipts alongside raw output and complete records.
+
+Older QEC installations require explicit `"discovery":"legacy-argparse"` and expose only the ququart battery. The native default never silently falls back to parser introspection. [P1 acceptance](QEC_ACCEPTANCE.md) retains this legacy mode against its original pin.
 
 ## Connect QSOL-CONTROL
 
@@ -146,6 +149,7 @@ Two tests start loopback HTTP servers; a restrictive execution sandbox must perm
 |---|---|
 | `src/qsol_workbench/model.py` | Input definitions, validation, action/plan model |
 | `src/qsol_workbench/adapters/builtin.py` | Demo, QEC, CONTROL and Ollama integration |
+| `src/qsol_workbench/adapters/qec_descriptor.py` | Native QEC descriptor compatibility and reviewed command mapping |
 | `src/qsol_workbench/worker.py` | Isolated discovery/demo/inference workers |
 | `src/qsol_workbench/process.py` | Process transport, capture, deadlines and cancellation |
 | `src/qsol_workbench/runtime.py` | Shared registry, jobs and records |

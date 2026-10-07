@@ -1,5 +1,15 @@
 # Validation evidence and limits
 
+## P2 backend-owned descriptors
+
+The installed-QEC P2 gate passed locally on Linux x86_64 / CPython 3.12.14, NumPy 2.3.5, SciPy 1.17.0 and Chromium 153.0.8010.0. QEC companion commit `51dd1ae9fe00a142af4b39a38c46deba2f8aca45` exports `qec-capabilities/1`; all 1,102 installed QEC Python sources match the pristine checkout and `pip check` passed.
+
+Direct execution, WORKBENCH CLI and actual Chromium DOM form submissions each completed the ququart battery, ququart report validator and qutrit battery. All 15 ququart and 13 qutrit artifacts per mode are byte-identical, with no normalization. QEC validation receipts are identical and passed. Chromium displayed the backend-reported artifact names/hashes and successful validation receipt. [Retained P2 evidence](../evidence/p2-qec/summary.json) and [reproduction/compatibility instructions](QEC_DESCRIPTORS.md) describe the gate.
+
+The local suite passes **57 Python tests and nine Node frontend tests**. Descriptor fixtures prove new scalar/default/choice/path propagation, refresh, stale-schema rejection without execution, explicit incompatibility and preserved zero-exit protocol-failure diagnostics. Offline evidence regressions reject resealed identity, receipt, browser-view, invocation and inventory errors. Fixture transcripts are separate from the installed scientific runs. QEC's companion passes **23 targeted tests** for shared declarations, parser/export parity, report generation and claim validation. No full QEC suite is claimed by this local run.
+
+P2 CI repeats all three real workflows against the pinned companion source; P1 CI keeps the original pin with explicit legacy discovery. Core CI verifies both retained gates without optional QEC dependencies. Small trial/stress counts establish integration only. The original handoff and P1 evidence are unchanged. Broader platform, hardware, real-model inference, production installation and durable-job gates remain planned.
+
 ## P1 real QEC acceptance
 
 The real acceptance gate passed locally on Linux x86_64 / CPython 3.12.14 with QEC commit `7103836d731a869dc82b077bc0b920a76072f08e` (package 173.0.0), NumPy 2.3.5, SciPy 1.17.0 and Chromium 153.0.8010.0. The backend was installed into a clean venv with no inherited site packages. All 1,099 installed QEC Python source files matched the pristine pinned checkout, and `pip check` passed.

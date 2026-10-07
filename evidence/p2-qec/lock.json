@@ -1,0 +1,54 @@
+{
+  "repository": "https://github.com/QSOLKCB/QEC",
+  "commit": "51dd1ae9fe00a142af4b39a38c46deba2f8aca45",
+  "package_version": "173.0.0",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "python": "3.12.14"
+  },
+  "dependencies": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "parameters": {
+    "trials": 40,
+    "harmonic_trials": 30,
+    "seed": 31,
+    "error_rates": "0.001,0.01"
+  },
+  "expected_artifacts": [
+    "exact_weight_enumerator.csv",
+    "exact_fer_curve.csv",
+    "exact_channel_weight_enumerator.csv",
+    "exact_channel_fer.csv",
+    "monte_carlo_fer.csv",
+    "harmonic_fault_matrix.csv",
+    "harmonic_end_to_end.csv",
+    "receiver_operating_curve.csv",
+    "lane_symmetry_certificate.json",
+    "report_claims.json",
+    "claim_validation.json",
+    "qbraid_replication_receipt.json",
+    "methodology.json",
+    "report.js"
+  ],
+  "claim_scope": "Integration acceptance with small trial counts; no new scientific, hardware or quantum-advantage claim.",
+  "descriptor_protocol": "qec-capabilities/1",
+  "stress_limit": 8,
+  "baseline_sha256": "80f1f74ad02c2ac7fdaf5e6a6df1611f55df3f4294cc11edfc889f5d7fe41b0a",
+  "qutrit_artifacts": [
+    "decoded_logical_error_long.csv",
+    "decoded_logical_error_wide.csv",
+    "guaranteed_radius_tail_long.csv",
+    "guaranteed_radius_tail_wide.csv",
+    "deterministic_stress_corpus.csv",
+    "harmonic_fault_injection.csv",
+    "v3_overlay.csv",
+    "v3_numeric_deltas.csv",
+    "published_evidence.csv",
+    "research_watch.csv",
+    "historical_v3_baseline.csv",
+    "methodology.json"
+  ]
+}

@@ -106,6 +106,10 @@ class Runtime:
                     parsed = json_loads(result["stdout"])
                     if plan.result_kind == "control":
                         check_control(parsed, plan.expected_operation)
+                if plan.expected_schema is not None and (not isinstance(parsed, dict) or parsed.get("schema") != plan.expected_schema):
+                    raise ValueError("Backend result does not match the declared output schema")
+                if plan.success_field is not None and parsed.get(plan.success_field) is not True:
+                    raise ValueError("Backend result does not report successful validation")
             with self.lock:
                 record.update(status=result["status"], result=parsed)
         except Exception as error:

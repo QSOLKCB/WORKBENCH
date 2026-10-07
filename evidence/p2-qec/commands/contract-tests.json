@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_qec_descriptors.py",
+    "-v"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "exit_code": 0,
+  "duration_seconds": 1.8695,
+  "stdout": "commands/contract-tests.stdout",
+  "stderr": "commands/contract-tests.stderr"
+}

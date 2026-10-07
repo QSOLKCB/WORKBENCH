@@ -1,0 +1,4 @@
+numpy==2.3.5
+pip==25.0.1
+qec @ file:///workspace/scratch/ebfc95b6b8c9/qec-p2-wheels/qec-173.0.0-py3-none-any.whl#sha256=29a607faca719fdd3344683b0c38f24ddbd05790dbca5c89a324a04f2fa4e658
+scipy==1.17.0

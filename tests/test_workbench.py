@@ -320,7 +320,7 @@ class RuntimeTests(unittest.TestCase):
             self.assertEqual(completed.stdout, "")
 
     def test_unavailable_backend_never_uses_demo(self):
-        with runtime({"qec": {"enabled": True, "python": "/not-a-python"}}) as instance:
+        with runtime({"qec": {"enabled": True, "discovery": "legacy-argparse", "python": "/not-a-python"}}) as instance:
             connection = next(c for c in instance.connections if c["id"] == "qec")
             self.assertEqual(connection["status"], "unavailable")
             with self.assertRaises(ValueError):
@@ -356,7 +356,7 @@ class AdapterTests(unittest.TestCase):
                 (parent / "__init__.py").write_text("")
             module.write_text("import argparse,json,sys\ndef parser(): return argparse.ArgumentParser()\n"
                               "if __name__=='__main__': print(json.dumps({'prefix':sys.prefix}))\n")
-            with runtime({"demo": {"enabled": False}, "qec": {"enabled": True,
+            with runtime({"demo": {"enabled": False}, "qec": {"enabled": True, "discovery": "legacy-argparse",
                           "python": str(environment / "bin/../bin/python"), "cwd": str(root)}}) as instance:
                 connection = next(c for c in instance.connections if c["id"] == "qec")
                 self.assertEqual(connection["status"], "available", connection)
@@ -384,7 +384,7 @@ class AdapterTests(unittest.TestCase):
             with patch.dict(os.environ):
                 os.environ.pop("PYTHONSAFEPATH", None)
                 os.environ.pop("PYTHONPATH", None)
-                with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": directory}}) as instance:
+                with runtime({"qec": {"enabled": True, "discovery": "legacy-argparse", "python": sys.executable, "cwd": directory}}) as instance:
                     connection = next(c for c in instance.connections if c["id"] == "qec")
                     self.assertEqual(connection["status"], "available", connection)
                     action = instance.actions["qec.ququart.benchmark"]
@@ -431,7 +431,7 @@ class AdapterTests(unittest.TestCase):
                     os.environ["PYTHONSAFEPATH"] = "1"
                     direct = subprocess.run([sys.executable, "-m", "qec.benchmark.ququart_battery.cli"],
                                             cwd=checkout, check=True, capture_output=True, text=True)
-                    with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": str(checkout)}}) as instance:
+                    with runtime({"qec": {"enabled": True, "discovery": "legacy-argparse", "python": sys.executable, "cwd": str(checkout)}}) as instance:
                         action = instance.actions["qec.ququart.benchmark"]
                         self.assertEqual(action.backend["module_path"], str(module))
                         self.assertEqual(action.backend["module_sha256"], hashlib.sha256(module.read_bytes()).hexdigest())
@@ -471,7 +471,7 @@ class AdapterTests(unittest.TestCase):
                     direct = subprocess.run([sys.executable, "-m", "qec.benchmark.ququart_battery.cli"],
                                             cwd=cwd, capture_output=True, text=True)
                     self.assertEqual(direct.returncode == 0, available, direct.stderr)
-                    with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": str(cwd)}}) as instance:
+                    with runtime({"qec": {"enabled": True, "discovery": "legacy-argparse", "python": sys.executable, "cwd": str(cwd)}}) as instance:
                         connection = next(c for c in instance.connections if c["id"] == "qec")
                         self.assertEqual(connection["status"], "available" if available else "unavailable", connection)
                         if available:
@@ -508,7 +508,7 @@ class AdapterTests(unittest.TestCase):
                 os.environ.pop("PYTHONPATH", None)
                 direct = subprocess.run([sys.executable, "-m", "qec.benchmark.ququart_battery.cli"],
                                         cwd=root, check=True, capture_output=True, text=True)
-                with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": directory}}) as instance:
+                with runtime({"qec": {"enabled": True, "discovery": "legacy-argparse", "python": sys.executable, "cwd": directory}}) as instance:
                     connection = next(c for c in instance.connections if c["id"] == "qec")
                     self.assertEqual(connection["status"], "available", connection)
                     action = instance.actions["qec.ququart.benchmark"]
@@ -575,7 +575,7 @@ class AdapterTests(unittest.TestCase):
                 (parent / "__init__.py").write_text("")
             base = "import argparse,json\ndef parser():\n p=argparse.ArgumentParser()\n p.add_argument('--trials',type=int,default=5)\n{extra} return p\nif __name__=='__main__': print(json.dumps(vars(parser().parse_args())))\n"
             module.write_text(base.format(extra=""))
-            config = {"qec": {"enabled": True, "python": sys.executable, "cwd": directory}}
+            config = {"qec": {"enabled": True, "discovery": "legacy-argparse", "python": sys.executable, "cwd": directory}}
             with patch.dict(os.environ, {"PYTHONPATH": directory}):
                 with runtime(config) as instance:
                     old = instance.actions["qec.ququart.benchmark"].public()

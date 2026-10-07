@@ -1,5 +1,16 @@
 # Changelog
 
+## Phase 2 QEC-owned descriptors — 2026-10-07
+
+- Consume `qec-capabilities/1` from QEC's installed provider; retain explicit `legacy-argparse` compatibility for the P1 pin.
+- Validate scalar/default/choice/path/effect/output contracts and bind capabilities to descriptor and implementation source identities.
+- Add real ququart report validation and qutrit benchmark operations through reviewed entry points.
+- Enforce native result schemas and validation success in the shared Runtime; render generic browser artifact/receipt views.
+- Prove refresh/new scalar propagation, stale-schema rejection and unsupported-input errors with fixtures.
+- Retain installed-QEC direct/CLI/Chromium parity for all three operations, an offline evidence verifier and separate P2 CI.
+
+The backend companion is QEC PR #595. No package release or version tag is created.
+
 ## Phase 1 real QEC acceptance — 2026-10-07
 
 - Pin QEC commit `7103836`, package 173.0.0, CPython 3.12.14 and NumPy/SciPy wheel identities in a clean Linux x86_64 environment.

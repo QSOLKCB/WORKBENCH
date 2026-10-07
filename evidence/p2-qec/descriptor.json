@@ -1,0 +1,176 @@
+{
+  "protocol": "qec-capabilities/1",
+  "implementation_modules": [
+    "qec.capabilities",
+    "qec.command_specs",
+    "qec.cli_contract"
+  ],
+  "actions": [
+    {
+      "id": "qec.ququart.benchmark",
+      "module": "qec.benchmark.ququart_battery.cli",
+      "title": "QEC ququart evidence battery",
+      "description": "Build exact channel FER oracles, corrected Monte Carlo evidence, harmonic receiver telemetry, replication receipts, and validated report claims.",
+      "fields": [
+        {
+          "name": "output",
+          "flag": "--output",
+          "type": "string",
+          "label": "Output",
+          "required": false,
+          "help": "",
+          "default": "benchmarks/ququart_fer_v170_1_1",
+          "path_role": "write-directory",
+          "path_base": "cwd"
+        },
+        {
+          "name": "trials",
+          "flag": "--trials",
+          "type": "integer",
+          "label": "Trials",
+          "required": false,
+          "help": "Monte Carlo trials per physical-channel/error-rate cell.",
+          "default": 5000,
+          "minimum": 1
+        },
+        {
+          "name": "harmonic_trials",
+          "flag": "--harmonic-trials",
+          "type": "integer",
+          "label": "Harmonic Trials",
+          "required": false,
+          "help": "Trials per harmonic physical-rate/noise-sigma cell.",
+          "default": 2000,
+          "minimum": 1
+        },
+        {
+          "name": "seed",
+          "flag": "--seed",
+          "type": "integer",
+          "label": "Seed",
+          "required": false,
+          "help": "",
+          "default": 1701001
+        },
+        {
+          "name": "error_rates",
+          "flag": "--error-rates",
+          "type": "string",
+          "label": "Error Rates",
+          "required": false,
+          "help": "Comma-separated independent per-site physical error rates.",
+          "default": "0.00001,0.00003,0.0001,0.0003,0.001,0.003,0.01,0.03,0.1,0.2"
+        }
+      ],
+      "effect": "writes-artifacts",
+      "output": {
+        "format": "json",
+        "schema": "qec.ququart-fer-battery.v170.1.1",
+        "view": "artifact-manifest",
+        "directory_field": "output"
+      }
+    },
+    {
+      "id": "qec.ququart.validate",
+      "module": "qec.benchmark.ququart_battery.validate_cli",
+      "title": "Validate QEC ququart report",
+      "description": "Validate a machine-readable report-claims declaration against generated ququart FER evidence. Optionally write the validation receipt.",
+      "fields": [
+        {
+          "name": "claims",
+          "flag": "--claims",
+          "type": "string",
+          "label": "Claims",
+          "required": true,
+          "help": "",
+          "path_role": "read-file",
+          "path_base": "cwd"
+        },
+        {
+          "name": "evidence",
+          "flag": "--evidence",
+          "type": "string",
+          "label": "Evidence",
+          "required": true,
+          "help": "",
+          "path_role": "read-directory",
+          "path_base": "cwd"
+        },
+        {
+          "name": "test_receipt",
+          "flag": "--test-receipt",
+          "type": "string",
+          "label": "Test Receipt",
+          "required": false,
+          "help": "",
+          "path_role": "read-file",
+          "path_base": "cwd"
+        },
+        {
+          "name": "output",
+          "flag": "--output",
+          "type": "string",
+          "label": "Output",
+          "required": false,
+          "help": "",
+          "path_role": "write-file",
+          "path_base": "cwd"
+        }
+      ],
+      "effect": "writes-artifacts",
+      "output": {
+        "format": "json",
+        "schema": "qec.ququart-report-claim-validation.v1",
+        "view": "validation-receipt",
+        "success_field": "passed"
+      }
+    },
+    {
+      "id": "qec.qutrit.benchmark",
+      "module": "qec.benchmark.qutrit_battery.cli",
+      "title": "QEC qutrit evidence battery",
+      "description": "Build deterministic qutrit QEC benchmark artifacts from the immutable historical v3 baseline.",
+      "fields": [
+        {
+          "name": "output",
+          "flag": "--output",
+          "type": "string",
+          "label": "Output",
+          "required": false,
+          "help": "",
+          "default": "benchmarks/qutrit_decoder_v1",
+          "path_role": "write-directory",
+          "path_base": "cwd"
+        },
+        {
+          "name": "v3_baseline",
+          "flag": "--v3-baseline",
+          "type": "string",
+          "label": "V3 Baseline",
+          "required": false,
+          "help": "",
+          "default": "qec_data_prepared.csv",
+          "path_role": "read-file",
+          "path_base": "cwd"
+        },
+        {
+          "name": "stress_limit",
+          "flag": "--stress-limit",
+          "type": "integer",
+          "label": "Stress Limit",
+          "required": false,
+          "help": "Maximum deterministic corpus patterns per code and weight.",
+          "default": 2048,
+          "minimum": 1
+        }
+      ],
+      "effect": "writes-artifacts",
+      "output": {
+        "format": "json",
+        "schema": "qec.qutrit-decoder-benchmark.v1",
+        "view": "artifact-manifest",
+        "directory_field": "output"
+      }
+    }
+  ]
+}

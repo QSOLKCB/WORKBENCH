@@ -61,3 +61,5 @@ Offline verification checks the evidence inventory, outcomes, saved record check
 ## Scope
 
 P1 proves this installed QEC workflow's integration in the recorded environment. The tiny Monte Carlo counts are unsuitable for new statistical or scientific claims. QEC's report version 170.1.1 describes the battery contract; package version 173.0.0 describes the installed distribution. QEC includes a historical qBraid replication receipt as an artifact; this acceptance does not rerun qBraid. No Ollama model, hardware quantum execution, full QEC suite, production installation or unfinished TUI adapter panel is validated here.
+
+The original P1 source pin predates the native descriptor export. Its runner explicitly selects `discovery: legacy-argparse`. Current setup and the three-operation gate are documented in [P2 descriptors](QEC_DESCRIPTORS.md).

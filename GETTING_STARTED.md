@@ -17,4 +17,4 @@ Optional connections are configured in a local JSON file; see [usage and backend
 
 See [instructions](INSTRUCTIONS.md) for validation commands and [validation boundaries](docs/VALIDATION.md) before treating integration fixtures as real scientific or model evidence.
 
-For the first supported real QEC environment, follow [P1 acceptance](docs/QEC_ACCEPTANCE.md). The [roadmap](docs/ROADMAP.md) records phase status and the next acceptance gates.
+For current QEC setup, follow [P2 descriptors and acceptance](docs/QEC_DESCRIPTORS.md). The original [P1 acceptance](docs/QEC_ACCEPTANCE.md) uses explicit legacy discovery. The [roadmap](docs/ROADMAP.md) records phase status and the next acceptance gates.

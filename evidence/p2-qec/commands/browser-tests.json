@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "tests/browser_values.mjs"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "exit_code": 0,
+  "duration_seconds": 0.1691,
+  "stdout": "commands/browser-tests.stdout",
+  "stderr": "commands/browser-tests.stderr"
+}

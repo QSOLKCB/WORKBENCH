@@ -50,16 +50,19 @@ Optional properties:
 - `multiline`: browser presentation hint.
 - `help`: human-readable explanation.
 - `flag`: QEC adapter's declared option spelling; clients do not build argv from it.
+- `path_role` / `path_base`: native QEC path semantics; strings are passed unchanged and relative paths use backend cwd.
 
 Unknown input names, type mismatches, integer/bool aliases, non-finite numbers, duplicate JSON members and invalid choices are rejected. The core validates defaults as well as submitted values. These checks do not replace backend scientific validation. A string such as QEC's comma-separated error-rate list retains its backend-defined grammar.
 
 The browser accepts whole decimal integer text only within JavaScript's exact safe range, −9007199254740991 through 9007199254740991. It checks the text with `BigInt` before converting to a JSON number and rejects larger values before dispatch or preset save, including unsafe discovered defaults/choices. CLI/TUI and direct API callers can supply larger integers supported by the backend. Number fields retain floating-point semantics. Boolean choices use the selected option's JSON boolean value; unconstrained booleans use checkboxes. Defaults and browser presets restore the corresponding control value.
 
-The QEC bridge supports ordinary scalar argparse store actions with built-in string/int/float or `pathlib.Path` converters. Boolean argparse actions, positional arguments, lists, subparsers and custom converters currently require adapter work. The probe rejects unsupported shapes rather than presenting an incomplete form. It uses argparse's internal `_actions` interface as a temporary compatibility bridge; a backend-owned descriptor is the preferred production contract.
+Native QEC discovery consumes `qec-capabilities/1` from the installed provider. Three reviewed entry points publish shared scalar declarations, including boolean values, path roles and versioned output contracts. Unsupported shapes/protocols fail explicitly. See [QEC descriptors](QEC_DESCRIPTORS.md).
+
+Explicit `discovery: legacy-argparse` supports older backends. This legacy QEC bridge supports ordinary scalar argparse store actions with built-in string/int/float or `pathlib.Path` converters. Boolean argparse actions, positional arguments, lists, subparsers and custom converters currently require adapter work. The probe rejects unsupported shapes rather than presenting an incomplete form. It uses argparse's internal `_actions` interface as a temporary compatibility bridge; native discovery is the default, without automatic fallback.
 
 String defaults pass through the declared converter, matching argparse behavior; non-string defaults remain unchanged, and Path defaults and choice members are exported as strings. When Python prepends an implicit import path, the isolated probe replaces its script directory with the configured working directory to match the eventual `python -m` invocation, including unpackaged checkouts. Under Python 3.11+ safe-path mode, the probe leaves the interpreter's import paths unchanged: it does not inject cwd or replace an explicit PYTHONPATH entry. A cwd-only backend is therefore unavailable when execution cannot import it; an explicitly configured import path remains usable.
 
-QEC reports a distribution version only when that distribution's file inventory includes the imported CLI module. Same-named unrelated metadata is ignored. When ownership cannot be established, including editable installs without the source module in their inventory, the identity is `unpackaged-checkout` alongside the actual module path and hash. This association is not an authenticated provenance check.
+QEC reports a distribution version only when that distribution's file inventory includes the imported provider module (CLI module in legacy mode). Same-named unrelated metadata is ignored. When ownership cannot be established, including editable installs without the source module in their inventory, the identity is `unpackaged-checkout` alongside the actual module path and hash. This association is not an authenticated provenance check.
 
 ## Capability identity and refresh
 
@@ -77,13 +80,15 @@ cwd                   optional explicit working directory
 stdin                 optional UTF-8 payload, written by the transport
 result_kind           json | control | ollama
 expected_operation    optional CONTROL response correlation check
+expected_schema       optional JSON result schema check
+success_field         optional JSON field required to be true
 ```
 
 There is no shell evaluation. The HTTP API cannot submit an arbitrary argv or rewrite adapter configuration. Configuration is loaded from an operator-selected local file. That file is trusted and can deliberately invoke local programs.
 
 The QEC adapter preserves the configured interpreter symlink so a virtual environment retains its installed packages; it normalizes relative path components without selecting the base interpreter.
 
-QEC starts the selected interpreter with `-m qec.benchmark.ququart_battery.cli`. CONTROL receives one request line and an EOF. Ollama uses a worker process so HTTP transport can be interrupted through the same job-control interface.
+QEC starts the selected interpreter with `-m` and the adapter-reviewed ququart benchmark/validator or qutrit benchmark module. CONTROL receives one request line and an EOF. Ollama uses a worker process so HTTP transport can be interrupted through the same job-control interface.
 
 Ollama generation has no independent socket timeout: the shared run deadline and cancellation terminate its worker, including a blocked connection or read. Model-list discovery retains its short probe deadline.
 
@@ -109,7 +114,7 @@ queued -> running -> succeeded | failed | cancelled | timed_out | output_limit
 saved unfinished record loaded by a new process -> interrupted (view classification)
 ```
 
-Record content includes action ID, full capability snapshot, normalized parameters, backend identity, argv/cwd, creation/start/finish times, captured stdout/stderr, exit code when available, parsed result and error. A successful OS process with invalid required JSON is classified as failed. CONTROL error envelopes cannot become success merely because the process exited zero. An Ollama stream must contain a terminal completion event.
+Record content includes action ID, full capability snapshot, normalized parameters, backend identity, argv/cwd, creation/start/finish times, captured stdout/stderr, exit code when available, parsed result and error. A successful OS process with invalid required JSON is classified as failed. CONTROL error envelopes cannot become success merely because the process exited zero. An Ollama stream must contain a terminal completion event. Native QEC results must match their declared schema; validation receipts require `passed: true`. Optional public `output` metadata drives generic browser artifact-manifest and validation-receipt views. These views display backend-reported content as text.
 
 Transport fields are retained before interpreting output. `transport_status` records the executor outcome separately from the final run `status`; a zero-exit malformed JSON, CONTROL or Ollama response retains `exit_code: 0`, captured output and `transport_status: succeeded`, while the final run is `failed`. The run stays active until interpretation finishes.
 
