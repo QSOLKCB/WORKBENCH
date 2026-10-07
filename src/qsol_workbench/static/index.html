@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>QSOL Workbench</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><div><span class="eyebrow">LOCAL PROJECT WORKSPACE</span><h1>QSOL Workbench <small>0.1</small></h1></div><button id="refresh" type="button">Refresh connections</button></header>
+<div id="notice" role="status" aria-live="polite"></div>
+<main>
+<aside><h2>Connections</h2><div id="connections"></div><h2>Actions</h2><nav id="actions" aria-label="Available actions"></nav><h2>Recent runs</h2><nav id="history" aria-label="Run history"></nav></aside>
+<section class="workspace">
+<div class="panel"><span class="eyebrow" id="action-id">READY TO CONNECT</span><h2 id="title">Choose an action</h2><p id="description">One capability model, available in your terminal and browser.</p><form id="form"><div id="fields"></div><div class="toolbar"><button class="primary" id="run" type="submit" disabled>Run action</button><button id="save-preset" type="button">Save preset</button><button id="load-preset" type="button">Load preset</button></div></form><p class="hint">Run inputs and outputs are saved on this computer. Presets are stored in this browser.</p><details><summary>Connection and capability details</summary><pre id="identity"></pre></details></div>
+<div class="panel"><div class="run-header"><div><span class="eyebrow">RUN INSPECTOR</span><h2 id="run-status">No run selected</h2></div><div class="toolbar"><button id="cancel" type="button" disabled>Cancel</button><button id="download" type="button" disabled>Export JSON</button></div></div><pre id="output" aria-label="Run output">Results and progress appear here.</pre><details><summary>Full run record</summary><pre id="record"></pre></details></div>
+</section>
+</main><footer>Capability-driven interfaces · Explicit backend identity · Local run history</footer>
+</body></html>

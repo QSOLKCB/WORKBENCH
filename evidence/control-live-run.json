@@ -1,0 +1,153 @@
+{
+  "protocol": "qsol-workbench-run/1",
+  "id": "0ee6afdf7ee54690842b044b4b2c5e78",
+  "workbench_version": "0.1.0",
+  "action": "control.health",
+  "capability": {
+    "id": "control.health",
+    "title": "CONTROL health",
+    "description": "Read-only CONTROL operation over JSONL/stdio.",
+    "fields": [],
+    "backend": {
+      "kind": "control",
+      "protocol": "qsol-control-agent-api/1",
+      "argv": [
+        "/usr/bin/python3",
+        "tools/agent_api.py",
+        "--root",
+        "/tmp/qsol-workbench-control-store"
+      ],
+      "cwd": "/tmp/qsol-workbench-control-live/QSOL-CONTROL-55c3fbee6435d4a6206aa946579f36724698a20b",
+      "discovery": {
+        "authority": "orchestration-only",
+        "ok": true,
+        "operation": "control.capabilities",
+        "protocol": "qsol-control-agent-response/1",
+        "request_id": "workbench-request",
+        "result": {
+          "agent_api_protocol": "qsol-control-agent-api/1",
+          "authority": "capability-discovery-only",
+          "hidden_chain_of_thought_available": false,
+          "human_ai_epistemic_authority_equal": true,
+          "limits": {
+            "caller_id_is_trusted_quota_identity": false,
+            "max_lattice_records_per_response": 1000,
+            "max_lattice_runs_per_trace": 100,
+            "max_model_states_per_response": 100,
+            "max_mutations_per_caller_per_process": 200,
+            "max_mutations_per_process": 200,
+            "max_requests_per_caller_per_process": 1000,
+            "max_requests_per_process": 1000,
+            "max_research_timeline_runs": 500,
+            "max_upload_bytes": 4194304
+          },
+          "nexus_arbitrary_operation_passthrough": false,
+          "nexus_governance_overrides": false,
+          "operations": [
+            "control.health",
+            "control.capabilities",
+            "control.ask",
+            "control.file.put",
+            "control.file.get",
+            "control.collection.create",
+            "control.collection.snapshot",
+            "control.collection.search",
+            "control.run.get",
+            "control.run.compare",
+            "control.replay.classify",
+            "control.replay.execute",
+            "control.replay.get",
+            "control.research.timeline",
+            "control.evidence.get",
+            "control.council.get",
+            "control.models.get",
+            "control.memory.get",
+            "control.memory.trace"
+          ],
+          "oracle_write_operations": [],
+          "parent_capabilities": {
+            "collections": true,
+            "dna_projection": true,
+            "files": true,
+            "lattice": true,
+            "lexical_search": true,
+            "model_state": true,
+            "nexus": false,
+            "oracle": false,
+            "replay_classification": true,
+            "replay_execution": true,
+            "research_timeline": true,
+            "run_compare": true
+          },
+          "phase7_replay_execution_implemented": true,
+          "protocol": "qsol-control-agent-capabilities/1",
+          "question_modes": [
+            "evidence_only",
+            "council"
+          ],
+          "replay_exactness_policy": "classify_before_execute_never_claim_exact_without_basis",
+          "transport": "jsonl-stdio",
+          "truth_percentage_available": false
+        }
+      }
+    },
+    "effect": "read",
+    "schema_sha256": "3c5b7f2a25e0ae0f8e52221d488cb5fa6f5d00a7d23ee48c22e9d32518b65a6e"
+  },
+  "parameters": {},
+  "status": "succeeded",
+  "created_at": "2026-10-07T05:23:09.929922+00:00",
+  "execution": {
+    "argv": [
+      "/usr/bin/python3",
+      "tools/agent_api.py",
+      "--root",
+      "/tmp/qsol-workbench-control-store"
+    ],
+    "cwd": "/tmp/qsol-workbench-control-live/QSOL-CONTROL-55c3fbee6435d4a6206aa946579f36724698a20b"
+  },
+  "stdout": "{\"authority\":\"orchestration-only\",\"ok\":true,\"operation\":\"control.health\",\"protocol\":\"qsol-control-agent-response/1\",\"request_id\":\"workbench-request\",\"result\":{\"agent_api_protocol\":\"qsol-control-agent-api/1\",\"authority\":\"status-only\",\"protocol\":\"qsol-control-agent-health/1\",\"services\":{\"control_storage\":{\"available\":true,\"configured\":true,\"status\":{\"audit_events\":0,\"collections\":0,\"files\":0,\"fingerprint\":\"sha256:c4d3cbef46d9112048b111a4c40a0881c2535caf3183c89c3c3d04fb3abc3c62\",\"indexes\":0,\"protocol\":\"qsol-control-storage-verification/1\",\"snapshots\":0,\"status\":\"valid\"}},\"nexus\":{\"available\":false,\"configured\":false},\"oracle\":{\"available\":false,\"configured\":false}},\"transport\":\"jsonl-stdio\"}}\n",
+  "stderr": "",
+  "result": {
+    "authority": "orchestration-only",
+    "ok": true,
+    "operation": "control.health",
+    "protocol": "qsol-control-agent-response/1",
+    "request_id": "workbench-request",
+    "result": {
+      "agent_api_protocol": "qsol-control-agent-api/1",
+      "authority": "status-only",
+      "protocol": "qsol-control-agent-health/1",
+      "services": {
+        "control_storage": {
+          "available": true,
+          "configured": true,
+          "status": {
+            "audit_events": 0,
+            "collections": 0,
+            "files": 0,
+            "fingerprint": "sha256:c4d3cbef46d9112048b111a4c40a0881c2535caf3183c89c3c3d04fb3abc3c62",
+            "indexes": 0,
+            "protocol": "qsol-control-storage-verification/1",
+            "snapshots": 0,
+            "status": "valid"
+          }
+        },
+        "nexus": {
+          "available": false,
+          "configured": false
+        },
+        "oracle": {
+          "available": false,
+          "configured": false
+        }
+      },
+      "transport": "jsonl-stdio"
+    }
+  },
+  "error": null,
+  "started_at": "2026-10-07T05:23:09.930198+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-10-07T05:23:09.991181+00:00",
+  "record_sha256": "ab54e8cfa4bb25da3fedb959e292b4a6702089a6f612052911ce11bc30157c65"
+}

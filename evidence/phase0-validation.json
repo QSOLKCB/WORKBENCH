@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-07",
+  "scope": "Phase 0 repository import",
+  "environment": {"os": "Linux", "python": "3.12.14", "node": "24.19.0"},
+  "tests": {"passed": 25, "failed": 0},
+  "checks": ["python compilation", "browser JavaScript syntax", "browser smoke script syntax", "CLI discovery", "demo total 42", "archive checksum", "complete extracted manifest", "extracted demo total 42", "manifest rejects extra file", "manifest rejects duplicate entry"],
+  "original_evidence_preserved": true,
+  "not_rerun": ["browser acceptance", "PTY acceptance", "real CONTROL source execution"],
+  "not_validated": ["real QEC scientific workflow", "real Ollama model generation", "package installation"],
+  "ci_matrix": {"os": "ubuntu-latest", "python": ["3.10", "3.14"], "results": "See GitHub Actions for the PR commit"}
+}

@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "checks": [
+    "generated form",
+    "demo result 42",
+    "live run polling",
+    "cancel",
+    "no browser exceptions"
+  ],
+  "screenshot": "evidence/browser.png"
+}

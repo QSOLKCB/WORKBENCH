@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qsol-workbench"
+version = "0.1.0"
+description = "A capability-driven terminal and local web workbench reference implementation"
+requires-python = ">=3.10"
+dependencies = []
+license = {file = "LICENSE"}
+
+[project.scripts]
+qsol-workbench = "qsol_workbench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+qsol_workbench = ["static/*"]

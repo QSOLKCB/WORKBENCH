@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-07",
+  "platform": "Linux",
+  "python": "3.14.4",
+  "node": "22.18.0",
+  "unit_tests": {
+    "passed": 20,
+    "failed": 0,
+    "transcript": "unit-tests.txt"
+  },
+  "browser": {
+    "status": "passed",
+    "checks": [
+      "generated form",
+      "demo result 42",
+      "live run polling",
+      "cancel",
+      "no browser exceptions"
+    ],
+    "screenshot": "evidence/browser.png"
+  },
+  "tui": {
+    "status": "smoke-passed",
+    "method": "interactive PTY, start demo with r, inspect success, quit with q"
+  },
+  "real_control": {
+    "status": "passed",
+    "commit": "55c3fbee6435d4a6206aa946579f36724698a20b",
+    "operations": [
+      "control.capabilities",
+      "control.health"
+    ],
+    "external_parents": "not configured"
+  },
+  "qec": {
+    "status": "fixture-tested; real scientific execution unverified"
+  },
+  "ollama": {
+    "status": "local HTTP fixture tested; no real model loaded"
+  },
+  "syntax_checks": {
+    "python": "passed",
+    "javascript": "passed"
+  },
+  "record_checksums": "all three included run records verified",
+  "external_repositories_modified": false
+}
