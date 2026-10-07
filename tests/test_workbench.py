@@ -1,7 +1,8 @@
 """Behavior and integration-contract tests; no model or QEC install required."""
-from contextlib import contextmanager
+from contextlib import contextmanager, redirect_stdout
 from copy import deepcopy
 import hashlib
+import io
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
@@ -12,7 +13,7 @@ import tempfile
 import threading
 import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 import urllib.error
 import urllib.request
 
@@ -23,6 +24,9 @@ from qsol_workbench.model import Plan, digest, field, json_loads, validate
 from qsol_workbench.process import execute
 from qsol_workbench.runtime import Runtime
 from qsol_workbench.web import make_server
+from qsol_workbench.cli import main as cli_main
+from qsol_workbench.tui import launch
+from qsol_workbench.worker import inference
 
 
 @contextmanager
@@ -113,6 +117,87 @@ class RuntimeTests(unittest.TestCase):
             self.assertEqual(result["status"], "failed")
             self.assertIn("not JSON", result["stdout"])
             self.assertIsNotNone(result["error"])
+
+    def test_protocol_failures_preserve_zero_exit_transport_results(self):
+        cases = [("json", "not JSON"),
+                 ("control", '{"protocol":"wrong"}'),
+                 ("ollama", '{"response":"partial","done":false}\n')]
+        for kind, output in cases:
+            with self.subTest(kind=kind), runtime() as instance:
+                instance.actions["demo.experiment"].build = lambda p: Plan(
+                    [sys.executable, "-c", "import sys; print('diagnostic',file=sys.stderr); print(" + repr(output) + ")"],
+                    result_kind=kind, expected_operation="control.health")
+                job = instance.start("demo.experiment", {})
+                result = instance.wait(job["id"])
+                self.assertEqual(result["status"], "failed")
+                self.assertEqual(result["exit_code"], 0)
+                self.assertEqual(result["transport_status"], "succeeded")
+                self.assertEqual(result["stdout"].strip(), output.strip())
+                self.assertIn("diagnostic", result["stderr"])
+                self.assertIsNone(result["result"])
+                self.assertIsNotNone(result["error"])
+                self.assertEqual(json_loads((instance.store / (job["id"] + ".json")).read_text()), result)
+
+    def test_surrogate_encoding_failure_reports_unsaved_final_record(self):
+        with runtime() as instance:
+            instance.actions["demo.experiment"].build = lambda p: Plan(
+                [sys.executable, "-c", "print(" + repr('{"text":"\\ud800"}') + ")"])
+            with patch("threading.excepthook") as uncaught:
+                job = instance.start("demo.experiment", {})
+                result = instance.wait(job["id"])
+                uncaught.assert_not_called()
+            self.assertEqual(result["exit_code"], 0)
+            self.assertIn("persistence_error", result)
+            self.assertNotIn("record_sha256", result)
+            self.assertEqual(result["result"]["text"], "\ud800")
+            saved = json_loads((instance.store / (job["id"] + ".json")).read_text())
+            self.assertEqual(saved["status"], "queued")
+            other = Runtime(store=instance.store)
+            try:
+                self.assertEqual(other.get(job["id"])["status"], "interrupted")
+            finally:
+                other.close()
+
+    def test_cli_encoding_failure_returns_nonzero_and_printable_json(self):
+        with runtime() as instance:
+            instance.actions["demo.experiment"].build = lambda p: Plan(
+                [sys.executable, "-c", "print(" + repr('{"text":"\\ud800"}') + ")"])
+            output = io.StringIO()
+            with patch("qsol_workbench.cli.Runtime", return_value=instance), redirect_stdout(output):
+                code = cli_main(["run", "demo.experiment"])
+            self.assertEqual(code, 1)
+            encoded = output.getvalue().encode("utf-8")
+            self.assertIn("persistence_error", json_loads(encoded))
+
+    def test_final_serialization_failure_is_visible_without_rehashing(self):
+        for error in (ValueError("serialization rejected"), TypeError("unserializable value"), OSError("disk full")):
+            with self.subTest(error=type(error).__name__), runtime() as instance:
+                save = instance._save
+                def fail_final(record):
+                    if record["status"] in {"queued", "running"}:
+                        return save(record)
+                    raise error
+                with patch.object(instance, "_save", side_effect=fail_final), patch("threading.excepthook") as uncaught:
+                    job = instance.start("demo.experiment", {"delay": 0})
+                    result = instance.wait(job["id"])
+                    uncaught.assert_not_called()
+                self.assertIn("persistence_error", result)
+                self.assertNotIn("record_sha256", result)
+
+    def test_tui_history_renders_legacy_unfinished_record_without_outputs(self):
+        with runtime() as instance:
+            run_id = "e" * 32
+            record = {"protocol": "qsol-workbench-run/1", "id": run_id,
+                      "status": "queued", "error": None}
+            (instance.store / (run_id + ".json")).write_text(json.dumps(record))
+            screen = MagicMock()
+            screen.getmaxyx.return_value = (30, 120)
+            screen.getch.side_effect = [ord("h"), ord("q")]
+            with patch("qsol_workbench.tui.curses.wrapper", side_effect=lambda app: app(screen)), patch("qsol_workbench.tui.curses.curs_set"):
+                launch(instance)
+            rendered = " ".join(call.args[2] for call in screen.addnstr.call_args_list)
+            self.assertIn("interrupted", rendered)
+            self.assertIn("Owner process ended", rendered)
 
     def test_job_limit_and_refresh_during_execution(self):
         with runtime() as instance:
@@ -252,6 +337,85 @@ class RuntimeTests(unittest.TestCase):
 
 
 class AdapterTests(unittest.TestCase):
+    def test_uninstalled_qec_checkout_and_converted_string_defaults(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            module = root / "qec/benchmark/ququart_battery/cli.py"
+            module.parent.mkdir(parents=True)
+            for parent in [root / "qec", root / "qec/benchmark", module.parent]:
+                (parent / "__init__.py").write_text("")
+            module.write_text(
+                "import argparse,json\nfrom pathlib import Path\n"
+                "def parser():\n p=argparse.ArgumentParser()\n"
+                " p.add_argument('--trials',type=int,default='10')\n"
+                " p.add_argument('--rate',type=float,default='0.25')\n"
+                " p.add_argument('--output',type=Path,default='result')\n"
+                " p.add_argument('--label',type=str,default='unchanged')\n"
+                " p.add_argument('--optional',type=int,default=argparse.SUPPRESS)\n"
+                " return p\n"
+                "if __name__=='__main__': print(json.dumps(vars(parser().parse_args()),default=str))\n")
+            with patch.dict(os.environ):
+                os.environ.pop("PYTHONPATH", None)
+                direct = subprocess.run([sys.executable, "-m", "qec.benchmark.ququart_battery.cli"],
+                                        cwd=root, check=True, capture_output=True, text=True)
+                with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": directory}}) as instance:
+                    connection = next(c for c in instance.connections if c["id"] == "qec")
+                    self.assertEqual(connection["status"], "available", connection)
+                    action = instance.actions["qec.ququart.benchmark"]
+                    defaults = {f["name"]: f["default"] for f in action.fields if "default" in f}
+                    self.assertEqual(defaults, json_loads(direct.stdout))
+                    self.assertIs(type(defaults["trials"]), int)
+                    self.assertIs(type(defaults["rate"]), float)
+                    self.assertEqual(action.backend["module_path"], str(module))
+                    job = instance.start(action.id, {})
+                    record = instance.wait(job["id"])
+                    self.assertEqual(record["status"], "succeeded", record)
+                    self.assertEqual(record["result"], json_loads(direct.stdout))
+
+    def test_ollama_generation_relies_on_shared_deadline_not_socket_timeout(self):
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.readline.side_effect = [b'{"response":"done","done":true}\n']
+        opener = MagicMock()
+        opener.open.return_value = response
+        params = {"model": "fixture", "prompt": "Hi", "temperature": .7, "seed": 42}
+        with patch("qsol_workbench.worker.urllib.request.build_opener", return_value=opener), patch("sys.stdin", io.StringIO(json.dumps(params))), redirect_stdout(io.StringIO()) as output:
+            inference("ollama-generate", "http://127.0.0.1:11434")
+        self.assertIsNone(opener.open.call_args.kwargs["timeout"])
+        self.assertTrue(json_loads(output.getvalue())["done"])
+
+    def test_blocked_ollama_worker_is_stopped_by_shared_run_deadline(self):
+        requested = threading.Event()
+        release = threading.Event()
+        class Ollama(BaseHTTPRequestHandler):
+            def log_message(self, *args): pass
+            def do_GET(self):
+                self.send_response(200); self.end_headers()
+                self.wfile.write(b'{"models":[{"name":"fixture"}]}')
+            def do_POST(self):
+                self.rfile.read(int(self.headers["Content-Length"]))
+                requested.set()
+                release.wait(timeout=3)
+                try:
+                    self.send_response(200); self.end_headers()
+                    self.wfile.write(b'{"response":"late","done":true}\n')
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Ollama)
+        thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+        try:
+            with runtime({"ollama": {"enabled": True, "url": f"http://127.0.0.1:{server.server_port}"}}, timeout=1) as instance:
+                job = instance.start("inference.generate", {"prompt": "Hi"})
+                self.assertTrue(requested.wait(timeout=2))
+                started = time.monotonic()
+                record = instance.wait(job["id"])
+                self.assertEqual(record["status"], "timed_out")
+                self.assertEqual(record["transport_status"], "timed_out")
+                self.assertLess(time.monotonic() - started, 2)
+        finally:
+            release.set()
+            server.shutdown(); server.server_close(); thread.join()
+
     def test_qec_discovers_new_argument_and_executes_it_without_ui_edit(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -308,6 +472,24 @@ class AdapterTests(unittest.TestCase):
 
 
 class WebTests(unittest.TestCase):
+    def test_persistence_encoding_error_remains_inspectable_over_http(self):
+        with runtime() as instance:
+            instance.actions["demo.experiment"].build = lambda p: Plan(
+                [sys.executable, "-c", "print(" + repr('{"text":"\\ud800"}') + ")"])
+            job = instance.start("demo.experiment", {})
+            result = instance.wait(job["id"])
+            self.assertIn("persistence_error", result)
+            server = make_server(instance, 0)
+            thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+            try:
+                request = urllib.request.Request(
+                    f"http://127.0.0.1:{server.server_port}/api/runs/{job['id']}",
+                    headers={"Authorization": "Bearer " + server.workbench_token})
+                with urllib.request.urlopen(request, timeout=5) as response:
+                    self.assertEqual(json_loads(response.read()), result)
+            finally:
+                server.shutdown(); server.server_close(); thread.join()
+
     def test_authenticated_http_uses_shared_runtime(self):
         with runtime() as instance:
             server = make_server(instance, 0)

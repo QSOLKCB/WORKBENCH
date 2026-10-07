@@ -53,7 +53,11 @@ Optional properties:
 
 Unknown input names, type mismatches, integer/bool aliases, non-finite numbers, duplicate JSON members and invalid choices are rejected. The core validates defaults as well as submitted values. These checks do not replace backend scientific validation. A string such as QEC's comma-separated error-rate list retains its backend-defined grammar.
 
+The browser accepts whole decimal integer text only within JavaScript's exact safe range, −9007199254740991 through 9007199254740991. It checks the text with `BigInt` before converting to a JSON number and rejects larger values before dispatch or preset save, including unsafe discovered defaults/choices. CLI/TUI and direct API callers can supply larger integers supported by the backend. Number fields retain floating-point semantics.
+
 The QEC bridge supports ordinary scalar argparse store actions with built-in string/int/float or `pathlib.Path` converters. Boolean argparse actions, positional arguments, lists, subparsers and custom converters currently require adapter work. The probe rejects unsupported shapes rather than presenting an incomplete form. It uses argparse's internal `_actions` interface as a temporary compatibility bridge; a backend-owned descriptor is the preferred production contract.
+
+String defaults pass through the declared converter, matching argparse behavior; non-string defaults remain unchanged, and Path defaults are exported as strings. The isolated probe starts its QEC module search at the configured working directory, matching the eventual `python -m` invocation, including unpackaged checkouts.
 
 ## Capability identity and refresh
 
@@ -76,6 +80,8 @@ expected_operation    optional CONTROL response correlation check
 There is no shell evaluation. The HTTP API cannot submit an arbitrary argv or rewrite adapter configuration. Configuration is loaded from an operator-selected local file. That file is trusted and can deliberately invoke local programs.
 
 QEC starts the selected interpreter with `-m qec.benchmark.ququart_battery.cli`. CONTROL receives one request line and an EOF. Ollama uses a worker process so HTTP transport can be interrupted through the same job-control interface.
+
+Ollama generation has no independent socket timeout: the shared run deadline and cancellation terminate its worker, including a blocked connection or read. Model-list discovery retains its short probe deadline.
 
 ## Local HTTP API
 
@@ -101,6 +107,8 @@ saved unfinished record loaded by a new process -> interrupted (view classificat
 
 Record content includes action ID, full capability snapshot, normalized parameters, backend identity, argv/cwd, creation/start/finish times, captured stdout/stderr, exit code when available, parsed result and error. A successful OS process with invalid required JSON is classified as failed. CONTROL error envelopes cannot become success merely because the process exited zero. An Ollama stream must contain a terminal completion event.
 
+Transport fields are retained before interpreting output. `transport_status` records the executor outcome separately from the final run `status`; a zero-exit malformed JSON, CONTROL or Ollama response retains `exit_code: 0`, captured output and `transport_status: succeeded`, while the final run is `failed`. The run stays active until interpretation finishes.
+
 During a run, output is kept in memory and exposed through polling. A queued record is persisted before execution, then atomically replaced with the final record. This is not a durable event stream: intermediate output can be lost on abrupt application death. The last unfinished disk record is reported as interrupted on a new process's read, without claiming the backend was rolled back.
 
 Each saved `record_sha256` is computed before adding that field. Remove it before recomputation. On disk reads, the runtime validates the object, protocol, run identity and known status, then verifies the checksum before interpreting the record. Final records require a checksum; malformed or mismatched checksums are rejected. History omits invalid records; direct CLI/API inspection reports the error. Owned jobs are read from session memory and do not trigger disk verification.
@@ -108,6 +116,8 @@ Each saved `record_sha256` is computed before adding that field. Remove it befor
 For unfinished records, the returned view uses `status: interrupted`, an explanatory error, and no top-level `record_sha256`. `stored_record` contains the exact parsed disk object and `stored_record_integrity` is `verified` when its checksum passed. Legacy unfinished records with no checksum are explicitly `unverified`. No inspection rewrites the stored file. A checksum validates content consistency, not authenticity; replacing both content and checksum cannot be detected by this local format.
 
 A persistence error is reported in the in-memory record and yields a nonzero CLI run outcome; it is not concealed as successfully saved evidence. There is no automatic signature, trusted timestamp or exact-replay guarantee.
+
+Final persistence catches JSON serialization, Unicode encoding and filesystem failures. An unsaved in-memory final record has `persistence_error` and no `record_sha256`; it is not rehashed after a serialization failure. CLI/HTTP JSON presentation escapes Unicode so such failures remain inspectable, including parsed lone surrogates. The previous disk snapshot remains the recovery record. TUI history tolerates missing legacy output fields and displays persistence errors.
 
 ## Extending the implementation
 

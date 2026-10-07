@@ -33,6 +33,8 @@ python3 workbench.py --config examples/config.json web --port 8765
 
 The web server binds to `127.0.0.1` only. Use the exact URL it prints. API access requires the per-process token in that URL; the fragment is removed from the address bar after loading. The browser polls job state twice per second. This is a local single-user prototype.
 
+Browser integer inputs require whole decimal text within −9007199254740991 through 9007199254740991. Larger integer inputs, defaults or choices produce an explicit error before submission or preset save. Use CLI/TUI for larger backend-supported seeds; the browser never silently rounds them into a different experiment.
+
 ## Terminal controls
 
 | Key | Operation |
@@ -107,6 +109,8 @@ Run `python3 workbench.py --config local.json --timeout 600 web`. Choose **Local
 This is single-prompt generation, not multi-turn chat, RAG, file ingestion, tool execution, model management, or training. Only loopback HTTP origins are accepted; redirects and inherited HTTP proxies are disabled. No model downloads occur. A seed is a recorded input, not a guarantee that a particular model/backend is deterministic.
 
 Cancellation terminates the local transport worker. It closes the HTTP connection but does not prove that the provider has stopped all server-side computation. Backend-visible response fields are retained in the raw stream; the main UI renders response text.
+
+The configured `--timeout` controls the shared generation deadline, including model loading and gaps between streamed events. Generation has no separate 120-second socket timeout. Model-list discovery still uses a short timeout.
 
 ## Records and limits
 

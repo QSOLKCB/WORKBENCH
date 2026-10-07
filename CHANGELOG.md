@@ -2,6 +2,18 @@
 
 ## Phase 0 repository baseline — 2026-10-07
 
+Review fixes:
+
+- Reject unsafe browser integer values before dispatch, with decimal-text validation and four frontend regression tests.
+- Match argparse conversion of string defaults and align QEC probe imports with execution from unpackaged checkouts.
+- Classify final serialization/encoding errors as persistence failures; retain inspectable JSON and avoid rehashing unsaved records.
+- Preserve transport status, exit code and captured output before interpreting backend responses.
+- Let the shared runtime enforce Ollama generation deadlines, including blocked sockets.
+- Render legacy TUI records without requiring stdout/stderr and show persistence errors.
+- Expand Python coverage from 25 to 34 tests and add browser regression checks to CI.
+
+Initial import:
+
 - Imported Astra's 0.1.0 reference implementation and preserved the original evidence and handoff manifest.
 - Organized usage, report and historical handoff documentation; added concise repository entry points.
 - Adopted the existing Apache-2.0 repository license and `qsol-workbench` package identity.

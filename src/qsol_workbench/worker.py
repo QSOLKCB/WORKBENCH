@@ -28,7 +28,11 @@ def qec_probe():
                 "type": kinds[action.type], "required": action.required,
                 "flag": flags[0], "help": action.help or ""}
         if action.default is not None and action.default != argparse.SUPPRESS:
-            spec["default"] = str(action.default) if isinstance(action.default, Path) else action.default
+            default = action.default
+            # argparse applies the declared converter to string defaults only.
+            if isinstance(default, str) and action.type is not None:
+                default = action.type(default)
+            spec["default"] = str(default) if isinstance(default, Path) else default
         if action.choices is not None:
             spec["choices"] = list(action.choices)
         fields.append(spec)
@@ -76,7 +80,9 @@ def inference(mode, url):
     request = urllib.request.Request(url + "/api/generate", data=json.dumps(payload).encode(),
                                      headers={"Content-Type": "application/json"})
     done = False
-    with opener.open(request, timeout=120) as response:
+    # The owning executor enforces the configured wall-clock deadline and
+    # cancellation by terminating this worker, including blocked socket reads.
+    with opener.open(request, timeout=None) as response:
         while raw := response.readline(1024 * 1024 + 1):
             if len(raw) > 1024 * 1024:
                 raise ValueError("Inference event exceeds limit")
@@ -103,6 +109,9 @@ def main():
         print(json.dumps({"demo": True, "label": params["label"], "total": total,
                           "steps": params["steps"], "seed": params["seed"]}))
     elif mode == "qec-probe":
+        # Match `python -m qec...`: the configured cwd is the first import path,
+        # rather than this worker script's directory.
+        sys.path[0] = str(Path.cwd())
         qec_probe()
     else:
         inference(mode, sys.argv[2])

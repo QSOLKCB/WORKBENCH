@@ -54,7 +54,7 @@ def main(argv=None):
             except KeyboardInterrupt:
                 runtime.cancel(record["id"])
                 result = runtime.wait(record["id"])
-            print(json.dumps(result, indent=2, ensure_ascii=False))
+            print(json.dumps(result, indent=2, ensure_ascii=True))
             return 0 if result["status"] == "succeeded" and not result.get("persistence_error") else 1
         elif args.command == "web":
             from .web import serve

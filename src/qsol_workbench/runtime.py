@@ -91,6 +91,9 @@ class Runtime:
 
         try:
             result = execute(plan, cancel=job["cancel"], emit=emit, timeout=self.timeout)
+            with self.lock:
+                record.update({key: value for key, value in result.items() if key != "status"})
+                record["transport_status"] = result["status"]
             parsed = None
             if result["status"] == "succeeded":
                 if plan.result_kind == "ollama":
@@ -104,8 +107,7 @@ class Runtime:
                     if plan.result_kind == "control":
                         check_control(parsed, plan.expected_operation)
             with self.lock:
-                record.update(result)
-                record["result"] = parsed
+                record.update(status=result["status"], result=parsed)
         except Exception as error:
             with self.lock:
                 record.update(status="failed", error=f"{type(error).__name__}: {error}")
@@ -114,10 +116,11 @@ class Runtime:
                 record["finished_at"] = now()
                 try:
                     self._save(record)
-                except OSError as error:
-                    record["persistence_error"] = str(error)
+                except (OSError, ValueError, TypeError) as error:
+                    # UnicodeError is a ValueError. Do not rehash a record that
+                    # may itself have failed JSON serialization or UTF-8 encoding.
+                    record["persistence_error"] = f"{type(error).__name__}: {error}"
                     record.pop("record_sha256", None)
-                    record["record_sha256"] = digest(record)
 
     def get(self, run_id):
         if not isinstance(run_id, str) or not re.fullmatch(r"[a-f0-9]{32}", run_id):

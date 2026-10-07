@@ -46,9 +46,11 @@ def launch(runtime):
             if run_id:
                 record = runtime.get(run_id)
                 write(top, 1, f"Run {run_id[:12]}  {record['status']}", curses.A_BOLD)
-                output = record["stderr"] + "\n" + record["stdout"]
+                output = record.get("stderr", "") + "\n" + record.get("stdout", "")
                 if record.get("error"):
                     output += "\n" + record["error"]
+                if record.get("persistence_error"):
+                    output += "\n" + record["persistence_error"]
                 for i, line in enumerate(output.splitlines()[-max(1, height-top-4):]):
                     write(top + 1 + i, 1, line)
             write(height - 2, 1, notice)

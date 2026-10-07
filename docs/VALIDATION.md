@@ -2,6 +2,10 @@
 
 ## Phase 0 repository validation
 
+The seven initial PR findings were reproduced and fixed on 7 October 2026. The updated suite passes **34 Python tests and four Node frontend tests**. New tests exercise safe/unsafe browser integers and defaults/choices, fractional strings that round to integers, converted QEC defaults and an unpackaged checkout without PYTHONPATH, zero-exit protocol failures, lone-surrogate and injected serialization failures, nonzero CLI reporting, HTTP inspection, legacy TUI history rendering and shared cancellation of an Ollama worker blocked in HTTP. The frontend suite runs the full application script against DOM/HTTP fixtures in Node; it is not a replacement for full Chrome acceptance.
+
+Python compilation, JavaScript syntax, the regenerated manifest and archive extraction/demo were rechecked after the fixes. Real QEC and real-model evidence boundaries remain unchanged. The initial import evidence below records the earlier 25-test baseline.
+
 The repository import was validated on 7 October 2026 with Linux, Python 3.12.14 and Node 24.19.0. All **25 tests passed**, including five new saved-record regressions. Python compilation, both JavaScript syntax checks, CLI discovery/result 42, archive checksum, complete extracted manifest and extracted demo passed. Added-file and duplicate-entry probes confirm manifest verification fails for incomplete coverage or repeated entries.
 
 New coverage rejects modified results/inputs, missing or malformed final checksums, malformed objects, unknown statuses and mismatched run identities. It checks verified interrupted views preserve the original stored object and bytes, legacy unfinished records are explicitly unverified, corrupt records are omitted from history, and CLI inspection returns an integrity error.

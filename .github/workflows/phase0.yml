@@ -28,6 +28,8 @@ jobs:
         run: python tools/verify_bundle.py
       - name: Behavior and adapter fixtures
         run: python -m unittest discover -s tests -v
+      - name: Browser integer input regressions
+        run: node --test tests/browser_values.mjs
       - name: Python and browser syntax
         run: |
           python -m compileall -q src tests tools workbench.py

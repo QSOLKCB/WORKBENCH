@@ -19,7 +19,7 @@ def make_server(runtime, port=8765):
 
         def send(self, status, body, content_type="application/json"):
             if content_type == "application/json":
-                body = json.dumps(body, ensure_ascii=False, allow_nan=False).encode()
+                body = json.dumps(body, ensure_ascii=True, allow_nan=False).encode()
             elif isinstance(body, str):
                 body = body.encode()
             self.send_response(status)

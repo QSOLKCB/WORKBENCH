@@ -16,6 +16,7 @@ python3 -m unittest discover -s tests -v
 python3 -m compileall -q src tests tools workbench.py
 node --check src/qsol_workbench/static/app.js
 node --check tools/browser_smoke.mjs
+node --test tests/browser_values.mjs
 ```
 
 Tests require local sockets for HTTP fixtures. Node is a development tool, not a runtime dependency. Optional browser acceptance also requires Chrome/Chromium; see [usage](docs/USAGE.md).

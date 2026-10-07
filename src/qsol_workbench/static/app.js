@@ -60,7 +60,17 @@ function values() {
   for (const spec of selected.fields) {
     const input = byId("field-" + spec.name);
     if (input.value === "" && !spec.required && spec.default === undefined) continue;
-    result[spec.name] = spec.type === "boolean" ? input.checked : ["number", "integer"].includes(spec.type) ? Number(input.value) : input.value;
+    if (spec.type === "integer") {
+      const raw = input.value.trim();
+      if (!/^[+-]?\d+$/.test(raw)) throw new Error(spec.label + " must be a whole decimal integer");
+      const integer = BigInt(raw);
+      if (integer < BigInt(Number.MIN_SAFE_INTEGER) || integer > BigInt(Number.MAX_SAFE_INTEGER)) {
+        throw new Error(spec.label + " is outside the browser's safe integer range; use CLI or TUI for larger integers");
+      }
+      result[spec.name] = Number(integer);
+    } else {
+      result[spec.name] = spec.type === "boolean" ? input.checked : spec.type === "number" ? Number(input.value) : input.value;
+    }
   }
   return result;
 }
