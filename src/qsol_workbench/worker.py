@@ -34,13 +34,18 @@ def qec_probe():
                 default = action.type(default)
             spec["default"] = str(default) if isinstance(default, Path) else default
         if action.choices is not None:
-            spec["choices"] = list(action.choices)
+            spec["choices"] = [str(choice) if isinstance(choice, Path) else choice
+                               for choice in action.choices]
         fields.append(spec)
-    try:
-        version = importlib.metadata.version("qec")
-    except importlib.metadata.PackageNotFoundError:
-        version = "unpackaged-checkout"
     origin = Path(module.__file__).resolve()
+    version = "unpackaged-checkout"
+    # A same-named distribution can belong to a different checkout. Only use
+    # metadata whose file inventory owns the CLI module we actually imported.
+    for distribution in importlib.metadata.distributions(name="qec"):
+        if any(Path(distribution.locate_file(file)).resolve() == origin
+               for file in distribution.files or ()):
+            version = distribution.version
+            break
     print(json.dumps({"fields": fields, "backend": {"kind": "qec", "version": version,
           "python": sys.executable, "module_path": str(origin),
           "module_sha256": hashlib.sha256(origin.read_bytes()).hexdigest()}}))

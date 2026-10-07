@@ -33,6 +33,11 @@ def make_server(runtime, port=8765):
             self.wfile.write(body)
 
         def allowed(self):
+            try:
+                self.request_path = urlsplit(self.path).path
+            except ValueError:
+                self.send(400, {"error": "Invalid request target"})
+                return False
             host = f"127.0.0.1:{self.server.server_port}"
             if self.headers.get("Host") != host:
                 self.send(403, {"error": "Unexpected Host"})
@@ -41,7 +46,7 @@ def make_server(runtime, port=8765):
             if origin and origin != "http://" + host:
                 self.send(403, {"error": "Unexpected Origin"})
                 return False
-            if self.path.startswith("/api/") and not secrets.compare_digest(
+            if self.request_path.startswith("/api/") and not secrets.compare_digest(
                     self.headers.get("Authorization", ""), "Bearer " + token):
                 self.send(401, {"error": "Open the URL printed by the workbench server"})
                 return False
@@ -50,7 +55,7 @@ def make_server(runtime, port=8765):
         def do_GET(self):
             if not self.allowed():
                 return
-            path = urlsplit(self.path).path
+            path = self.request_path
             try:
                 if path == "/api/manifest":
                     self.send(200, runtime.manifest())
@@ -84,12 +89,12 @@ def make_server(runtime, port=8765):
                 body = json_loads(raw)
                 if not isinstance(body, dict):
                     raise ValueError("Body must be an object")
-                if self.path == "/api/run":
+                if self.request_path == "/api/run":
                     result = runtime.start(body["action"], body.get("parameters", {}), body.get("schema_sha256"))
                     self.send(202, result)
-                elif self.path == "/api/cancel":
+                elif self.request_path == "/api/cancel":
                     self.send(200, runtime.cancel(body["id"]))
-                elif self.path == "/api/refresh":
+                elif self.request_path == "/api/refresh":
                     self.send(200, runtime.refresh())
                 else:
                     self.send(404, {"error": "Not found"})

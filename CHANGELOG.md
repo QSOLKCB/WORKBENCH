@@ -4,6 +4,11 @@
 
 Review fixes:
 
+- Authenticate normalized absolute-form API targets and share the same path with GET/POST routing.
+- Serialize QEC Path choices and bind advertised versions to metadata owning the imported CLI module.
+- Render legacy inference history without stdout; submit and restore boolean select values correctly.
+- Expand current regression coverage to 38 Python tests and seven Node frontend tests.
+
 - Respect Python safe-path mode in QEC discovery; test normal cwd imports, rejected implicit cwd imports and preserved explicit PYTHONPATH against direct execution.
 
 - Reject unsafe browser integer values before dispatch, with decimal-text validation and four frontend regression tests.

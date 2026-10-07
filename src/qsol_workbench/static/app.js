@@ -42,7 +42,7 @@ function choose(action) {
       if (input.type === "number") input.step = spec.type === "integer" ? "1" : "any";
     }
     input.id = label.htmlFor; input.name = spec.name;
-    if (spec.type === "boolean") input.checked = spec.default === true;
+    if (input.type === "checkbox") input.checked = spec.default === true;
     else if (spec.default !== undefined) input.value = String(spec.default);
     input.required = !!spec.required;
     if (spec.minimum !== undefined) input.min = spec.minimum;
@@ -68,8 +68,10 @@ function values() {
         throw new Error(spec.label + " is outside the browser's safe integer range; use CLI or TUI for larger integers");
       }
       result[spec.name] = Number(integer);
+    } else if (spec.type === "boolean") {
+      result[spec.name] = input.type === "checkbox" ? input.checked : JSON.parse(input.value);
     } else {
-      result[spec.name] = spec.type === "boolean" ? input.checked : spec.type === "number" ? Number(input.value) : input.value;
+      result[spec.name] = spec.type === "number" ? Number(input.value) : input.value;
     }
   }
   return result;
@@ -114,9 +116,9 @@ async function poll() {
     byId("run-status").textContent = record.status + " · " + record.id.slice(0, 12);
     byId("cancel").disabled = !["queued", "running"].includes(record.status);
     byId("download").disabled = false;
-    let output = record.stdout;
+    let output = record.stdout || "";
     if (record.action === "inference.generate") {
-      output = record.stdout.split("\n").flatMap(line => {try {return [JSON.parse(line).response || ""];} catch {return [];}}).join("");
+      output = output.split("\n").flatMap(line => {try {return [JSON.parse(line).response || ""];} catch {return [];}}).join("");
     }
     byId("output").textContent = [record.stderr, output, record.error, record.persistence_error].filter(Boolean).join("\n");
     byId("record").textContent = JSON.stringify(record, null, 2);
@@ -150,7 +152,7 @@ byId("load-preset").onclick = () => {
     if (!saved) return notice("No saved preset for this action.");
     for (const spec of selected.fields) if (saved[spec.name] !== undefined) {
       const input = byId("field-" + spec.name);
-      if (spec.type === "boolean") input.checked = saved[spec.name]; else input.value = saved[spec.name];
+      if (input.type === "checkbox") input.checked = saved[spec.name]; else input.value = String(saved[spec.name]);
     }
     notice("Preset loaded; current backend validation still applies.");
   } catch (e) {notice(e.message);}

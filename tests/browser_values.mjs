@@ -5,27 +5,36 @@ import vm from "node:vm";
 
 const source = await readFile(new URL("../src/qsol_workbench/static/app.js", import.meta.url), "utf8");
 
-async function browser(spec = {name: "seed", type: "integer", label: "Seed", required: true}) {
-  const elements = new Map(), requests = [];
+async function browser(spec = {name: "seed", type: "integer", label: "Seed", required: true},
+                       record = {id: "a".repeat(32), action: "fixture", status: "succeeded", stdout: "", stderr: ""}) {
+  const elements = new Map(), requests = [], presets = new Map();
   class Element {
-    constructor() {this.children = []; this.value = ""; this.classList = {toggle() {}};}
+    constructor(tag = "div") {
+      this.tagName = tag.toUpperCase(); this.children = []; this.value = "";
+      this.type = tag === "select" ? "select-one" : "";
+      this.classList = {toggle() {}};
+    }
+    set type(value) {this._type = value; if (value === "checkbox") this.value = "on";}
+    get type() {return this._type;}
     set id(value) {this._id = value; elements.set(value, this);}
     get id() {return this._id;}
     set textContent(value) {this._text = value; this.children = [];}
     get textContent() {return this._text || "";}
-    append(...children) {this.children.push(...children);}
+    append(...children) {
+      if (this.tagName === "SELECT" && !this.children.length && children.length) this.value = children[0].value;
+      this.children.push(...children);
+    }
   }
   const document = {
     getElementById(id) {if (!elements.has(id)) {const e = new Element(); e.id = id;} return elements.get(id);},
-    createElement() {return new Element();}
+    createElement(tag) {return new Element(tag);}
   };
   const context = vm.createContext({document, URLSearchParams, location: {hash: "", pathname: "/"},
     sessionStorage: {getItem() {return "";}, setItem() {}}, history: {replaceState() {}},
-    setInterval() {}, localStorage: {getItem() {return null;}, setItem() {}},
+    setInterval() {}, localStorage: {getItem(key) {return presets.get(key) ?? null;}, setItem(key, value) {presets.set(key, value);}},
     async fetch(path, options) {
       requests.push({path, options});
-      const data = path === "/api/manifest" ? {actions: [], connections: []} : path === "/api/runs" ? [] :
-        {id: "a".repeat(32), action: "fixture", status: "succeeded", stdout: "", stderr: ""};
+      const data = path === "/api/manifest" ? {actions: [], connections: []} : path === "/api/runs" ? [record] : record;
       return {ok: true, async json() {return data;}};
     }});
   vm.runInContext(source, context);
@@ -34,7 +43,7 @@ async function browser(spec = {name: "seed", type: "integer", label: "Seed", req
   context.fixture = {id: "fixture", title: "Fixture", description: "", schema_sha256: "fixture-hash", fields: [spec]};
   vm.runInContext("choose(fixture)", context);
   return {document, requests, async submit(value) {
-    if (value !== undefined) document.getElementById("field-seed").value = value;
+    if (value !== undefined) document.getElementById("field-" + spec.name).value = value;
     await document.getElementById("form").onsubmit({preventDefault() {}});
   }};
 }
@@ -47,6 +56,54 @@ test("browser sends the exact safe integer boundaries", async () => {
     assert.ok(run);
     assert.equal(JSON.parse(run.options.body).parameters.seed, Number(BigInt(value)));
   }
+});
+
+test("boolean choices submit selected values and restore defaults and presets", async () => {
+  for (const value of [true, false]) {
+    const b = await browser({name: "enabled", type: "boolean", label: "Enabled", required: true,
+      choices: [true, false], default: value});
+    const input = b.document.getElementById("field-enabled");
+    assert.equal(input.value, String(value));
+    await b.submit();
+    assert.equal(JSON.parse(b.requests.find(r => r.path === "/api/run").options.body).parameters.enabled, value);
+    input.value = String(!value);
+    b.document.getElementById("save-preset").onclick();
+    input.value = String(value);
+    b.document.getElementById("load-preset").onclick();
+    assert.equal(input.value, String(!value));
+    await b.submit();
+    assert.equal(JSON.parse(b.requests.filter(r => r.path === "/api/run").at(-1).options.body).parameters.enabled, !value);
+  }
+  const b = await browser({name: "enabled", type: "boolean", label: "Enabled", required: true, choices: [true, false]});
+  await b.submit("true");
+  assert.equal(JSON.parse(b.requests.find(r => r.path === "/api/run").options.body).parameters.enabled, true);
+});
+
+test("boolean checkboxes submit both states and restore presets", async () => {
+  for (const value of [true, false]) {
+    const b = await browser({name: "enabled", type: "boolean", label: "Enabled", default: value});
+    const input = b.document.getElementById("field-enabled");
+    assert.equal(input.checked, value);
+    input.checked = !value;
+    b.document.getElementById("save-preset").onclick();
+    input.checked = value;
+    b.document.getElementById("load-preset").onclick();
+    assert.equal(input.checked, !value);
+    await b.submit();
+    assert.equal(JSON.parse(b.requests.find(r => r.path === "/api/run").options.body).parameters.enabled, !value);
+  }
+});
+
+test("history renders legacy inference records without stdout and clears stale output", async () => {
+  const record = {id: "b".repeat(32), action: "inference.generate", status: "interrupted", error: "Owner process ended"};
+  const b = await browser(undefined, record);
+  b.document.getElementById("output").textContent = "stale output";
+  b.document.getElementById("record").textContent = "stale record";
+  await b.document.getElementById("history").children[0].onclick();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(b.document.getElementById("output").textContent, record.error);
+  assert.deepEqual(JSON.parse(b.document.getElementById("record").textContent), record);
+  assert.doesNotMatch(b.document.getElementById("notice").textContent, /split/);
 });
 
 test("browser rejects unsafe 64-bit integer inputs before dispatch", async () => {

@@ -53,11 +53,13 @@ Optional properties:
 
 Unknown input names, type mismatches, integer/bool aliases, non-finite numbers, duplicate JSON members and invalid choices are rejected. The core validates defaults as well as submitted values. These checks do not replace backend scientific validation. A string such as QEC's comma-separated error-rate list retains its backend-defined grammar.
 
-The browser accepts whole decimal integer text only within JavaScript's exact safe range, −9007199254740991 through 9007199254740991. It checks the text with `BigInt` before converting to a JSON number and rejects larger values before dispatch or preset save, including unsafe discovered defaults/choices. CLI/TUI and direct API callers can supply larger integers supported by the backend. Number fields retain floating-point semantics.
+The browser accepts whole decimal integer text only within JavaScript's exact safe range, −9007199254740991 through 9007199254740991. It checks the text with `BigInt` before converting to a JSON number and rejects larger values before dispatch or preset save, including unsafe discovered defaults/choices. CLI/TUI and direct API callers can supply larger integers supported by the backend. Number fields retain floating-point semantics. Boolean choices use the selected option's JSON boolean value; unconstrained booleans use checkboxes. Defaults and browser presets restore the corresponding control value.
 
 The QEC bridge supports ordinary scalar argparse store actions with built-in string/int/float or `pathlib.Path` converters. Boolean argparse actions, positional arguments, lists, subparsers and custom converters currently require adapter work. The probe rejects unsupported shapes rather than presenting an incomplete form. It uses argparse's internal `_actions` interface as a temporary compatibility bridge; a backend-owned descriptor is the preferred production contract.
 
-String defaults pass through the declared converter, matching argparse behavior; non-string defaults remain unchanged, and Path defaults are exported as strings. When Python prepends an implicit import path, the isolated probe replaces its script directory with the configured working directory to match the eventual `python -m` invocation, including unpackaged checkouts. Under Python 3.11+ safe-path mode, the probe leaves the interpreter's import paths unchanged: it does not inject cwd or replace an explicit PYTHONPATH entry. A cwd-only backend is therefore unavailable when execution cannot import it; an explicitly configured import path remains usable.
+String defaults pass through the declared converter, matching argparse behavior; non-string defaults remain unchanged, and Path defaults and choice members are exported as strings. When Python prepends an implicit import path, the isolated probe replaces its script directory with the configured working directory to match the eventual `python -m` invocation, including unpackaged checkouts. Under Python 3.11+ safe-path mode, the probe leaves the interpreter's import paths unchanged: it does not inject cwd or replace an explicit PYTHONPATH entry. A cwd-only backend is therefore unavailable when execution cannot import it; an explicitly configured import path remains usable.
+
+QEC reports a distribution version only when that distribution's file inventory includes the imported CLI module. Same-named unrelated metadata is ignored. When ownership cannot be established, including editable installs without the source module in their inventory, the identity is `unpackaged-checkout` alongside the actual module path and hash. This association is not an authenticated provenance check.
 
 ## Capability identity and refresh
 
@@ -85,7 +87,7 @@ Ollama generation has no independent socket timeout: the shared run deadline and
 
 ## Local HTTP API
 
-The server accepts only its exact loopback Host value, and rejects a supplied mismatched Origin. API requests need `Authorization: Bearer <session-token>`. Mutating requests require a JSON body with a bounded explicit Content-Length. There is no CORS allowance, remote binding option or endpoint to change configuration.
+The server accepts only its exact loopback Host value, and rejects a supplied mismatched Origin. API requests need `Authorization: Bearer <session-token>`. Authentication and GET/POST routing share the URL-split request path, so absolute-form and origin-form API targets require the same token. Malformed targets are rejected. Mutating requests require a JSON body with a bounded explicit Content-Length. There is no CORS allowance, remote binding option or endpoint to change configuration.
 
 | Method | Path | Meaning |
 |---|---|---|
@@ -117,7 +119,7 @@ For unfinished records, the returned view uses `status: interrupted`, an explana
 
 A persistence error is reported in the in-memory record and yields a nonzero CLI run outcome; it is not concealed as successfully saved evidence. There is no automatic signature, trusted timestamp or exact-replay guarantee.
 
-Final persistence catches JSON serialization, Unicode encoding and filesystem failures. An unsaved in-memory final record has `persistence_error` and no `record_sha256`; it is not rehashed after a serialization failure. CLI/HTTP JSON presentation escapes Unicode so such failures remain inspectable, including parsed lone surrogates. The previous disk snapshot remains the recovery record. TUI history tolerates missing legacy output fields and displays persistence errors.
+Final persistence catches JSON serialization, Unicode encoding and filesystem failures. An unsaved in-memory final record has `persistence_error` and no `record_sha256`; it is not rehashed after a serialization failure. CLI/HTTP JSON presentation escapes Unicode so such failures remain inspectable, including parsed lone surrogates. The previous disk snapshot remains the recovery record. Browser and TUI history tolerate missing legacy output fields and displays persistence errors.
 
 ## Extending the implementation
 

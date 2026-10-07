@@ -2,6 +2,7 @@
 from contextlib import contextmanager, redirect_stdout
 from copy import deepcopy
 import hashlib
+import http.client
 import io
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -337,6 +338,80 @@ class RuntimeTests(unittest.TestCase):
 
 
 class AdapterTests(unittest.TestCase):
+    def test_qec_path_choices_match_direct_argparse_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            module = root / "qec/benchmark/ququart_battery/cli.py"
+            module.parent.mkdir(parents=True)
+            for parent in [root / "qec", root / "qec/benchmark", module.parent]:
+                (parent / "__init__.py").write_text("")
+            module.write_text(
+                "import argparse,json\nfrom pathlib import Path\n"
+                "def parser():\n p=argparse.ArgumentParser()\n"
+                " p.add_argument('--output',type=Path,choices=[Path('a'),Path('b')],default=Path('a'))\n"
+                " return p\n"
+                "if __name__=='__main__': print(json.dumps(vars(parser().parse_args()),default=str))\n")
+            with patch.dict(os.environ):
+                os.environ.pop("PYTHONSAFEPATH", None)
+                os.environ.pop("PYTHONPATH", None)
+                with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": directory}}) as instance:
+                    connection = next(c for c in instance.connections if c["id"] == "qec")
+                    self.assertEqual(connection["status"], "available", connection)
+                    action = instance.actions["qec.ququart.benchmark"]
+                    spec = action.public()["fields"][0]
+                    self.assertEqual(spec["choices"], ["a", "b"])
+                    self.assertEqual(spec["default"], "a")
+                    for params in ({}, {"output": "b"}):
+                        argv = [sys.executable, "-m", "qec.benchmark.ququart_battery.cli"]
+                        if params:
+                            argv.append("--output=" + params["output"])
+                        direct = subprocess.run(argv, cwd=root, check=True, capture_output=True, text=True)
+                        job = instance.start(action.id, params)
+                        record = instance.wait(job["id"])
+                        self.assertEqual(record["status"], "succeeded", record)
+                        self.assertEqual(record["result"], json_loads(direct.stdout))
+                    with self.assertRaisesRegex(ValueError, "one of"):
+                        instance.start(action.id, {"output": "c"})
+
+    def test_qec_version_metadata_must_own_the_imported_module(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            checkout = root / "checkout"
+            foreign = root / "foreign"
+            module = checkout / "qec/benchmark/ququart_battery/cli.py"
+            module.parent.mkdir(parents=True)
+            for parent in [checkout / "qec", checkout / "qec/benchmark", module.parent]:
+                (parent / "__init__.py").write_text("")
+            module.write_text("import argparse,json\ndef parser(): return argparse.ArgumentParser()\nif __name__=='__main__': print(json.dumps({'fixture':True}))\n")
+            foreign_metadata = foreign / "qec-9.9.dist-info"
+            foreign_metadata.mkdir(parents=True)
+            (foreign_metadata / "METADATA").write_text("Metadata-Version: 2.1\nName: qec\nVersion: 9.9\n")
+            (foreign_metadata / "RECORD").write_text("qec/benchmark/ququart_battery/cli.py,,\n")
+            own_metadata = checkout / "qec-1.2.dist-info"
+            for scenario, version in [("foreign", "unpackaged-checkout"), ("owned", "1.2"), ("unlisted", "unpackaged-checkout")]:
+                with self.subTest(scenario=scenario), patch.dict(os.environ):
+                    if scenario == "owned":
+                        own_metadata.mkdir()
+                        (own_metadata / "METADATA").write_text("Metadata-Version: 2.1\nName: qec\nVersion: 1.2\n")
+                        (own_metadata / "RECORD").write_text("qec/benchmark/ququart_battery/cli.py,,\n")
+                    elif scenario == "unlisted":
+                        (own_metadata / "RECORD").unlink()
+                    # Search unrelated metadata first, then the actual code.
+                    os.environ["PYTHONPATH"] = os.pathsep.join([str(foreign), str(checkout)])
+                    os.environ["PYTHONSAFEPATH"] = "1"
+                    direct = subprocess.run([sys.executable, "-m", "qec.benchmark.ququart_battery.cli"],
+                                            cwd=checkout, check=True, capture_output=True, text=True)
+                    with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": str(checkout)}}) as instance:
+                        action = instance.actions["qec.ququart.benchmark"]
+                        self.assertEqual(action.backend["module_path"], str(module))
+                        self.assertEqual(action.backend["module_sha256"], hashlib.sha256(module.read_bytes()).hexdigest())
+                        self.assertEqual(action.backend["version"], version)
+                        job = instance.start(action.id, {})
+                        record = instance.wait(job["id"])
+                        self.assertEqual(record["status"], "succeeded", record)
+                        self.assertEqual(record["capability"]["backend"]["version"], version)
+                        self.assertEqual(record["result"], json_loads(direct.stdout))
+
     @unittest.skipUnless(sys.version_info >= (3, 11), "Safe-path mode requires Python 3.11+")
     def test_qec_probe_follows_execution_import_rules_in_safe_path_mode(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -517,6 +592,49 @@ class AdapterTests(unittest.TestCase):
 
 
 class WebTests(unittest.TestCase):
+    def test_absolute_form_api_requests_require_the_same_authentication(self):
+        with runtime() as instance:
+            job = instance.start("demo.experiment", {"label": "private prompt", "delay": 0})
+            instance.wait(job["id"])
+            server = make_server(instance, 0)
+            thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
+            host = f"127.0.0.1:{server.server_port}"
+            def request(method, target, token=None, body=None):
+                connection = http.client.HTTPConnection("127.0.0.1", server.server_port, timeout=5)
+                headers = {"Host": host}
+                if token is not None:
+                    headers["Authorization"] = "Bearer " + token
+                if body is not None:
+                    headers["Content-Type"] = "application/json"
+                    body = json.dumps(body)
+                try:
+                    connection.request(method, target, body=body, headers=headers)
+                    response = connection.getresponse()
+                    return response.status, response.read()
+                finally:
+                    connection.close()
+            try:
+                for path in ("/api/manifest", "/api/runs", "/api/runs/" + job["id"]):
+                    for target in (path, "http://" + host + path):
+                        for token in (None, "wrong"):
+                            with self.subTest(target=target, authenticated=False):
+                                status, data = request("GET", target, token)
+                                self.assertEqual(status, 401)
+                                self.assertNotIn(b"private prompt", data)
+                        status, data = request("GET", target, server.workbench_token)
+                        self.assertEqual(status, 200)
+                        self.assertIsNotNone(json_loads(data))
+                payload = {"action": "demo.experiment", "parameters": {"delay": 0}}
+                for target in ("/api/run", "http://" + host + "/api/run"):
+                    status, _ = request("POST", target, body=payload)
+                    self.assertEqual(status, 401)
+                self.assertEqual(len(instance.jobs), 1)
+                status, data = request("POST", "http://" + host + "/api/run", server.workbench_token, payload)
+                self.assertEqual(status, 202)
+                self.assertEqual(instance.wait(json_loads(data)["id"])["status"], "succeeded")
+            finally:
+                server.shutdown(); server.server_close(); thread.join()
+
     def test_persistence_encoding_error_remains_inspectable_over_http(self):
         with runtime() as instance:
             instance.actions["demo.experiment"].build = lambda p: Plan(
