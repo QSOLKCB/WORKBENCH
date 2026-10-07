@@ -337,6 +337,51 @@ class RuntimeTests(unittest.TestCase):
 
 
 class AdapterTests(unittest.TestCase):
+    @unittest.skipUnless(sys.version_info >= (3, 11), "Safe-path mode requires Python 3.11+")
+    def test_qec_probe_follows_execution_import_rules_in_safe_path_mode(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            backend = root / "backend"
+            unrelated = root / "unrelated"
+            unrelated.mkdir()
+            module = backend / "qec/benchmark/ququart_battery/cli.py"
+            module.parent.mkdir(parents=True)
+            for parent in [backend / "qec", backend / "qec/benchmark", module.parent]:
+                (parent / "__init__.py").write_text("")
+            module.write_text(
+                "import argparse,json\n"
+                "def parser():\n return argparse.ArgumentParser()\n"
+                "if __name__=='__main__': print(json.dumps({'fixture':True}))\n")
+            cases = [(False, None, backend, True),
+                     (True, None, backend, False),
+                     (True, str(backend), unrelated, True)]
+            for safe_path, python_path, cwd, available in cases:
+                with self.subTest(safe_path=safe_path, python_path=python_path), patch.dict(os.environ):
+                    os.environ.pop("PYTHONSAFEPATH", None)
+                    os.environ.pop("PYTHONPATH", None)
+                    if safe_path:
+                        os.environ["PYTHONSAFEPATH"] = "1"
+                    if python_path is not None:
+                        os.environ["PYTHONPATH"] = python_path
+                    direct = subprocess.run([sys.executable, "-m", "qec.benchmark.ququart_battery.cli"],
+                                            cwd=cwd, capture_output=True, text=True)
+                    self.assertEqual(direct.returncode == 0, available, direct.stderr)
+                    with runtime({"qec": {"enabled": True, "python": sys.executable, "cwd": str(cwd)}}) as instance:
+                        connection = next(c for c in instance.connections if c["id"] == "qec")
+                        self.assertEqual(connection["status"], "available" if available else "unavailable", connection)
+                        if available:
+                            action = instance.actions["qec.ququart.benchmark"]
+                            self.assertEqual(action.backend["module_path"], str(module))
+                            job = instance.start(action.id, {})
+                            record = instance.wait(job["id"])
+                            self.assertEqual(record["status"], "succeeded", record)
+                            self.assertEqual(record["result"], json_loads(direct.stdout))
+                        else:
+                            self.assertIn("ModuleNotFoundError", connection["reason"])
+                            self.assertNotIn("qec.ququart.benchmark", instance.actions)
+                            with self.assertRaisesRegex(ValueError, "unavailable"):
+                                instance.start("qec.ququart.benchmark", {})
+
     def test_uninstalled_qec_checkout_and_converted_string_defaults(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -2,6 +2,8 @@
 
 ## Phase 0 repository validation
 
+The subsequent safe-path finding was reproduced in both directions: discovery incorrectly enabled a cwd-only QEC under `PYTHONSAFEPATH=1`, and overwrote an explicit PYTHONPATH entry when cwd differed. The probe now respects the interpreter's safe-path flag. The latest local run passes **35 Python tests and four Node frontend tests**, including direct-execution parity for normal cwd imports, safe-path rejection and safe-path explicit imports. The safe-path regression skips Python 3.10, which does not implement this mode; CI exercises it on Python 3.14.
+
 The seven initial PR findings were reproduced and fixed on 7 October 2026. The updated suite passes **34 Python tests and four Node frontend tests**. New tests exercise safe/unsafe browser integers and defaults/choices, fractional strings that round to integers, converted QEC defaults and an unpackaged checkout without PYTHONPATH, zero-exit protocol failures, lone-surrogate and injected serialization failures, nonzero CLI reporting, HTTP inspection, legacy TUI history rendering and shared cancellation of an Ollama worker blocked in HTTP. The frontend suite runs the full application script against DOM/HTTP fixtures in Node; it is not a replacement for full Chrome acceptance.
 
 Python compilation, JavaScript syntax, the regenerated manifest and archive extraction/demo were rechecked after the fixes. Real QEC and real-model evidence boundaries remain unchanged. The initial import evidence below records the earlier 25-test baseline.

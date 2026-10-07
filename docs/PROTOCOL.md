@@ -57,7 +57,7 @@ The browser accepts whole decimal integer text only within JavaScript's exact sa
 
 The QEC bridge supports ordinary scalar argparse store actions with built-in string/int/float or `pathlib.Path` converters. Boolean argparse actions, positional arguments, lists, subparsers and custom converters currently require adapter work. The probe rejects unsupported shapes rather than presenting an incomplete form. It uses argparse's internal `_actions` interface as a temporary compatibility bridge; a backend-owned descriptor is the preferred production contract.
 
-String defaults pass through the declared converter, matching argparse behavior; non-string defaults remain unchanged, and Path defaults are exported as strings. The isolated probe starts its QEC module search at the configured working directory, matching the eventual `python -m` invocation, including unpackaged checkouts.
+String defaults pass through the declared converter, matching argparse behavior; non-string defaults remain unchanged, and Path defaults are exported as strings. When Python prepends an implicit import path, the isolated probe replaces its script directory with the configured working directory to match the eventual `python -m` invocation, including unpackaged checkouts. Under Python 3.11+ safe-path mode, the probe leaves the interpreter's import paths unchanged: it does not inject cwd or replace an explicit PYTHONPATH entry. A cwd-only backend is therefore unavailable when execution cannot import it; an explicitly configured import path remains usable.
 
 ## Capability identity and refresh
 

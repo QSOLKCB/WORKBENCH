@@ -109,9 +109,10 @@ def main():
         print(json.dumps({"demo": True, "label": params["label"], "total": total,
                           "steps": params["steps"], "seed": params["seed"]}))
     elif mode == "qec-probe":
-        # Match `python -m qec...`: the configured cwd is the first import path,
-        # rather than this worker script's directory.
-        sys.path[0] = str(Path.cwd())
+        # Match `python -m qec...` only when Python prepends an implicit path.
+        # In safe-path mode preserve explicit PYTHONPATH/site paths unchanged.
+        if not getattr(sys.flags, "safe_path", False):
+            sys.path[0] = str(Path.cwd())
         qec_probe()
     else:
         inference(mode, sys.argv[2])

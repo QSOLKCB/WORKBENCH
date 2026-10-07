@@ -4,6 +4,8 @@
 
 Review fixes:
 
+- Respect Python safe-path mode in QEC discovery; test normal cwd imports, rejected implicit cwd imports and preserved explicit PYTHONPATH against direct execution.
+
 - Reject unsafe browser integer values before dispatch, with decimal-text validation and four frontend regression tests.
 - Match argparse conversion of string defaults and align QEC probe imports with execution from unpackaged checkouts.
 - Classify final serialization/encoding errors as persistence failures; retain inspectable JSON and avoid rehashing unsaved records.
