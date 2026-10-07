@@ -1,0 +1,90 @@
+{
+  "protocol": "qsol-workbench/1",
+  "workbench_version": "0.1.0",
+  "store": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/store",
+  "connections": [
+    {
+      "id": "demo",
+      "status": "disabled"
+    },
+    {
+      "id": "qec",
+      "status": "available",
+      "actions": [
+        "qec.ququart.benchmark"
+      ]
+    },
+    {
+      "id": "control",
+      "status": "disabled"
+    },
+    {
+      "id": "ollama",
+      "status": "disabled"
+    }
+  ],
+  "actions": [
+    {
+      "id": "qec.ququart.benchmark",
+      "title": "QEC ququart evidence battery",
+      "description": "Runs the installed QEC benchmark and returns its manifest. Writes to the selected output directory.",
+      "fields": [
+        {
+          "name": "output",
+          "label": "Output",
+          "type": "string",
+          "required": false,
+          "flag": "--output",
+          "help": "",
+          "default": "benchmarks/ququart_fer_v170_1_1"
+        },
+        {
+          "name": "trials",
+          "label": "Trials",
+          "type": "integer",
+          "required": false,
+          "flag": "--trials",
+          "help": "Monte Carlo trials per physical-channel/error-rate cell.",
+          "default": 5000
+        },
+        {
+          "name": "harmonic_trials",
+          "label": "Harmonic Trials",
+          "type": "integer",
+          "required": false,
+          "flag": "--harmonic-trials",
+          "help": "Trials per harmonic physical-rate/noise-sigma cell.",
+          "default": 2000
+        },
+        {
+          "name": "seed",
+          "label": "Seed",
+          "type": "integer",
+          "required": false,
+          "flag": "--seed",
+          "help": "",
+          "default": 1701001
+        },
+        {
+          "name": "error_rates",
+          "label": "Error Rates",
+          "type": "string",
+          "required": false,
+          "flag": "--error-rates",
+          "help": "Comma-separated independent per-site physical error rates.",
+          "default": "0.00001,0.00003,0.0001,0.0003,0.001,0.003,0.01,0.03,0.1,0.2"
+        }
+      ],
+      "backend": {
+        "kind": "qec",
+        "version": "173.0.0",
+        "python": "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+        "module_path": "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/cli.py",
+        "module_sha256": "7720835c0f2b9810da455313c428256ba4315b67340a7d6ac666fa281b227a25",
+        "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1"
+      },
+      "effect": "writes-artifacts",
+      "schema_sha256": "c10f5863cd27ac979e1af3a9378b18568f5e57475c211c632752cd3654ab6f71"
+    }
+  ]
+}

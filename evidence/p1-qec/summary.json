@@ -1,0 +1,21 @@
+{
+  "protocol": "qsol-workbench-p1/1",
+  "status": "passed",
+  "modes": [
+    "direct",
+    "cli",
+    "browser"
+  ],
+  "started_at": "2026-10-07T10:47:33.119614+00:00",
+  "output_directory": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec",
+  "qec_commit": "7103836d731a869dc82b077bc0b920a76072f08e",
+  "claim_scope": "Integration acceptance with small trial counts; no new scientific, hardware or quantum-advantage claim.",
+  "comparison": {
+    "byte_identical": true,
+    "manifest_sha256": "9a35c3e5f45241ef8aa9cfcb63c2f07f52e013a4df3a6e422ee7d9c8697609ab",
+    "artifact_count_per_mode": 15,
+    "normalized_fields": [],
+    "note": "No path/timestamp exclusions were needed."
+  },
+  "finished_at": "2026-10-07T10:47:44.060647+00:00"
+}

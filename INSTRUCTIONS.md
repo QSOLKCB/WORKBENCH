@@ -22,3 +22,11 @@ node --test tests/browser_values.mjs
 Tests require local sockets for HTTP fixtures. Node is a development tool, not a runtime dependency. Optional browser acceptance also requires Chrome/Chromium; see [usage](docs/USAGE.md).
 
 After changing repository files, run `python3 tools/build_bundle.py` to regenerate `MANIFEST.sha256` and a deterministic archive/checksum outside the checkout, then `python3 tools/verify_bundle.py`. The manifest covers the current repository; the historical manifest under `docs/handoff/` covers the original uploaded archive.
+
+Verify retained P1 evidence without installing QEC:
+
+```sh
+python3 tools/qec_acceptance.py --verify evidence/p1-qec
+```
+
+Repeat real QEC/Chromium execution using [QEC acceptance instructions](docs/QEC_ACCEPTANCE.md). Phase status is in [ROADMAP.md](docs/ROADMAP.md).

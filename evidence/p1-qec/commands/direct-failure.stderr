@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/cli.py", line 66, in <module>
+    main()
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/cli.py", line 55, in main
+    manifest = build_report(
+               ^^^^^^^^^^^^^
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/report.py", line 91, in build_report
+    for row in monte_carlo_rows(
+               ^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/channels.py", line 121, in monte_carlo_rows
+    raise ValueError("trials must be positive")
+ValueError: trials must be positive

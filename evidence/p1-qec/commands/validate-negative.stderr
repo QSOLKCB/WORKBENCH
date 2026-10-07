@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/validate_cli.py", line 57, in <module>
+    main()
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/validate_cli.py", line 49, in main
+    receipt = validate_report_claims(claims, facts, test_receipt=test_receipt)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/claims.py", line 280, in validate_report_claims
+    raise ReportClaimError("; ".join(errors))
+qec.benchmark.ququart_battery.claims.ReportClaimError: threshold claims require a separately declared code-family scaling study

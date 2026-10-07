@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+    "-m",
+    "qec.benchmark.ququart_battery.cli",
+    "--trials=40",
+    "--harmonic-trials=30",
+    "--seed=31",
+    "--error-rates=0.001,0.01",
+    "--output=/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/direct"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1",
+  "exit_code": 0,
+  "duration_seconds": 1.3365,
+  "stdout": "commands/direct-success.stdout",
+  "stderr": "commands/direct-success.stderr"
+}

@@ -1,8 +1,18 @@
 # Validation evidence and limits
 
+## P1 real QEC acceptance
+
+The real acceptance gate passed locally on Linux x86_64 / CPython 3.12.14 with QEC commit `7103836d731a869dc82b077bc0b920a76072f08e` (package 173.0.0), NumPy 2.3.5, SciPy 1.17.0 and Chromium 153.0.8010.0. The backend was installed into a clean venv with no inherited site packages. All 1,099 installed QEC Python source files matched the pristine pinned checkout, and `pip check` passed.
+
+Direct, WORKBENCH CLI and actual Chromium DOM form submissions each generated 15 artifacts. Their scientific manifests and artifact bytes were identical, without path/timestamp normalization. QEC independently validated all three reports. Zero-trial runs failed directly and in both interfaces with retained nonzero exits and QEC stderr; QEC also rejected an invalid threshold claim. See [retained evidence](../evidence/p1-qec/summary.json), [reproduction instructions](QEC_ACCEPTANCE.md) and [roadmap](ROADMAP.md).
+
+The updated offline suite passes **45 Python tests and seven Node frontend fixture tests**. New regressions exercise preserved venv interpreter symlinks, changed/missing artifacts, rehashed scientific differences, inconsistent methodology, resealed outcome/identity mutations and complete evidence inventories. The offline verifier reads retained real execution evidence; it does not repeat QEC execution. `.github/workflows/p1-qec.yml` repeats real execution and uploads a separate evidence bundle. CI results belong to its actual PR commit.
+
+The workload used 40 Monte Carlo trials and 30 harmonic trials per cell at two rates, seed 31. This establishes integration only. No full QEC test suite, quantum hardware or qBraid execution, installed Ollama model, production artifact installation or new scientific claim is validated. The original handoff evidence remains unchanged.
+
 ## Phase 0 repository validation
 
-The latest five review findings were reproduced and fixed. The current local suite passes **38 Python tests and seven Node frontend tests**. Raw HTTP fixtures cover origin-form and absolute-form manifest/history/record reads with missing, incorrect and valid tokens, plus POST authentication and execution. QEC fixtures compare Path defaults/choices against direct argparse execution and test foreign, owning and incomplete distribution metadata with saved capability identities. Browser fixtures exercise boolean select submission, defaults/presets, checkbox preservation and legacy inference history without stdout. These are fixture checks; real backend and full-browser evidence boundaries remain unchanged.
+The latest five review findings were reproduced and fixed. The final Phase 0 local suite passed **38 Python tests and seven Node frontend tests**. Raw HTTP fixtures cover origin-form and absolute-form manifest/history/record reads with missing, incorrect and valid tokens, plus POST authentication and execution. QEC fixtures compare Path defaults/choices against direct argparse execution and test foreign, owning and incomplete distribution metadata with saved capability identities. Browser fixtures exercise boolean select submission, defaults/presets, checkbox preservation and legacy inference history without stdout. These are fixture checks; real backend and full-browser evidence boundaries remain unchanged.
 
 The subsequent safe-path finding was reproduced in both directions: discovery incorrectly enabled a cwd-only QEC under `PYTHONSAFEPATH=1`, and overwrote an explicit PYTHONPATH entry when cwd differed. The probe now respects the interpreter's safe-path flag. That local run passed **35 Python tests and four Node frontend tests**, including direct-execution parity for normal cwd imports, safe-path rejection and safe-path explicit imports. The safe-path regression skips Python 3.10, which does not implement this mode; CI exercises it on Python 3.14.
 
@@ -86,7 +96,7 @@ The original run record is `evidence/control-live-run.json`. Its absolute `/tmp`
 
 The real reviewed QEC CLI parser defines the command shape used by the adapter. Tests create an isolated importable fixture with the same parser entry-point pattern, add a new scalar option, refresh discovery and prove that the new value reaches execution without UI changes.
 
-**No full QEC scientific environment or real ququart benchmark run was executed here.** The next acceptance gate is P1 in `IMPLEMENTATION_PLAN.md`. The missing historical TUI adapter modules remain outside this implementation.
+The original handoff used fixtures. P1 subsequently ran the real ququart battery through direct CLI, WORKBENCH CLI and Chromium with QEC-owned validation, as recorded above. Broader QEC environments and statistical claims remain outside that small integration workload. The missing historical TUI adapter modules remain outside this implementation.
 
 ## Inference boundary
 
@@ -114,6 +124,6 @@ The archive build writes an internal per-file manifest and an external `.zip256`
 - The AI module is single-prompt streaming, not an advanced multi-turn assistant.
 - Generic arbitrary stdin event-stream viewing is planned; this version accepts JSON parameters from stdin and captures adapter output.
 - Browser embedding, RIVET presentation, PROVENANCE and MACH integrations are not implemented.
-- No performance benchmark, package-install test, Windows support claim or multi-Python CI matrix is supplied.
+- No performance benchmark, production-artifact installation test or Windows support claim is supplied. Core CI covers Python 3.10/3.14; the real P1 workflow is pinned to CPython 3.12.14 on Linux x86_64.
 
 These limits should remain visible in future handoffs until appropriate evidence supersedes them.

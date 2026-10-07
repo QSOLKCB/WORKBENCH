@@ -1,4 +1,4 @@
-name: Phase 0
+name: Core and bundle
 
 on:
   push:
@@ -35,6 +35,9 @@ jobs:
           python -m compileall -q src tests tools workbench.py
           node --check src/qsol_workbench/static/app.js
           node --check tools/browser_smoke.mjs
+          node --check tools/qec_browser.mjs
+      - name: Verify retained real QEC evidence
+        run: python tools/qec_acceptance.py --verify evidence/p1-qec
       - name: CLI discovery and known-result smoke
         run: |
           python workbench.py discover

@@ -1,0 +1,45 @@
+name: P1 real QEC
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-qec:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: QSOLKCB/QEC
+          ref: 7103836d731a869dc82b077bc0b920a76072f08e
+          path: .workbench/qec
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare clean pinned QEC environment
+        run: |
+          python -m venv .workbench/qec-venv
+          .workbench/qec-venv/bin/python -m pip install --require-hashes --only-binary=:all: --no-deps -r examples/qec-p1-requirements.txt
+          python -m pip wheel --no-deps --wheel-dir "$RUNNER_TEMP/qec-wheels" .workbench/qec
+          .workbench/qec-venv/bin/python -m pip install --no-index --no-deps --find-links "$RUNNER_TEMP/qec-wheels" qec==173.0.0
+          .workbench/qec-venv/bin/python -m pip check
+      - name: Real direct, CLI and browser acceptance
+        run: |
+          python tools/qec_acceptance.py --qec-root .workbench/qec --python .workbench/qec-venv/bin/python --browser-bin /usr/bin/google-chrome --output "$RUNNER_TEMP/p1-qec"
+          python tools/qec_acceptance.py --verify "$RUNNER_TEMP/p1-qec"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p1-real-qec-evidence
+          path: ${{ runner.temp }}/p1-qec
+          if-no-files-found: warn

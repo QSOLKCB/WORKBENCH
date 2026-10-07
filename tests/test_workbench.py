@@ -14,6 +14,7 @@ import tempfile
 import threading
 import time
 import unittest
+import venv
 from unittest.mock import MagicMock, patch
 import urllib.error
 import urllib.request
@@ -338,6 +339,35 @@ class RuntimeTests(unittest.TestCase):
 
 
 class AdapterTests(unittest.TestCase):
+    @unittest.skipUnless(os.name == "posix", "Exercises POSIX venv interpreter symlinks")
+    def test_qec_preserves_the_virtual_environment_interpreter(self):
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ):
+            root = Path(directory)
+            environment = root / "venv"
+            venv.EnvBuilder(with_pip=False, symlinks=True).create(environment)
+            python = environment / "bin/python"
+            self.assertTrue(python.is_symlink())
+            os.environ.pop("PYTHONPATH", None)
+            site = Path(subprocess.check_output(
+                [str(python), "-c", "import sysconfig; print(sysconfig.get_path('purelib'))"], text=True).strip())
+            module = site / "qec/benchmark/ququart_battery/cli.py"
+            module.parent.mkdir(parents=True)
+            for parent in [site / "qec", site / "qec/benchmark", module.parent]:
+                (parent / "__init__.py").write_text("")
+            module.write_text("import argparse,json,sys\ndef parser(): return argparse.ArgumentParser()\n"
+                              "if __name__=='__main__': print(json.dumps({'prefix':sys.prefix}))\n")
+            with runtime({"demo": {"enabled": False}, "qec": {"enabled": True,
+                          "python": str(environment / "bin/../bin/python"), "cwd": str(root)}}) as instance:
+                connection = next(c for c in instance.connections if c["id"] == "qec")
+                self.assertEqual(connection["status"], "available", connection)
+                action = instance.actions["qec.ququart.benchmark"]
+                self.assertEqual(action.backend["python"], str(python))
+                job = instance.start(action.id, {})
+                record = instance.wait(job["id"])
+                self.assertEqual(record["execution"]["argv"][0], str(python))
+                self.assertEqual(record["status"], "succeeded", record)
+                self.assertEqual(record["result"], {"prefix": str(environment)})
+
     def test_qec_path_choices_match_direct_argparse_execution(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

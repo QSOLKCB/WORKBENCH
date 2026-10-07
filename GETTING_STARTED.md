@@ -16,3 +16,5 @@ Run `python3 workbench.py tui` in an interactive terminal with curses, or `pytho
 Optional connections are configured in a local JSON file; see [usage and backend setup](docs/USAGE.md). Keep private prompts and run stores out of the repository.
 
 See [instructions](INSTRUCTIONS.md) for validation commands and [validation boundaries](docs/VALIDATION.md) before treating integration fixtures as real scientific or model evidence.
+
+For the first supported real QEC environment, follow [P1 acceptance](docs/QEC_ACCEPTANCE.md). The [roadmap](docs/ROADMAP.md) records phase status and the next acceptance gates.

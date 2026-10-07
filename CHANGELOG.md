@@ -1,5 +1,15 @@
 # Changelog
 
+## Phase 1 real QEC acceptance — 2026-10-07
+
+- Pin QEC commit `7103836`, package 173.0.0, CPython 3.12.14 and NumPy/SciPy wheel identities in a clean Linux x86_64 environment.
+- Preserve the configured venv interpreter instead of resolving its executable symlink to the base environment.
+- Add repeatable direct/CLI/Chromium acceptance, independent QEC report validation, byte-level artifact parity and retained backend/claim failures.
+- Retain full real-QEC evidence with an offline verifier and behavior regressions; add a separate real-execution CI job.
+- Add `docs/ROADMAP.md` and reproducible QEC acceptance instructions.
+
+The package remains 0.1.0. Small trial counts establish integration only.
+
 ## Phase 0 repository baseline — 2026-10-07
 
 Review fixes:

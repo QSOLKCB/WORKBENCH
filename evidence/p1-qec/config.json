@@ -1,0 +1,10 @@
+{
+  "demo": {
+    "enabled": false
+  },
+  "qec": {
+    "enabled": true,
+    "python": "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+    "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1"
+  }
+}

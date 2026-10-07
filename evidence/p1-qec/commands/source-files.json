@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "ls-files",
+    "src/qec"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1",
+  "exit_code": 0,
+  "duration_seconds": 0.0022,
+  "stdout": "commands/source-files.stdout",
+  "stderr": "commands/source-files.stderr"
+}

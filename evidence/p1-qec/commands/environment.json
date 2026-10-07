@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+    "-c",
+    "import hashlib,importlib.metadata as m,json,platform,sys,sysconfig\nimport qec, qec.benchmark.ququart_battery.cli as cli\nfrom pathlib import Path\nroot=Path(qec.__file__).parent\npackages={}\nfor name in ('qec','numpy','scipy','pip','setuptools','wheel'):\n try:\n  d=m.distribution(name); packages[name]={'version':d.version,'requires':d.requires or []}\n except m.PackageNotFoundError: packages[name]={'version':None,'requires':[]}\nprint(json.dumps({'executable':sys.executable,'python':sys.version,'prefix':sys.prefix,'base_prefix':sys.base_prefix,\n 'platform':platform.platform(),'architecture':platform.machine(),'purelib':sysconfig.get_path('purelib'),\n 'packages':packages,'cli_path':cli.__file__,'cli_sha256':hashlib.sha256(Path(cli.__file__).read_bytes()).hexdigest(),\n 'module_files':{p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*.py'))}}))\n"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1",
+  "exit_code": 0,
+  "duration_seconds": 0.2665,
+  "stdout": "commands/environment.stdout",
+  "stderr": "commands/environment.stderr"
+}

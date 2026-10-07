@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "node",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/tools/qec_browser.mjs",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/browser-cases.json",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/browser.json",
+    "120"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "exit_code": 0,
+  "duration_seconds": 3.8034,
+  "stdout": "commands/browser.stdout",
+  "stderr": "commands/browser.stderr"
+}
