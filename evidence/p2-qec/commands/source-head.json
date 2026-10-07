@@ -6,7 +6,7 @@
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
   "exit_code": 0,
-  "duration_seconds": 0.0023,
+  "duration_seconds": 0.0021,
   "stdout": "commands/source-head.stdout",
   "stderr": "commands/source-head.stderr"
 }

@@ -1,6 +1,6 @@
 {
   "protocol": "qsol-workbench-run/1",
-  "id": "c08706e9dbe942ebaee72bf5a20f68b4",
+  "id": "b9d5a7f9bc4349faaf86ad000d2300f8",
   "workbench_version": "0.1.0",
   "action": "qec.ququart.benchmark",
   "capability": {
@@ -105,20 +105,20 @@
     "schema_sha256": "3f82efff27d948c687e2e822f92afbb116a7bd73818e7cad8113cc2f4a9370db"
   },
   "parameters": {
-    "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/cli/ququart",
+    "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/cli/ququart",
     "trials": 40,
     "harmonic_trials": 30,
     "seed": 31,
     "error_rates": "0.001,0.01"
   },
   "status": "succeeded",
-  "created_at": "2026-10-07T11:48:40.810223+00:00",
+  "created_at": "2026-10-07T11:52:55.020677+00:00",
   "execution": {
     "argv": [
       "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
       "-m",
       "qec.benchmark.ququart_battery.cli",
-      "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/cli/ququart",
+      "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/cli/ququart",
       "--trials=40",
       "--harmonic-trials=30",
       "--seed=31",
@@ -157,9 +157,9 @@
     "version": "170.1.1"
   },
   "error": null,
-  "started_at": "2026-10-07T11:48:40.810834+00:00",
+  "started_at": "2026-10-07T11:52:55.021554+00:00",
   "exit_code": 0,
   "transport_status": "succeeded",
-  "finished_at": "2026-10-07T11:48:41.960627+00:00",
-  "record_sha256": "f99e39ca07196ff1e7bf911d86032da33a4a8dd04cc8df4642332d370001ba45"
+  "finished_at": "2026-10-07T11:52:56.227435+00:00",
+  "record_sha256": "7307a2ee311a1ef1a88d630ecdb4abaa4f6570499e79570dddb336c48b604e53"
 }

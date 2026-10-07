@@ -7,6 +7,6 @@ test_unsupported_protocol_shapes_commands_and_defaults_never_fall_back (test_qec
 test_zero_exit_wrong_schema_and_unsuccessful_receipt_keep_transport_diagnostics (test_qec_descriptors.DescriptorTests.test_zero_exit_wrong_schema_and_unsuccessful_receipt_keep_transport_diagnostics) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 1.775s
+Ran 7 tests in 1.868s
 
 OK

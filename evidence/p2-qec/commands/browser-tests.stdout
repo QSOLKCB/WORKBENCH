@@ -1,12 +1,12 @@
-✔ browser sends the exact safe integer boundaries (9.195377ms)
-✔ boolean choices submit selected values and restore defaults and presets (4.537562ms)
-✔ boolean checkboxes submit both states and restore presets (3.258914ms)
-✔ history renders legacy inference records without stdout and clears stale output (1.940696ms)
-✔ refresh regenerates a newly declared field and submits the new fingerprint (1.939906ms)
-✔ structured views show backend artifact hashes and validation receipts as text (2.292868ms)
-✔ browser rejects unsafe 64-bit integer inputs before dispatch (2.901145ms)
-✔ browser rejects fractional strings that Number would round to integers (3.199885ms)
-✔ unsafe JSON defaults and choices cannot dispatch a rounded value (2.087698ms)
+✔ browser sends the exact safe integer boundaries (9.334773ms)
+✔ boolean choices submit selected values and restore defaults and presets (3.936539ms)
+✔ required boolean checkboxes submit both states and restore presets (3.096031ms)
+✔ history renders legacy inference records without stdout and clears stale output (2.111085ms)
+✔ refresh regenerates a newly declared field and submits the new fingerprint (1.526132ms)
+✔ structured views show backend artifact hashes and validation receipts as text (2.315083ms)
+✔ browser rejects unsafe 64-bit integer inputs before dispatch (3.0889ms)
+✔ browser rejects fractional strings that Number would round to integers (2.872715ms)
+✔ unsafe JSON defaults and choices cannot dispatch a rounded value (1.833766ms)
 ℹ tests 9
 ℹ suites 0
 ℹ pass 9
@@ -14,4 +14,4 @@
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 110.504112
+ℹ duration_ms 108.930755

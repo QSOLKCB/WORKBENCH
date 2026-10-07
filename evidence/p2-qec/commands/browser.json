@@ -2,13 +2,13 @@
   "argv": [
     "node",
     "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/tools/qec_browser.mjs",
-    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/browser-cases.json",
-    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/browser.json",
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/browser-cases.json",
+    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/browser.json",
     "180"
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
   "exit_code": 0,
-  "duration_seconds": 10.7661,
+  "duration_seconds": 10.3408,
   "stdout": "commands/browser.stdout",
   "stderr": "commands/browser.stderr"
 }

@@ -3,13 +3,13 @@
     "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
     "-m",
     "qec.benchmark.ququart_battery.validate_cli",
-    "--claims=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart/report_claims.json",
-    "--evidence=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart",
-    "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/validation/direct.json"
+    "--claims=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart/report_claims.json",
+    "--evidence=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart",
+    "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/validation/direct.json"
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
   "exit_code": 0,
-  "duration_seconds": 0.1119,
+  "duration_seconds": 0.1314,
   "stdout": "commands/direct-ququart-validate.stdout",
   "stderr": "commands/direct-ququart-validate.stderr"
 }

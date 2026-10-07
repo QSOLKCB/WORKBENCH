@@ -8,7 +8,7 @@
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
   "exit_code": 0,
-  "duration_seconds": 0.1745,
+  "duration_seconds": 0.1821,
   "stdout": "commands/pip-freeze.stdout",
   "stderr": "commands/pip-freeze.stderr"
 }

@@ -8,7 +8,7 @@
     "src/qsol_workbench/model.py": "6e0256c0bae844897f92aa91d4c7a8a879466d8551a8923540fa6e652b08023e",
     "src/qsol_workbench/process.py": "77d12956a9da989079761aa8db29d6d25b9b93147b05bfbce47853846c33f3f8",
     "src/qsol_workbench/runtime.py": "ae5174ebc8a86a7ea7c6990ecb04845183bca11d80185a981d2b45977982837c",
-    "src/qsol_workbench/static/app.js": "a3194af3d17d702d30c3dcb36d049f44dcc1e722b8f07e018522198904385bd8",
+    "src/qsol_workbench/static/app.js": "19dbdc6cb5be78332d735912abe6645421f3a7b9d720780ee0a0ce087c91987f",
     "src/qsol_workbench/static/index.html": "ffceb28ad1ea30f76f4a24c1a56a5403edda9ed80956973ec76b8469999d18e6",
     "src/qsol_workbench/static/style.css": "0647065a29a8f4b3eeea2d0c82e96841b77b386cf01381780780f19206b66197",
     "src/qsol_workbench/tui.py": "6223017cdd430317a421c7be494690e564d8c50e1510b16b8483225f033e46af",

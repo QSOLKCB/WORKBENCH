@@ -84,10 +84,11 @@ test("boolean choices submit selected values and restore defaults and presets", 
   assert.equal(JSON.parse(b.requests.find(r => r.path === "/api/run").options.body).parameters.enabled, true);
 });
 
-test("boolean checkboxes submit both states and restore presets", async () => {
+test("required boolean checkboxes submit both states and restore presets", async () => {
   for (const value of [true, false]) {
-    const b = await browser({name: "enabled", type: "boolean", label: "Enabled", default: value});
+    const b = await browser({name: "enabled", type: "boolean", label: "Enabled", required: true, default: value});
     const input = b.document.getElementById("field-enabled");
+    assert.equal(input.required, false);
     assert.equal(input.checked, value);
     input.checked = !value;
     b.document.getElementById("save-preset").onclick();

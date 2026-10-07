@@ -44,7 +44,9 @@ function choose(action) {
     input.id = label.htmlFor; input.name = spec.name;
     if (input.type === "checkbox") input.checked = spec.default === true;
     else if (spec.default !== undefined) input.value = String(spec.default);
-    input.required = !!spec.required;
+    // A required boolean means a supplied value, including false. HTML's
+    // checkbox required attribute instead requires true; values() supplies both.
+    input.required = !!spec.required && input.type !== "checkbox";
     if (spec.minimum !== undefined) input.min = spec.minimum;
     if (spec.maximum !== undefined) input.max = spec.maximum;
     if (spec.max_length !== undefined) input.maxLength = spec.max_length;

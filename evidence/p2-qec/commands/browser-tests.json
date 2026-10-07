@@ -6,7 +6,7 @@
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
   "exit_code": 0,
-  "duration_seconds": 0.1691,
+  "duration_seconds": 0.1696,
   "stdout": "commands/browser-tests.stdout",
   "stderr": "commands/browser-tests.stderr"
 }

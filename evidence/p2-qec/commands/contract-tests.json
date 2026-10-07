@@ -12,7 +12,7 @@
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
   "exit_code": 0,
-  "duration_seconds": 1.8695,
+  "duration_seconds": 1.9674,
   "stdout": "commands/contract-tests.stdout",
   "stderr": "commands/contract-tests.stderr"
 }

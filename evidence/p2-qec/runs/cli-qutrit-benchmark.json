@@ -1,6 +1,6 @@
 {
   "protocol": "qsol-workbench-run/1",
-  "id": "8b29196c2ce14fd4a7f47c9c7099f351",
+  "id": "67dcb8bc89ed4f3ea431ca306dfe4aab",
   "workbench_version": "0.1.0",
   "action": "qec.qutrit.benchmark",
   "capability": {
@@ -88,18 +88,18 @@
     "schema_sha256": "35b8cfc577107acff8a83f924da2e2efa823e8d8bbcfc6588f0fbd6219c9483a"
   },
   "parameters": {
-    "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/cli/qutrit",
+    "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/cli/qutrit",
     "v3_baseline": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv",
     "stress_limit": 8
   },
   "status": "succeeded",
-  "created_at": "2026-10-07T11:48:42.477839+00:00",
+  "created_at": "2026-10-07T11:52:56.757579+00:00",
   "execution": {
     "argv": [
       "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
       "-m",
       "qec.benchmark.qutrit_battery.cli",
-      "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/cli/qutrit",
+      "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/cli/qutrit",
       "--v3-baseline=/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv",
       "--stress-limit=8"
     ],
@@ -129,9 +129,9 @@
     "sha256": "602a78d45a0770d2219ced2c4e6591af2270338a282d5fbb072cb9dcffa43fce"
   },
   "error": null,
-  "started_at": "2026-10-07T11:48:42.478399+00:00",
+  "started_at": "2026-10-07T11:52:56.758214+00:00",
   "exit_code": 0,
   "transport_status": "succeeded",
-  "finished_at": "2026-10-07T11:48:49.728283+00:00",
-  "record_sha256": "35e5d27b26c04a6d7e39466b36db8545392bd2ff9013558a388be143aed99326"
+  "finished_at": "2026-10-07T11:53:03.723666+00:00",
+  "record_sha256": "8f5735fda6b4354d01b174c1d95812a955e91aeeb3d59d1dc13494b8b0667ef9"
 }

@@ -7,34 +7,34 @@
       "harmonic_trials": 30,
       "seed": 31,
       "error_rates": "0.001,0.01",
-      "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/browser/ququart"
+      "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/browser/ququart"
     },
     "status": "succeeded",
     "view": "Artifact manifest (backend-reported)",
-    "record": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/runs/browser-ququart-benchmark.json"
+    "record": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/runs/browser-ququart-benchmark.json"
   },
   {
     "name": "ququart-validate",
     "action": "qec.ququart.validate",
     "parameters": {
-      "claims": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart/report_claims.json",
-      "evidence": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/direct/ququart",
-      "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/validation/browser.json"
+      "claims": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart/report_claims.json",
+      "evidence": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart",
+      "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/validation/browser.json"
     },
     "status": "succeeded",
     "view": "Validation passed",
-    "record": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/runs/browser-ququart-validate.json"
+    "record": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/runs/browser-ququart-validate.json"
   },
   {
     "name": "qutrit-benchmark",
     "action": "qec.qutrit.benchmark",
     "parameters": {
-      "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/artifacts/browser/qutrit",
+      "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/browser/qutrit",
       "v3_baseline": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv",
       "stress_limit": 8
     },
     "status": "succeeded",
     "view": "Artifact manifest (backend-reported)",
-    "record": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-run/runs/browser-qutrit-benchmark.json"
+    "record": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/runs/browser-qutrit-benchmark.json"
   }
 ]
