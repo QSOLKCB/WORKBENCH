@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/26be73b6159c/WORKBENCH/workbench.py",
+    "--config",
+    "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/config.json",
+    "--store",
+    "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/store",
+    "--timeout",
+    "180",
+    "run",
+    "qec.qutrit.benchmark",
+    "--params",
+    "{\"output\": \"/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/cli/qutrit\", \"v3_baseline\": \"/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv\", \"stress_limit\": 8}"
+  ],
+  "cwd": "/workspace/scratch/26be73b6159c/WORKBENCH",
+  "exit_code": 0,
+  "duration_seconds": 7.8539,
+  "stdout": "commands/cli-qutrit-benchmark.stdout",
+  "stderr": "commands/cli-qutrit-benchmark.stderr"
+}

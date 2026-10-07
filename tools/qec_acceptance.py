@@ -303,7 +303,7 @@ print(json.dumps({'executable':sys.executable,'python':sys.version,'prefix':sys.
         files = [p for p in (ROOT / "src/qsol_workbench").rglob("*") if p.is_file() and p.suffix in (".py", ".js", ".html", ".css")]
         write_json(output / "workbench-source.json", {"version": "0.1.0",
             "files": {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted(files)}})
-        config = {"demo": {"enabled": False}, "qec": {"enabled": True, "python": python, "cwd": str(qec_root)}}
+        config = {"demo": {"enabled": False}, "qec": {"enabled": True, "discovery": "legacy-argparse", "python": python, "cwd": str(qec_root)}}
         write_json(output / "config.json", config)
         runtime = Runtime(config, output / "store", timeout=args.timeout)
         server = None

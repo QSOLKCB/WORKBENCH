@@ -37,7 +37,9 @@ jobs:
           node --check tools/browser_smoke.mjs
           node --check tools/qec_browser.mjs
       - name: Verify retained real QEC evidence
-        run: python tools/qec_acceptance.py --verify evidence/p1-qec
+        run: |
+          python tools/qec_acceptance.py --verify evidence/p1-qec
+          python tools/qec_p2_acceptance.py --verify evidence/p2-qec
       - name: CLI discovery and known-result smoke
         run: |
           python workbench.py discover

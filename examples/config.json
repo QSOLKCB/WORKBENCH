@@ -1,6 +1,7 @@
 {
   "demo": {"enabled": true},
   "qec": {
+    "discovery": "descriptor",
     "enabled": false,
     "python": "/absolute/path/to/QEC/.venv/bin/python",
     "cwd": "/absolute/path/to/QEC"

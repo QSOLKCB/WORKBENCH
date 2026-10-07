@@ -1,0 +1,13 @@
+test_discovery_does_not_import_cli_and_exposes_three_operations (test_qec_descriptors.DescriptorTests.test_discovery_does_not_import_cli_and_exposes_three_operations) ... ok
+test_missing_descriptor_requires_explicit_legacy_mode (test_qec_descriptors.DescriptorTests.test_missing_descriptor_requires_explicit_legacy_mode) ... ok
+test_refresh_updates_http_and_cli_and_rejects_stale_fingerprint (test_qec_descriptors.DescriptorTests.test_refresh_updates_http_and_cli_and_rejects_stale_fingerprint) ... ok
+test_required_validation_paths_and_all_entry_points_remain_distinct (test_qec_descriptors.DescriptorTests.test_required_validation_paths_and_all_entry_points_remain_distinct) ... ok
+test_supported_scalar_values_defaults_choices_and_paths_reach_direct_cli (test_qec_descriptors.DescriptorTests.test_supported_scalar_values_defaults_choices_and_paths_reach_direct_cli) ... ok
+test_unsupported_protocol_shapes_commands_and_defaults_never_fall_back (test_qec_descriptors.DescriptorTests.test_unsupported_protocol_shapes_commands_and_defaults_never_fall_back) ... ok
+test_zero_exit_incomplete_or_mistyped_results_never_persist_success (test_qec_descriptors.DescriptorTests.test_zero_exit_incomplete_or_mistyped_results_never_persist_success) ... ok
+test_zero_exit_wrong_schema_and_unsuccessful_receipt_keep_transport_diagnostics (test_qec_descriptors.DescriptorTests.test_zero_exit_wrong_schema_and_unsuccessful_receipt_keep_transport_diagnostics) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 3.438s
+
+OK

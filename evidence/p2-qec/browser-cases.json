@@ -1,0 +1,40 @@
+[
+  {
+    "name": "ququart-benchmark",
+    "action": "qec.ququart.benchmark",
+    "parameters": {
+      "trials": 40,
+      "harmonic_trials": 30,
+      "seed": 31,
+      "error_rates": "0.001,0.01",
+      "output": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/browser/ququart"
+    },
+    "status": "succeeded",
+    "view": "Artifact manifest (backend-reported)",
+    "record": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/runs/browser-ququart-benchmark.json"
+  },
+  {
+    "name": "ququart-validate",
+    "action": "qec.ququart.validate",
+    "parameters": {
+      "claims": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart/report_claims.json",
+      "evidence": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart",
+      "output": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/validation/browser.json"
+    },
+    "status": "succeeded",
+    "view": "Validation passed",
+    "record": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/runs/browser-ququart-validate.json"
+  },
+  {
+    "name": "qutrit-benchmark",
+    "action": "qec.qutrit.benchmark",
+    "parameters": {
+      "output": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/browser/qutrit",
+      "v3_baseline": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned/qec_data_prepared.csv",
+      "stress_limit": 8
+    },
+    "status": "succeeded",
+    "view": "Artifact manifest (backend-reported)",
+    "record": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/runs/browser-qutrit-benchmark.json"
+  }
+]

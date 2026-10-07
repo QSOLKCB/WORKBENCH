@@ -44,7 +44,9 @@ function choose(action) {
     input.id = label.htmlFor; input.name = spec.name;
     if (input.type === "checkbox") input.checked = spec.default === true;
     else if (spec.default !== undefined) input.value = String(spec.default);
-    input.required = !!spec.required;
+    // A required boolean means a supplied value, including false. HTML's
+    // checkbox required attribute instead requires true; values() supplies both.
+    input.required = !!spec.required && input.type !== "checkbox";
     if (spec.minimum !== undefined) input.min = spec.minimum;
     if (spec.maximum !== undefined) input.max = spec.maximum;
     if (spec.max_length !== undefined) input.maxLength = spec.max_length;
@@ -116,6 +118,7 @@ async function poll() {
     byId("run-status").textContent = record.status + " · " + record.id.slice(0, 12);
     byId("cancel").disabled = !["queued", "running"].includes(record.status);
     byId("download").disabled = false;
+    renderResult(record);
     let output = record.stdout || "";
     if (record.action === "inference.generate") {
       output = output.split("\n").flatMap(line => {try {return [JSON.parse(line).response || ""];} catch {return [];}}).join("");
@@ -124,6 +127,19 @@ async function poll() {
     byId("record").textContent = JSON.stringify(record, null, 2);
     if (changed) await historyList();
   } finally {polling = false;}
+}
+function renderResult(record) {
+  const element = byId("result-view"), contract = record.capability?.output, result = record.result;
+  element.textContent = ""; element.hidden = true;
+  if (!contract || !result || record.status !== "succeeded") return;
+  if (contract.view === "artifact-manifest" && result.files && typeof result.files === "object" && !Array.isArray(result.files)) {
+    const directory = record.parameters?.[contract.directory_field] || "";
+    element.textContent = "Artifact manifest (backend-reported)" + (directory ? "\n" + directory : "") + "\n\n" +
+      Object.entries(result.files).sort(([a], [b]) => a.localeCompare(b)).map(([name, hash]) => name + "\n  SHA-256: " + String(hash)).join("\n");
+  } else if (contract.view === "validation-receipt") {
+    element.textContent = (result.passed === true ? "Validation passed" : "Validation did not pass") + "\n" + JSON.stringify(result, null, 2);
+  }
+  element.hidden = !element.textContent;
 }
 byId("form").onsubmit = async event => {
   event.preventDefault(); if (!selected) return;

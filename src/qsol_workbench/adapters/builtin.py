@@ -6,6 +6,7 @@ import sys
 from ..model import Action, Plan, field, json_loads
 from ..process import execute
 from ..worker import local_endpoint
+from .qec_descriptor import actions_from_descriptor
 
 WORKER = str(Path(__file__).resolve().parents[1] / "worker.py")
 
@@ -32,6 +33,12 @@ def qec(config):
     # environment and loses the backend installed in the configured venv.
     python = os.path.abspath(Path(config["python"]).expanduser())
     cwd = str(Path(config.get("cwd", ".")).expanduser().resolve())
+    mode = config.get("discovery", "descriptor")
+    if mode == "descriptor":
+        discovery = probe(Plan([python, WORKER, "qec-descriptor"], cwd=cwd))
+        return actions_from_descriptor(discovery, python, cwd)
+    if mode != "legacy-argparse":
+        raise ValueError("QEC discovery must be descriptor or explicit legacy-argparse")
     discovery = probe(Plan([python, WORKER, "qec-probe"], cwd=cwd))
     fields = discovery["fields"]
 

@@ -55,18 +55,22 @@ try {
   };
   await call("Runtime.enable"); await call("Page.enable");
   await call("Page.navigate", {url});
-  await until("document.querySelector('#field-trials') !== null");
-  if (await evaluate("document.querySelector('#action-id').textContent") !== "qec.ququart.benchmark") {
-    throw new Error("QEC action was not discovered");
-  }
+  await until("document.querySelector('#actions button') !== null");
   for (const entry of cases) {
+    const action = entry.action || "qec.ququart.benchmark";
+    await evaluate(`(() => {
+      const button = Array.from(document.querySelectorAll('#actions button')).find(b => b.dataset.id === ${JSON.stringify(action)});
+      if (!button) throw new Error('QEC action was not discovered');
+      button.click();
+    })()`);
     const oldId = await evaluate("document.querySelector('#record').textContent ? JSON.parse(document.querySelector('#record').textContent).id : null");
     await evaluate(`(() => {
       const parameters = ${JSON.stringify(entry.parameters)};
       for (const [name, value] of Object.entries(parameters)) {
         const input = document.getElementById('field-' + name);
         if (!input) throw new Error('Missing generated field: ' + name);
-        input.value = String(value);
+        if (input.type === 'checkbox') input.checked = value;
+        else input.value = String(value);
       }
       document.getElementById('form').requestSubmit();
     })()`);
@@ -76,10 +80,13 @@ try {
       return record.id !== ${JSON.stringify(oldId)} && !['queued','running'].includes(record.status) ? record : false;
     })()`);
     await writeFile(entry.record, JSON.stringify(record, null, 2) + "\n");
-    receipt.runs.push({case: entry.name, id: record.id, status: record.status, expected_status: entry.status,
-      parameters: record.parameters, schema_sha256: record.capability.schema_sha256});
+    const view = await evaluate("({hidden:document.getElementById('result-view').hidden,text:document.getElementById('result-view').textContent})");
+    receipt.runs.push({case: entry.name, action: record.action, id: record.id, status: record.status, expected_status: entry.status,
+      parameters: record.parameters, schema_sha256: record.capability.schema_sha256, view});
     await writeFile(receiptFile, JSON.stringify(receipt, null, 2) + "\n");
     if (record.status !== entry.status || record.persistence_error) throw new Error("Unexpected browser run outcome");
+    if (record.action !== action) throw new Error("Browser submitted a different action");
+    if (entry.view && (view.hidden || !view.text.startsWith(entry.view))) throw new Error("Missing structured result view");
     if (JSON.stringify(Object.entries(record.parameters).sort()) !== JSON.stringify(Object.entries(entry.parameters).sort())) {
       throw new Error("Browser submitted different parameters");
     }

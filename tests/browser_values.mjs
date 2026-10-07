@@ -8,9 +8,11 @@ const source = await readFile(new URL("../src/qsol_workbench/static/app.js", imp
 async function browser(spec = {name: "seed", type: "integer", label: "Seed", required: true},
                        record = {id: "a".repeat(32), action: "fixture", status: "succeeded", stdout: "", stderr: ""}) {
   const elements = new Map(), requests = [], presets = new Map();
+  let manifestFixture = {actions: [], connections: []};
   class Element {
     constructor(tag = "div") {
       this.tagName = tag.toUpperCase(); this.children = []; this.value = "";
+      this.dataset = {};
       this.type = tag === "select" ? "select-one" : "";
       this.classList = {toggle() {}};
     }
@@ -34,7 +36,7 @@ async function browser(spec = {name: "seed", type: "integer", label: "Seed", req
     setInterval() {}, localStorage: {getItem(key) {return presets.get(key) ?? null;}, setItem(key, value) {presets.set(key, value);}},
     async fetch(path, options) {
       requests.push({path, options});
-      const data = path === "/api/manifest" ? {actions: [], connections: []} : path === "/api/runs" ? [record] : record;
+      const data = ["/api/manifest", "/api/refresh"].includes(path) ? manifestFixture : path === "/api/runs" ? [record] : record;
       return {ok: true, async json() {return data;}};
     }});
   vm.runInContext(source, context);
@@ -42,7 +44,10 @@ async function browser(spec = {name: "seed", type: "integer", label: "Seed", req
   await new Promise(resolve => setImmediate(resolve));
   context.fixture = {id: "fixture", title: "Fixture", description: "", schema_sha256: "fixture-hash", fields: [spec]};
   vm.runInContext("choose(fixture)", context);
-  return {document, requests, async submit(value) {
+  return {document, requests, async refresh(action) {
+    manifestFixture = {actions: [action], connections: [{id: "qec", status: "available"}]};
+    await document.getElementById("refresh").onclick();
+  }, async submit(value) {
     if (value !== undefined) document.getElementById("field-" + spec.name).value = value;
     await document.getElementById("form").onsubmit({preventDefault() {}});
   }};
@@ -79,10 +84,11 @@ test("boolean choices submit selected values and restore defaults and presets", 
   assert.equal(JSON.parse(b.requests.find(r => r.path === "/api/run").options.body).parameters.enabled, true);
 });
 
-test("boolean checkboxes submit both states and restore presets", async () => {
+test("required boolean checkboxes submit both states and restore presets", async () => {
   for (const value of [true, false]) {
-    const b = await browser({name: "enabled", type: "boolean", label: "Enabled", default: value});
+    const b = await browser({name: "enabled", type: "boolean", label: "Enabled", required: true, default: value});
     const input = b.document.getElementById("field-enabled");
+    assert.equal(input.required, false);
     assert.equal(input.checked, value);
     input.checked = !value;
     b.document.getElementById("save-preset").onclick();
@@ -99,11 +105,44 @@ test("history renders legacy inference records without stdout and clears stale o
   const b = await browser(undefined, record);
   b.document.getElementById("output").textContent = "stale output";
   b.document.getElementById("record").textContent = "stale record";
+  b.document.getElementById("result-view").textContent = "stale artifacts";
+  b.document.getElementById("result-view").hidden = false;
   await b.document.getElementById("history").children[0].onclick();
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(b.document.getElementById("output").textContent, record.error);
   assert.deepEqual(JSON.parse(b.document.getElementById("record").textContent), record);
   assert.doesNotMatch(b.document.getElementById("notice").textContent, /split/);
+  assert.equal(b.document.getElementById("result-view").textContent, "");
+  assert.equal(b.document.getElementById("result-view").hidden, true);
+});
+
+test("refresh regenerates a newly declared field and submits the new fingerprint", async () => {
+  const b = await browser();
+  await b.refresh({id: "fixture", title: "Updated", description: "", schema_sha256: "new-fingerprint",
+    fields: [{name: "seed", type: "integer", label: "Seed", default: 2},
+      {name: "new_option", type: "integer", label: "New option", choices: [7, 9], default: 7}]});
+  assert.equal(b.document.getElementById("field-new_option").value, "7");
+  b.document.getElementById("field-new_option").value = "9";
+  await b.submit();
+  const request = JSON.parse(b.requests.find(r => r.path === "/api/run").options.body);
+  assert.deepEqual(request.parameters, {seed: 2, new_option: 9});
+  assert.equal(request.schema_sha256, "new-fingerprint");
+});
+
+test("structured views show backend artifact hashes and validation receipts as text", async () => {
+  for (const view of ["artifact-manifest", "validation-receipt"]) {
+    const record = {id: "c".repeat(32), action: "qec.fixture", status: "succeeded", stdout: "", stderr: "",
+      capability: {output: {view, directory_field: "output"}}, parameters: {output: "relative output"},
+      result: {passed: true, files: {"<img src=x onerror=evil>": "a".repeat(64)}}};
+    const b = await browser(undefined, record);
+    await b.document.getElementById("history").children[0].onclick();
+    await new Promise(resolve => setImmediate(resolve));
+    const element = b.document.getElementById("result-view");
+    assert.equal(element.hidden, false);
+    assert.match(element.textContent, view === "artifact-manifest" ? /backend-reported.*\nrelative output/ : /Validation passed/);
+    assert.ok(element.textContent.includes("<img src=x onerror=evil>"));
+    assert.equal(element.children.length, 0);
+  }
 });
 
 test("browser rejects unsafe 64-bit integer inputs before dispatch", async () => {

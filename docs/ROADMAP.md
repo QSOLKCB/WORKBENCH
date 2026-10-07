@@ -5,8 +5,8 @@ The detailed work and acceptance contracts live in [IMPLEMENTATION_PLAN.md](IMPL
 | Phase | Outcome | Status | Acceptance gate |
 |---|---|---|---|
 | P0 | Shared reference runtime, CLI/TUI/web and adapters | Merged | Demo, behavior tests, records and bundle verification |
-| P1 | First supported real QEC environment | Implemented; local real acceptance passed | Direct, CLI and browser runs produce validated equivalent QEC artifacts |
-| P2 | Backend-owned capability descriptors | Next | Typed backend exports replace argparse internals; refresh and stale-schema handling retain execution parity |
+| P1 | First supported real QEC environment | Merged; real acceptance passed | Direct, CLI and browser runs produce validated equivalent QEC artifacts |
+| P2 | Backend-owned capability descriptors | Implemented; real three-operation parity passed | Typed backend exports replace argparse internals; refresh and stale-schema handling retain execution parity |
 | P3 | Useful independent CONTROL read workflow | Planned | Add an operation through its adapter and tests while retaining response correlation and provenance |
 | P4 | Production runtime/presentation decision | Planned after P1–P3 | Measure resource use, responsiveness and installation; demonstrate parity before migration |
 | P5 | Durable lifecycle and artifact inspection | Planned | Distinct failures, bounded history, explicit recovery and artifact export |
@@ -22,12 +22,12 @@ The small workload uses two error rates, 40 Monte Carlo trials per cell, 30 harm
 
 P1 also fixes virtual-environment interpreter selection: resolving a Python executable symlink selected the base interpreter and hid the installed QEC package. The adapter now normalizes the configured path while preserving that symlink.
 
-## Next: P2
+## P2 evidence
 
-1. Design a versioned descriptor owned by QEC and generated from the same command declarations as its CLI.
-2. Preserve defaults, requiredness, choices, path semantics, effects and output contracts.
-3. Keep unsupported structures explicit and bind descriptors to the installed backend identity.
-4. Select two additional implemented QEC operations by operator demand; inspect their actual CLI and artifact formats first.
-5. Prove discovery refresh, stale-schema rejection and direct/workbench parameter parity.
+[Descriptor setup and acceptance](QEC_DESCRIPTORS.md) documents the QEC companion and native/legacy compatibility. [Retained evidence](../evidence/p2-qec/summary.json) pins the companion source and proves byte-identical direct/CLI/Chromium output for ququart benchmark (15 artifacts), qutrit benchmark (13 artifacts), and ququart report validation. Backend exports and public parsers share scalar declarations; discovery does not import scientific command modules. Refresh, stale-schema rejection and unsupported-input failures have separate fixture proofs.
+
+## Next: P3
+
+Add one useful existing CONTROL read workflow through its adapter, preserve response correlation and provenance, and prove it in CLI/browser without adding backend dispatch to the frontend. Inspect CONTROL's actual schemas before choosing the operation.
 
 Real-model inference, unfinished QEC diagnostics/history panels, production packaging, background jobs and cross-process coordination retain their existing gates. Optional integrations do not become base dependencies merely by appearing here.

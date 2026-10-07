@@ -1,0 +1,17 @@
+✔ browser sends the exact safe integer boundaries (9.005025ms)
+✔ boolean choices submit selected values and restore defaults and presets (3.597266ms)
+✔ required boolean checkboxes submit both states and restore presets (2.825642ms)
+✔ history renders legacy inference records without stdout and clears stale output (1.717361ms)
+✔ refresh regenerates a newly declared field and submits the new fingerprint (1.262765ms)
+✔ structured views show backend artifact hashes and validation receipts as text (1.680305ms)
+✔ browser rejects unsafe 64-bit integer inputs before dispatch (3.014577ms)
+✔ browser rejects fractional strings that Number would round to integers (2.648466ms)
+✔ unsafe JSON defaults and choices cannot dispatch a rounded value (2.560392ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.594027

@@ -5,10 +5,51 @@ import importlib
 import importlib.metadata
 import json
 from pathlib import Path
+import re
 import sys
 import time
 import urllib.request
 from urllib.parse import urlsplit
+
+
+def qec_version(origin):
+    for distribution in importlib.metadata.distributions(name="qec"):
+        if any(Path(distribution.locate_file(file)).resolve() == origin
+               for file in distribution.files or ()):
+            return distribution.version
+    return "unpackaged-checkout"
+
+
+def qec_descriptor():
+    try:
+        provider = importlib.import_module("qec.capabilities")
+    except ModuleNotFoundError as error:
+        if error.name == "qec.capabilities":
+            raise ValueError("QEC has no backend-owned descriptor; install descriptor-capable QEC or explicitly select discovery=legacy-argparse") from error
+        raise
+    descriptor = provider.descriptor()
+    if not isinstance(descriptor, dict) or descriptor.get("protocol") != "qec-capabilities/1":
+        raise ValueError("Unsupported QEC descriptor protocol; adapter update required")
+    actions, implementation = descriptor.get("actions"), descriptor.get("implementation_modules")
+    if not isinstance(actions, list) or not actions or not isinstance(implementation, list) or "qec.capabilities" not in implementation:
+        raise ValueError("Malformed QEC descriptor action/implementation list")
+    origin = Path(provider.__file__).resolve()
+    root = origin.parent
+    modules = {}
+    names = implementation + [action.get("module") for action in actions if isinstance(action, dict)]
+    if len(names) > 64:
+        raise ValueError("QEC descriptor has too many implementation modules")
+    for name in names:
+        if not isinstance(name, str) or not re.fullmatch(r"qec(?:\.[A-Za-z_][A-Za-z0-9_]*)+", name):
+            raise ValueError("Unsupported QEC module identity")
+        # Read reviewed module source without importing scientific CLI parents.
+        path = (root.joinpath(*name.split(".")[1:])).with_suffix(".py").resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise ValueError("QEC descriptor module is not a source file in the imported package: " + name)
+        modules[name] = {"module_path": str(path), "module_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+    print(json.dumps({"descriptor": descriptor, "modules": modules,
+          "backend": {"kind": "qec", "version": qec_version(origin), "python": sys.executable,
+                      "discovery": "descriptor", "descriptor_protocol": descriptor["protocol"]}}))
 
 
 def qec_probe():
@@ -38,16 +79,9 @@ def qec_probe():
                                for choice in action.choices]
         fields.append(spec)
     origin = Path(module.__file__).resolve()
-    version = "unpackaged-checkout"
-    # A same-named distribution can belong to a different checkout. Only use
-    # metadata whose file inventory owns the CLI module we actually imported.
-    for distribution in importlib.metadata.distributions(name="qec"):
-        if any(Path(distribution.locate_file(file)).resolve() == origin
-               for file in distribution.files or ()):
-            version = distribution.version
-            break
+    version = qec_version(origin)
     print(json.dumps({"fields": fields, "backend": {"kind": "qec", "version": version,
-          "python": sys.executable, "module_path": str(origin),
+          "python": sys.executable, "discovery": "legacy-argparse", "module_path": str(origin),
           "module_sha256": hashlib.sha256(origin.read_bytes()).hexdigest()}}))
 
 
@@ -113,12 +147,12 @@ def main():
             time.sleep(params["delay"])
         print(json.dumps({"demo": True, "label": params["label"], "total": total,
                           "steps": params["steps"], "seed": params["seed"]}))
-    elif mode == "qec-probe":
+    elif mode in ("qec-probe", "qec-descriptor"):
         # Match `python -m qec...` only when Python prepends an implicit path.
         # In safe-path mode preserve explicit PYTHONPATH/site paths unchanged.
         if not getattr(sys.flags, "safe_path", False):
             sys.path[0] = str(Path.cwd())
-        qec_probe()
+        (qec_probe if mode == "qec-probe" else qec_descriptor)()
     else:
         inference(mode, sys.argv[2])
 
