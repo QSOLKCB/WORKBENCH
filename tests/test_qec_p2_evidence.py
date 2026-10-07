@@ -59,6 +59,33 @@ class P2EvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'argv/cwd'):
                 verify_evidence(target)
 
+    def test_resealed_direct_invocations_must_match_every_locked_operation(self):
+        changes = [lambda command: command['argv'].__setitem__(0, '/foreign/python'),
+                   lambda command: command['argv'].__setitem__(2, 'foreign.module'),
+                   lambda command: command['argv'].__setitem__(-1, '--foreign=1'),
+                   lambda command: command.update(cwd='/foreign/cwd'),
+                   lambda command: command.update(stdout='validation/direct.json')]
+        for label in ('ququart-benchmark', 'ququart-validate', 'qutrit-benchmark'):
+            for mutate in changes:
+                with self.subTest(operation=label, mutation=mutate), tempfile.TemporaryDirectory() as directory:
+                    target = Path(directory) / 'evidence'; shutil.copytree(EVIDENCE, target)
+                    path = target / f'commands/direct-{label}.json'
+                    command = read_json(path); mutate(command); write_json(path, command); seal(target)
+                    with self.assertRaisesRegex(ValueError, 'Direct command argv/cwd'):
+                        verify_evidence(target)
+
+    def test_resealed_source_map_cannot_change_omit_or_add_python_files(self):
+        changes = [lambda files: files.update({'__init__.py': '0' * 64}),
+                   lambda files: files.pop('__init__.py'),
+                   lambda files: files.update({'foreign.py': '0' * 64})]
+        for mutate in changes:
+            with self.subTest(mutation=mutate), tempfile.TemporaryDirectory() as directory:
+                target = Path(directory) / 'evidence'; shutil.copytree(EVIDENCE, target)
+                path = target / 'qec-source.json'
+                source = read_json(path); mutate(source['python_files']); write_json(path, source); seal(target)
+                with self.assertRaisesRegex(ValueError, 'pinned source map'):
+                    verify_evidence(target)
+
     def test_resealed_json_format_changes_do_not_claim_byte_parity(self):
         for name in ('artifacts/cli/qutrit/benchmark_manifest.json', 'validation/cli.json'):
             with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:

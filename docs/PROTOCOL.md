@@ -82,6 +82,7 @@ result_kind           json | control | ollama
 expected_operation    optional CONTROL response correlation check
 expected_schema       optional JSON result schema check
 success_field         optional JSON field required to be true
+validate_result       optional adapter-owned structural result validator
 ```
 
 There is no shell evaluation. The HTTP API cannot submit an arbitrary argv or rewrite adapter configuration. Configuration is loaded from an operator-selected local file. That file is trusted and can deliberately invoke local programs.
@@ -114,7 +115,7 @@ queued -> running -> succeeded | failed | cancelled | timed_out | output_limit
 saved unfinished record loaded by a new process -> interrupted (view classification)
 ```
 
-Record content includes action ID, full capability snapshot, normalized parameters, backend identity, argv/cwd, creation/start/finish times, captured stdout/stderr, exit code when available, parsed result and error. A successful OS process with invalid required JSON is classified as failed. CONTROL error envelopes cannot become success merely because the process exited zero. An Ollama stream must contain a terminal completion event. Native QEC results must match their declared schema; validation receipts require `passed: true`. Optional public `output` metadata drives generic browser artifact-manifest and validation-receipt views. These views display backend-reported content as text.
+Record content includes action ID, full capability snapshot, normalized parameters, backend identity, argv/cwd, creation/start/finish times, captured stdout/stderr, exit code when available, parsed result and error. A successful OS process with invalid required JSON is classified as failed. CONTROL error envelopes cannot become success merely because the process exited zero. An Ollama stream must contain a terminal completion event. Native QEC results must match their declared schema and pass adapter-owned structural checks before success is saved: complete artifact inventories, typed required metadata, SHA-256 values and the returned object checksum. Validation receipts require complete boolean checks, claims/facts hashes and `passed: true`. Optional public `output` metadata drives generic browser artifact-manifest and validation-receipt views. These views display backend-reported content as text.
 
 Transport fields are retained before interpreting output. `transport_status` records the executor outcome separately from the final run `status`; a zero-exit malformed JSON, CONTROL or Ollama response retains `exit_code: 0`, captured output and `transport_status: succeeded`, while the final run is `failed`. The run stays active until interpretation finishes.
 

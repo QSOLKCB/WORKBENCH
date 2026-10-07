@@ -1,14 +1,14 @@
 {
   "argv": [
     "node",
-    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/tools/qec_browser.mjs",
-    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/browser-cases.json",
-    "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/browser.json",
+    "/workspace/scratch/26be73b6159c/WORKBENCH/tools/qec_browser.mjs",
+    "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/browser-cases.json",
+    "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/browser.json",
     "180"
   ],
-  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "cwd": "/workspace/scratch/26be73b6159c/WORKBENCH",
   "exit_code": 0,
-  "duration_seconds": 10.3408,
+  "duration_seconds": 10.2712,
   "stdout": "commands/browser.stdout",
   "stderr": "commands/browser.stderr"
 }

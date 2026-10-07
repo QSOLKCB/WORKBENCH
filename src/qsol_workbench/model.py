@@ -89,6 +89,7 @@ class Plan:
     expected_operation: str | None = None
     expected_schema: str | None = None
     success_field: str | None = None
+    validate_result: object | None = None
 
 
 @dataclass

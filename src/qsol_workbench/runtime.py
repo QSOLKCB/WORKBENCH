@@ -110,6 +110,8 @@ class Runtime:
                     raise ValueError("Backend result does not match the declared output schema")
                 if plan.success_field is not None and parsed.get(plan.success_field) is not True:
                     raise ValueError("Backend result does not report successful validation")
+                if plan.validate_result is not None:
+                    plan.validate_result(parsed)
             with self.lock:
                 record.update(status=result["status"], result=parsed)
         except Exception as error:

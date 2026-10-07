@@ -50,5 +50,7 @@
     "research_watch.csv",
     "historical_v3_baseline.csv",
     "methodology.json"
-  ]
+  ],
+  "python_files_sha256": "ab605495df0c636428ac9e50e6d25c3ec6d839e29e08c9aecca9159e798134b2",
+  "python_file_count": 1102
 }

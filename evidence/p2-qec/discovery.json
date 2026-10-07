@@ -1,7 +1,7 @@
 {
   "protocol": "qsol-workbench/1",
   "workbench_version": "0.1.0",
-  "store": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/store",
+  "store": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/store",
   "connections": [
     {
       "id": "demo",

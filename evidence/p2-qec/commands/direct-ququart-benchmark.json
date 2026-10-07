@@ -7,11 +7,11 @@
     "--harmonic-trials=30",
     "--seed=31",
     "--error-rates=0.001,0.01",
-    "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart"
+    "--output=/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart"
   ],
   "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned",
   "exit_code": 0,
-  "duration_seconds": 1.2612,
+  "duration_seconds": 1.2459,
   "stdout": "commands/direct-ququart-benchmark.stdout",
   "stderr": "commands/direct-ququart-benchmark.stderr"
 }

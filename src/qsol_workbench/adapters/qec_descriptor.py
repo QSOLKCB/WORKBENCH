@@ -4,6 +4,7 @@ import math
 import re
 
 from ..model import Action, Plan, digest, validate
+from .qec_results import validate_result
 
 COMMANDS = {
     "qec.ququart.benchmark": ("qec.benchmark.ququart_battery.cli", "qec.ququart-fer-battery.v170.1.1", "artifact-manifest"),
@@ -88,7 +89,8 @@ def actions_from_descriptor(discovery, python, cwd):
                     value = parameters[name]
                     text = ("true" if value else "false") if field["type"] == "boolean" else str(value)
                     argv.append(field["flag"] + "=" + text)
-            return Plan(argv, cwd=cwd, expected_schema=output["schema"], success_field=output.get("success_field"))
+            return Plan(argv, cwd=cwd, expected_schema=output["schema"], success_field=output.get("success_field"),
+                        validate_result=lambda result: validate_result(result, output["schema"]))
 
         found.append(Action(action_id, action["title"], action["description"], fields, identity, build, action["effect"], output))
     return found

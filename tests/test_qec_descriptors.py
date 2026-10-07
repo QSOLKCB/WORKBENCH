@@ -45,14 +45,20 @@ def backend(descriptor=None):
         root = Path(directory)
         qec = root / "qec"
         qec.mkdir(); (qec / "__init__.py").write_text("")
-        data = {"descriptor": deepcopy(descriptor or fixture_descriptor()), "responses": {}}
+        # Valid result shapes captured from the pinned backend; these remain
+        # fixtures, not evidence that this temporary backend ran science.
+        result_paths = ("artifacts/direct/ququart/benchmark_manifest.json", "validation/direct.json",
+                        "artifacts/direct/qutrit/benchmark_manifest.json")
+        results = {action: json.loads((ROOT / "evidence/p2-qec" / path).read_text())
+                   for action, path in zip(COMMANDS, result_paths)}
+        data = {"descriptor": deepcopy(descriptor or fixture_descriptor()), "responses": {}, "results": results}
         def publish():
             (root / "descriptor.json").write_text(json.dumps(data))
         publish()
         (qec / "capabilities.py").write_text(
             "import json\nfrom pathlib import Path\n"
             "def descriptor(): return json.loads((Path(__file__).parent.parent/'descriptor.json').read_text())['descriptor']\n")
-        program = """import argparse,json
+        program = """import argparse,hashlib,json
 from pathlib import Path
 root=Path(__file__).resolve().parents[3]
 (root/'cli-imported').write_text('imported')
@@ -66,8 +72,12 @@ for field in action['fields']:
                      default=field.get('default',argparse.SUPPRESS),choices=field.get('choices'))
 if __name__=='__main__':
  params=vars(parser.parse_args())
- result={'schema':action['output']['schema'],'parameters':params,'files':{},'passed':True}
+ result=data['results'][action['id']]
+ result['parameters']=params
  result.update(data['responses'].get(action['id'],{}))
+ result.pop('sha256',None)
+ result['sha256']=hashlib.sha256(json.dumps(result,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
+ if 'sha256' in data['responses'].get(action['id'],{}): result['sha256']=data['responses'][action['id']]['sha256']
  print(json.dumps(result))
 """
         for module, _, _ in COMMANDS.values():
@@ -212,6 +222,51 @@ class DescriptorTests(unittest.TestCase):
                 self.assertIn("explicitly select discovery=legacy-argparse", connection["reason"])
             finally:
                 instance.close()
+
+    def test_zero_exit_incomplete_or_mistyped_results_never_persist_success(self):
+        for action_id in COMMANDS:
+            with self.subTest(action=action_id), backend() as (root, config, data, publish):
+                instance = Runtime(config, root / "store")
+                valid = deepcopy(data['results'][action_id])
+                mutations = []
+                # Every required top-level member, plus malformed nested data.
+                for key in valid:
+                    if key != 'sha256':
+                        mutations.append(lambda result, key=key: result.pop(key))
+                if 'files' in valid:
+                    mutations += [lambda r: r.update(files=None), lambda r: r.update(files={}),
+                                  lambda r: r['files'].update({'../foreign': '0' * 64}),
+                                  lambda r: r['files'].update(methodology_json=123),
+                                  lambda r: r['files'].update({'methodology.json': 'not-a-hash'}),
+                                  lambda r: r.update(deterministic=1)]
+                    if 'seed' in valid:
+                        mutations.append(lambda r: r.update(seed=True))
+                else:
+                    mutations += [lambda r: r.update(checks=[]), lambda r: r.update(checks={}),
+                                  lambda r: r['checks'].update(numeric_claims_match=1),
+                                  lambda r: r['checks'].update(numeric_claims_match=False),
+                                  lambda r: r['checks'].update(threshold_claim_permitted=True),
+                                  lambda r: r.update(passed=1)]
+                params = {'claims': 'a', 'evidence': 'b'} if action_id == 'qec.ququart.validate' else {}
+                try:
+                    for mutate in mutations:
+                        data['results'][action_id] = deepcopy(valid)
+                        mutate(data['results'][action_id]); publish()
+                        record = instance.wait(instance.start(action_id, params)['id'])
+                        self.assertEqual(record['status'], 'failed', record)
+                        self.assertEqual(record['exit_code'], 0)
+                        self.assertEqual(record['transport_status'], 'succeeded')
+                        self.assertTrue(record['stdout'])
+                        self.assertTrue(record['error'])
+                        saved = json.loads((root / 'store' / (record['id'] + '.json')).read_text())
+                        self.assertEqual(saved['status'], 'failed')
+                    data['results'][action_id] = valid
+                    data['responses'][action_id] = {'sha256': '0' * 64}; publish()
+                    record = instance.wait(instance.start(action_id, params)['id'])
+                    self.assertEqual(record['status'], 'failed')
+                    self.assertIn('checksum mismatch', record['error'])
+                finally:
+                    instance.close()
 
 
 if __name__ == "__main__":

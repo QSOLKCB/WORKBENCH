@@ -58,6 +58,17 @@ def parameters(output, root, mode, action, lock):
             'v3_baseline': str(root / 'qec_data_prepared.csv'), 'stress_limit': lock['stress_limit']}
 
 
+def direct_argv(python, action, params):
+    return [python, '-m', MODULES[ACTIONS.index(action)]] + [
+        '--' + name.replace('_', '-') + '=' + str(value) for name, value in params.items()]
+
+
+def verify_source_map(hashes, lock):
+    if (not isinstance(hashes, dict) or len(hashes) != lock['python_file_count'] or
+            digest(hashes) != lock['python_files_sha256']):
+        raise ValueError('QEC Python source inventory differs from pinned source map')
+
+
 def verify_record(record, action, params, environment, source):
     checked_checksum(record, 'record_sha256', digest)
     if (record.get('protocol') != 'qsol-workbench-run/1' or record.get('action') != action or record.get('parameters') != params or
@@ -109,6 +120,7 @@ def verify_evidence(directory):
             environment['packages']['qec']['version'] != lock['package_version'] or
             environment['prefix'] == environment['base_prefix']):
         raise ValueError('QEC source/environment identity mismatch')
+    verify_source_map(source.get('python_files'), lock)
     descriptor = read_json(directory / 'descriptor.json')
     if descriptor.get('protocol') != 'qec-capabilities/1' or [a['id'] for a in descriptor['actions']] != list(ACTIONS):
         raise ValueError('Missing backend-owned descriptors')
@@ -140,6 +152,13 @@ def verify_evidence(directory):
                 command = read_json(directory / f'commands/{mode}-{label}.json')
                 if command['exit_code'] != 0:
                     raise ValueError('Acceptance execution failed')
+                if mode == 'direct':
+                    params = parameters(original_output, root, mode, action, lock)
+                    if (command.get('argv') != direct_argv(environment['executable'], action, params) or
+                            command.get('cwd') != str(root) or
+                            command.get('stdout') != f'commands/direct-{label}.stdout' or
+                            command.get('stderr') != f'commands/direct-{label}.stderr'):
+                        raise ValueError('Direct command argv/cwd or transcript differs from locked invocation')
                 returned = read_json(directory / command['stdout'])
             if mode != 'direct':
                 record = read_json(directory / f'runs/{mode}-{label}.json')
@@ -174,7 +193,7 @@ def verify_evidence(directory):
         if read_json(directory / f'commands/{name}.json')['exit_code'] != 0:
             raise ValueError('Required acceptance check failed: ' + name)
     contract_text = (directory / 'commands/contract-tests.stderr').read_text()
-    if 'Ran 7 tests' not in contract_text or not contract_text.rstrip().endswith('OK'):
+    if 'Ran 8 tests' not in contract_text or not contract_text.rstrip().endswith('OK'):
         raise ValueError('Missing refresh/stale/unsupported descriptor regression transcript')
     if summary.get('comparison') != comparison:
         raise ValueError('Stored comparison differs from retained scientific evidence')
@@ -214,6 +233,7 @@ def run_acceptance(args):
         tracked = capture('source-files', ['git', 'ls-files', 'src/qec'])
         hashes = {str(Path(name).relative_to('src/qec')): sha256(root / name)
                   for name in tracked.splitlines() if name.endswith('.py')}
+        verify_source_map(hashes, lock)
         code = """import hashlib,importlib.metadata as m,json,platform,sys
 import qec
 from pathlib import Path
@@ -258,7 +278,7 @@ print(json.dumps({'executable':sys.executable,'python':sys.version,'prefix':sys.
                                       'view': 'Validation passed' if action == ACTIONS[1] else 'Artifact manifest (backend-reported)',
                                       'record': str(output / f'runs/browser-{label}.json')})
                         continue
-                    argv = [python, '-m', module] + ['--' + name.replace('_', '-') + '=' + str(value) for name, value in params.items()]
+                    argv = direct_argv(python, action, params)
                     if mode == 'cli':
                         argv = [sys.executable, str(ROOT / 'workbench.py'), '--config', str(output / 'config.json'),
                                 '--store', str(output / 'store'), '--timeout', str(args.timeout), 'run', action, '--params', json.dumps(params)]

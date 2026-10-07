@@ -10,9 +10,9 @@
     "test_qec_descriptors.py",
     "-v"
   ],
-  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "cwd": "/workspace/scratch/26be73b6159c/WORKBENCH",
   "exit_code": 0,
-  "duration_seconds": 1.9674,
+  "duration_seconds": 3.5362,
   "stdout": "commands/contract-tests.stdout",
   "stderr": "commands/contract-tests.stderr"
 }

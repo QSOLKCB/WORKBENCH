@@ -1,6 +1,6 @@
 {
   "protocol": "qsol-workbench-run/1",
-  "id": "019ade26781147bd808f59a2bc891638",
+  "id": "6999e4885de54935bd9bb8b418b56b3d",
   "workbench_version": "0.1.0",
   "action": "qec.ququart.validate",
   "capability": {
@@ -96,20 +96,20 @@
     "schema_sha256": "5f633921b29d972c35a30f99940648e83790745b0fb968c1d03ff4e427fbceaf"
   },
   "parameters": {
-    "claims": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart/report_claims.json",
-    "evidence": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart",
-    "output": "/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/validation/cli.json"
+    "claims": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart/report_claims.json",
+    "evidence": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart",
+    "output": "/workspace/scratch/26be73b6159c/qec-p2-final-review-run/validation/cli.json"
   },
   "status": "succeeded",
-  "created_at": "2026-10-07T11:52:56.434369+00:00",
+  "created_at": "2026-10-07T12:05:51.715559+00:00",
   "execution": {
     "argv": [
       "/workspace/scratch/ebfc95b6b8c9/qec-p2-clean/bin/python",
       "-m",
       "qec.benchmark.ququart_battery.validate_cli",
-      "--claims=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart/report_claims.json",
-      "--evidence=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/artifacts/direct/ququart",
-      "--output=/workspace/scratch/ebfc95b6b8c9/qec-p2-final-browser-run/validation/cli.json"
+      "--claims=/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart/report_claims.json",
+      "--evidence=/workspace/scratch/26be73b6159c/qec-p2-final-review-run/artifacts/direct/ququart",
+      "--output=/workspace/scratch/26be73b6159c/qec-p2-final-review-run/validation/cli.json"
     ],
     "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p2-pinned"
   },
@@ -133,9 +133,9 @@
     "sha256": "bb95e276af93e05629fd5f953a3fa59ace9bceb6cac9940c899371c949d9d359"
   },
   "error": null,
-  "started_at": "2026-10-07T11:52:56.435048+00:00",
+  "started_at": "2026-10-07T12:05:51.716426+00:00",
   "exit_code": 0,
   "transport_status": "succeeded",
-  "finished_at": "2026-10-07T11:52:56.559759+00:00",
-  "record_sha256": "0df17f2e4d499c2a31c3bec8a5a77c9fa8099c0cf0c23a21bb7e24ffbeb8da68"
+  "finished_at": "2026-10-07T12:05:51.858713+00:00",
+  "record_sha256": "a3dff5a431ba49e6bf09b57519363be9017eace6e4b707ccf7a48f26fe7373f6"
 }

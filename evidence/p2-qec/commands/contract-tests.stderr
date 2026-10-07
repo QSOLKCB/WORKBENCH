@@ -4,9 +4,10 @@ test_refresh_updates_http_and_cli_and_rejects_stale_fingerprint (test_qec_descri
 test_required_validation_paths_and_all_entry_points_remain_distinct (test_qec_descriptors.DescriptorTests.test_required_validation_paths_and_all_entry_points_remain_distinct) ... ok
 test_supported_scalar_values_defaults_choices_and_paths_reach_direct_cli (test_qec_descriptors.DescriptorTests.test_supported_scalar_values_defaults_choices_and_paths_reach_direct_cli) ... ok
 test_unsupported_protocol_shapes_commands_and_defaults_never_fall_back (test_qec_descriptors.DescriptorTests.test_unsupported_protocol_shapes_commands_and_defaults_never_fall_back) ... ok
+test_zero_exit_incomplete_or_mistyped_results_never_persist_success (test_qec_descriptors.DescriptorTests.test_zero_exit_incomplete_or_mistyped_results_never_persist_success) ... ok
 test_zero_exit_wrong_schema_and_unsuccessful_receipt_keep_transport_diagnostics (test_qec_descriptors.DescriptorTests.test_zero_exit_wrong_schema_and_unsuccessful_receipt_keep_transport_diagnostics) ... ok
 
 ----------------------------------------------------------------------
-Ran 7 tests in 1.868s
+Ran 8 tests in 3.438s
 
 OK
