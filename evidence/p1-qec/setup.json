@@ -1,0 +1,84 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "pip",
+        "wheel",
+        "--no-deps",
+        "--no-build-isolation",
+        "--wheel-dir",
+        "/workspace/scratch/ebfc95b6b8c9/qec-p1-wheels",
+        "/workspace/scratch/ebfc95b6b8c9/QEC-p1"
+      ],
+      "cwd": "/workspace/scratch/ebfc95b6b8c9",
+      "exit_code": 0,
+      "duration_seconds": 6.4453,
+      "stdout": "Processing ./QEC-p1\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: qec\n  Building wheel for qec (pyproject.toml): started\n  Building wheel for qec (pyproject.toml): finished with status 'done'\n  Created wheel for qec: filename=qec-173.0.0-py3-none-any.whl size=3188095 sha256=14e2dd8f6fa707d60edf0f3281b448d1c7e81a869562aef8b9e593d0840a4ff7\n  Stored in directory: /tmp/pip-ephem-wheel-cache-hu10e19f/wheels/44/a2/c0/915eacf28daec54a774dc084a8b3e9d2015443399c4f51764f\nSuccessfully built qec\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "venv",
+        "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean"
+      ],
+      "cwd": "/workspace/scratch/ebfc95b6b8c9",
+      "exit_code": 0,
+      "duration_seconds": 1.7823,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-deps",
+        "--find-links",
+        "/workspace/scratch/ebfc95b6b8c9/qec-p1-wheels",
+        "qec==173.0.0",
+        "numpy==2.3.5",
+        "scipy==1.17.0"
+      ],
+      "cwd": "/workspace/scratch/ebfc95b6b8c9",
+      "exit_code": 0,
+      "duration_seconds": 6.9624,
+      "stdout": "Looking in links: /workspace/scratch/ebfc95b6b8c9/qec-p1-wheels\nProcessing ./qec-p1-wheels/qec-173.0.0-py3-none-any.whl\nProcessing ./qec-p1-wheels/numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl\nProcessing ./qec-p1-wheels/scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl\nInstalling collected packages: scipy, qec, numpy\nSuccessfully installed numpy-2.3.5 qec-173.0.0 scipy-1.17.0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "cwd": "/workspace/scratch/ebfc95b6b8c9",
+      "exit_code": 0,
+      "duration_seconds": 0.2201,
+      "stdout": "No broken requirements found.\n",
+      "stderr": ""
+    }
+  ],
+  "dependency_wheels": {
+    "scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "9eeb9b5f5997f75507814ed9d298ab23f62cf79f5a3ef90031b1ee2506abdb5b",
+    "numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28",
+    "qec-173.0.0-py3-none-any.whl": "14e2dd8f6fa707d60edf0f3281b448d1c7e81a869562aef8b9e593d0840a4ff7"
+  },
+  "installation": "clean venv; local QEC wheel; exact numpy/scipy wheels; no index or dependency resolution during installation",
+  "build_environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "packages": {
+      "pip": "26.2.1",
+      "setuptools": "84.0.0",
+      "wheel": "0.48.0",
+      "packaging": "26.3"
+    }
+  }
+}

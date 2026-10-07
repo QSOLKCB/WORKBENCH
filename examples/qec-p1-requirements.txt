@@ -1,0 +1,3 @@
+# First P1 environment: CPython 3.12, Linux x86_64; exact upstream PyPI wheels.
+numpy==2.3.5 --hash=sha256:0d8163f43acde9a73c2a33605353a4f1bc4798745a8b1d73183b28e5b435ae28
+scipy==1.17.0 --hash=sha256:9eeb9b5f5997f75507814ed9d298ab23f62cf79f5a3ef90031b1ee2506abdb5b

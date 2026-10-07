@@ -1,0 +1,23 @@
+{
+  "adversarial_rejection_evaluations": 375,
+  "all_tests_passed": false,
+  "analysis_scope": "finite_code_capacity",
+  "artifact_match_claims": [],
+  "curve_language": [
+    "low_error_quadratic_regime",
+    "intermediate_error_regime",
+    "high_error_regime"
+  ],
+  "deterministic_fault_evaluations": 525,
+  "end_to_end_cells": 14,
+  "expected_accept_evaluations": 150,
+  "hardware_claim": false,
+  "hardware_declarations": {},
+  "lane_symmetry_verified": true,
+  "schema": "qec.ququart-report-claims.v1",
+  "test_status": "not_claimed_by_generated_report",
+  "threshold_claim": true,
+  "zero_deterministic_adversarial_false_accepts": true,
+  "zero_receiver_false_trust": true,
+  "sha256": "d806a651883c5b5897faba59a68cea8180acf5f725e781e5dd5e7ac94b5e11b5"
+}

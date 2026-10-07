@@ -1,5 +1,7 @@
 # Implementation plan and migration gates
 
+Current phase status is maintained in [ROADMAP.md](ROADMAP.md).
+
 This is an executable-work plan, not a promise that all listed work has shipped. P0 is the bundled reference baseline. Subsequent phases need their stated acceptance evidence before completion claims.
 
 ## P0 — Reviewable reference baseline (delivered)
@@ -13,6 +15,8 @@ Repository baseline additions: Apache-2.0 licensing, `qsol-workbench` package id
 **Gate:** Run the demo, verify the known result 42, pass tests, inspect the real CONTROL evidence, and verify the ZIP/checksum. See `VALIDATION.md` for exact evidence; do not infer real QEC scientific execution or real model generation from fixture tests.
 
 ## P1 — Establish the first supported QEC environment
+
+**Implemented and locally validated:** pinned QEC 173.0.0 on Linux x86_64 / CPython 3.12.14, direct/CLI/Chromium parity, complete artifacts, independent QEC report validation and retained negative outcomes. See [acceptance instructions](QEC_ACCEPTANCE.md) and [evidence](../evidence/p1-qec/summary.json). CI repeats this gate per commit.
 
 **Work:**
 

@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/workbench.py",
+    "--config",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/config.json",
+    "--store",
+    "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/store",
+    "--timeout",
+    "120",
+    "run",
+    "qec.ququart.benchmark",
+    "--params",
+    "{\"trials\": 0, \"harmonic_trials\": 30, \"seed\": 31, \"error_rates\": \"0.001,0.01\", \"output\": \"/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/cli-failure\"}"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH",
+  "exit_code": 1,
+  "duration_seconds": 1.1567,
+  "stdout": "commands/cli-failure.stdout",
+  "stderr": "commands/cli-failure.stderr"
+}

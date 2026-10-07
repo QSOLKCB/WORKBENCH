@@ -1,0 +1,46 @@
+{
+  "repository": "https://github.com/QSOLKCB/QEC",
+  "commit": "7103836d731a869dc82b077bc0b920a76072f08e",
+  "package_version": "173.0.0",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "python": "3.12.14"
+  },
+  "dependencies": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "action": "qec.ququart.benchmark",
+  "module": "qec.benchmark.ququart_battery.cli",
+  "validator": "qec.benchmark.ququart_battery.validate_cli",
+  "parameters": {
+    "trials": 40,
+    "harmonic_trials": 30,
+    "seed": 31,
+    "error_rates": "0.001,0.01"
+  },
+  "failure_parameters": {
+    "trials": 0,
+    "harmonic_trials": 30,
+    "seed": 31,
+    "error_rates": "0.001,0.01"
+  },
+  "expected_artifacts": [
+    "exact_weight_enumerator.csv",
+    "exact_fer_curve.csv",
+    "exact_channel_weight_enumerator.csv",
+    "exact_channel_fer.csv",
+    "monte_carlo_fer.csv",
+    "harmonic_fault_matrix.csv",
+    "harmonic_end_to_end.csv",
+    "receiver_operating_curve.csv",
+    "lane_symmetry_certificate.json",
+    "report_claims.json",
+    "claim_validation.json",
+    "qbraid_replication_receipt.json",
+    "methodology.json",
+    "report.js"
+  ],
+  "claim_scope": "Integration acceptance with small trial counts; no new scientific, hardware or quantum-advantage claim."
+}

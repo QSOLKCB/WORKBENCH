@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1",
+  "exit_code": 0,
+  "duration_seconds": 0.0023,
+  "stdout": "commands/source-head.stdout",
+  "stderr": "commands/source-head.stderr"
+}

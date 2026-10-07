@@ -1,0 +1,99 @@
+{
+  "protocol": "qsol-workbench-run/1",
+  "id": "340f177678fa44cfac573a7dd13871f5",
+  "workbench_version": "0.1.0",
+  "action": "qec.ququart.benchmark",
+  "capability": {
+    "id": "qec.ququart.benchmark",
+    "title": "QEC ququart evidence battery",
+    "description": "Runs the installed QEC benchmark and returns its manifest. Writes to the selected output directory.",
+    "fields": [
+      {
+        "name": "output",
+        "label": "Output",
+        "type": "string",
+        "required": false,
+        "flag": "--output",
+        "help": "",
+        "default": "benchmarks/ququart_fer_v170_1_1"
+      },
+      {
+        "name": "trials",
+        "label": "Trials",
+        "type": "integer",
+        "required": false,
+        "flag": "--trials",
+        "help": "Monte Carlo trials per physical-channel/error-rate cell.",
+        "default": 5000
+      },
+      {
+        "name": "harmonic_trials",
+        "label": "Harmonic Trials",
+        "type": "integer",
+        "required": false,
+        "flag": "--harmonic-trials",
+        "help": "Trials per harmonic physical-rate/noise-sigma cell.",
+        "default": 2000
+      },
+      {
+        "name": "seed",
+        "label": "Seed",
+        "type": "integer",
+        "required": false,
+        "flag": "--seed",
+        "help": "",
+        "default": 1701001
+      },
+      {
+        "name": "error_rates",
+        "label": "Error Rates",
+        "type": "string",
+        "required": false,
+        "flag": "--error-rates",
+        "help": "Comma-separated independent per-site physical error rates.",
+        "default": "0.00001,0.00003,0.0001,0.0003,0.001,0.003,0.01,0.03,0.1,0.2"
+      }
+    ],
+    "backend": {
+      "kind": "qec",
+      "version": "173.0.0",
+      "python": "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+      "module_path": "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/cli.py",
+      "module_sha256": "7720835c0f2b9810da455313c428256ba4315b67340a7d6ac666fa281b227a25",
+      "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1"
+    },
+    "effect": "writes-artifacts",
+    "schema_sha256": "c10f5863cd27ac979e1af3a9378b18568f5e57475c211c632752cd3654ab6f71"
+  },
+  "parameters": {
+    "output": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/browser-failure",
+    "trials": 0,
+    "harmonic_trials": 30,
+    "seed": 31,
+    "error_rates": "0.001,0.01"
+  },
+  "status": "failed",
+  "created_at": "2026-10-07T10:47:41.649278+00:00",
+  "execution": {
+    "argv": [
+      "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+      "-m",
+      "qec.benchmark.ququart_battery.cli",
+      "--output=/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/browser-failure",
+      "--trials=0",
+      "--harmonic-trials=30",
+      "--seed=31",
+      "--error-rates=0.001,0.01"
+    ],
+    "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1"
+  },
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/cli.py\", line 66, in <module>\n    main()\n  File \"/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/cli.py\", line 55, in main\n    manifest = build_report(\n               ^^^^^^^^^^^^^\n  File \"/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/report.py\", line 91, in build_report\n    for row in monte_carlo_rows(\n               ^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/lib/python3.12/site-packages/qec/benchmark/ququart_battery/channels.py\", line 121, in monte_carlo_rows\n    raise ValueError(\"trials must be positive\")\nValueError: trials must be positive\n",
+  "result": null,
+  "error": null,
+  "started_at": "2026-10-07T10:47:41.650046+00:00",
+  "exit_code": 1,
+  "transport_status": "failed",
+  "finished_at": "2026-10-07T10:47:42.526360+00:00",
+  "record_sha256": "f45c785d7d268e65500c3402a198867a0bea04ba3db2bea7063a4beeb5e815bd"
+}

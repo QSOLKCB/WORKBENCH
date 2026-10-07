@@ -81,6 +81,8 @@ expected_operation    optional CONTROL response correlation check
 
 There is no shell evaluation. The HTTP API cannot submit an arbitrary argv or rewrite adapter configuration. Configuration is loaded from an operator-selected local file. That file is trusted and can deliberately invoke local programs.
 
+The QEC adapter preserves the configured interpreter symlink so a virtual environment retains its installed packages; it normalizes relative path components without selecting the base interpreter.
+
 QEC starts the selected interpreter with `-m qec.benchmark.ququart_battery.cli`. CONTROL receives one request line and an EOF. Ollama uses a worker process so HTTP transport can be interrupted through the same job-control interface.
 
 Ollama generation has no independent socket timeout: the shared run deadline and cancellation terminate its worker, including a blocked connection or read. Model-list discovery retains its short probe deadline.
@@ -119,7 +121,7 @@ For unfinished records, the returned view uses `status: interrupted`, an explana
 
 A persistence error is reported in the in-memory record and yields a nonzero CLI run outcome; it is not concealed as successfully saved evidence. There is no automatic signature, trusted timestamp or exact-replay guarantee.
 
-Final persistence catches JSON serialization, Unicode encoding and filesystem failures. An unsaved in-memory final record has `persistence_error` and no `record_sha256`; it is not rehashed after a serialization failure. CLI/HTTP JSON presentation escapes Unicode so such failures remain inspectable, including parsed lone surrogates. The previous disk snapshot remains the recovery record. Browser and TUI history tolerate missing legacy output fields and displays persistence errors.
+Final persistence catches JSON serialization, Unicode encoding and filesystem failures. An unsaved in-memory final record has `persistence_error` and no `record_sha256`; it is not rehashed after a serialization failure. CLI/HTTP JSON presentation escapes Unicode so such failures remain inspectable, including parsed lone surrogates. The previous disk snapshot remains the recovery record. Browser and TUI history tolerate missing legacy output fields and display persistence errors.
 
 ## Extending the implementation
 

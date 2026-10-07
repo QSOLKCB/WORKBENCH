@@ -1,0 +1,36 @@
+{
+  "engine": "Chromium 153.0.8010.0",
+  "status": "passed",
+  "transport": "real Chromium DOM form submission",
+  "runs": [
+    {
+      "case": "success",
+      "id": "352efaf8546441b0bd2c4b9600541a0b",
+      "status": "succeeded",
+      "expected_status": "succeeded",
+      "parameters": {
+        "output": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/browser",
+        "trials": 40,
+        "harmonic_trials": 30,
+        "seed": 31,
+        "error_rates": "0.001,0.01"
+      },
+      "schema_sha256": "c10f5863cd27ac979e1af3a9378b18568f5e57475c211c632752cd3654ab6f71"
+    },
+    {
+      "case": "failure",
+      "id": "340f177678fa44cfac573a7dd13871f5",
+      "status": "failed",
+      "expected_status": "failed",
+      "parameters": {
+        "output": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/browser-failure",
+        "trials": 0,
+        "harmonic_trials": 30,
+        "seed": 31,
+        "error_rates": "0.001,0.01"
+      },
+      "schema_sha256": "c10f5863cd27ac979e1af3a9378b18568f5e57475c211c632752cd3654ab6f71"
+    }
+  ],
+  "exceptions": []
+}

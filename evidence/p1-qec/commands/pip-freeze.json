@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/workspace/scratch/ebfc95b6b8c9/qec-p1-clean/bin/python",
+    "-m",
+    "pip",
+    "freeze",
+    "--all"
+  ],
+  "cwd": "/workspace/scratch/ebfc95b6b8c9/QEC-p1",
+  "exit_code": 0,
+  "duration_seconds": 0.2237,
+  "stdout": "commands/pip-freeze.stdout",
+  "stderr": "commands/pip-freeze.stderr"
+}

@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0",
+  "files": {
+    "src/qsol_workbench/__init__.py": "fd4697fe0afd3f6dcbb093cf5b833e3ff00badfeb9416cd409449d2290c81073",
+    "src/qsol_workbench/adapters/__init__.py": "3efc453a995c44d7c080273266c4e1345dfd96631610571dd6f175678cebc04c",
+    "src/qsol_workbench/adapters/builtin.py": "5613f2cde0fd6b5c373d86e25a5792b6596dcfa1b4393eeef7825397bf756a55",
+    "src/qsol_workbench/cli.py": "29bff6b1dc814b5bf803720a44b91c5381465c1d3251ef45d7a1a4580168beb3",
+    "src/qsol_workbench/model.py": "6aeb2ea554240424ba23a3bb7ab072195b0fd78a41f615febfb0ed786a1ee039",
+    "src/qsol_workbench/process.py": "77d12956a9da989079761aa8db29d6d25b9b93147b05bfbce47853846c33f3f8",
+    "src/qsol_workbench/runtime.py": "3af55e65bc43a3c9a2650ac4e55c4b22de2bc8da6e2efafd0a2d74d5d7a7264c",
+    "src/qsol_workbench/static/app.js": "4f716e2fa69b232c96a9dbdb68eb4c0fc1f582b324f29e61fdcf98d646964fe2",
+    "src/qsol_workbench/static/index.html": "11800fa2195c4db7d2cdd3e4f1c78135c8b40578f4655c86214ccd947751e519",
+    "src/qsol_workbench/static/style.css": "0647065a29a8f4b3eeea2d0c82e96841b77b386cf01381780780f19206b66197",
+    "src/qsol_workbench/tui.py": "6223017cdd430317a421c7be494690e564d8c50e1510b16b8483225f033e46af",
+    "src/qsol_workbench/web.py": "21f4ce1c6b9dbdd5d8111c0b06566a479a5cf6cbc21e3b439caa5c84898cae41",
+    "src/qsol_workbench/worker.py": "592e5845737610800bfbe7db338a25cc82413534ff9ce66be50592a027fadf00"
+  }
+}

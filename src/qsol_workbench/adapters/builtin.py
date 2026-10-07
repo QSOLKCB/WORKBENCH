@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -27,7 +28,9 @@ def demo():
 
 
 def qec(config):
-    python = str(Path(config["python"]).expanduser().resolve())
+    # A venv interpreter is commonly a symlink: resolving it selects the base
+    # environment and loses the backend installed in the configured venv.
+    python = os.path.abspath(Path(config["python"]).expanduser())
     cwd = str(Path(config.get("cwd", ".")).expanduser().resolve())
     discovery = probe(Plan([python, WORKER, "qec-probe"], cwd=cwd))
     fields = discovery["fields"]

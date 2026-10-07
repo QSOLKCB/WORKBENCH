@@ -1,0 +1,26 @@
+[
+  {
+    "name": "success",
+    "parameters": {
+      "trials": 40,
+      "harmonic_trials": 30,
+      "seed": 31,
+      "error_rates": "0.001,0.01",
+      "output": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/browser"
+    },
+    "status": "succeeded",
+    "record": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/runs/browser-success.json"
+  },
+  {
+    "name": "failure",
+    "parameters": {
+      "trials": 0,
+      "harmonic_trials": 30,
+      "seed": 31,
+      "error_rates": "0.001,0.01",
+      "output": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/artifacts/browser-failure"
+    },
+    "status": "failed",
+    "record": "/workspace/scratch/ebfc95b6b8c9/WORKBENCH/evidence/p1-qec/runs/browser-failure.json"
+  }
+]
