@@ -1,0 +1,25 @@
+test_control_protocol_fixture (test_workbench.AdapterTests.test_control_protocol_fixture) ... ok
+test_inference_stream_against_local_http_fixture (test_workbench.AdapterTests.test_inference_stream_against_local_http_fixture) ... ok
+test_qec_discovers_new_argument_and_executes_it_without_ui_edit (test_workbench.AdapterTests.test_qec_discovers_new_argument_and_executes_it_without_ui_edit) ... ok
+test_choices_and_defaults (test_workbench.ContractTests.test_choices_and_defaults) ... ok
+test_control_error_and_wrong_correlation_rejected (test_workbench.ContractTests.test_control_error_and_wrong_correlation_rejected) ... ok
+test_validation_rejects_unknown_bool_alias_and_nonfinite (test_workbench.ContractTests.test_validation_rejects_unknown_bool_alias_and_nonfinite) ... ok
+test_cancel_running_process (test_workbench.ProcessTests.test_cancel_running_process) ... ok
+test_descendant_with_open_pipe_obeys_deadline (test_workbench.ProcessTests.test_descendant_with_open_pipe_obeys_deadline) ... ok
+test_nonzero_exit_retains_stderr (test_workbench.ProcessTests.test_nonzero_exit_retains_stderr) ... ok
+test_output_bound_and_timeout (test_workbench.ProcessTests.test_output_bound_and_timeout) ... ok
+test_subprocess_is_not_a_shell (test_workbench.ProcessTests.test_subprocess_is_not_a_shell) ... ok
+test_bad_configuration_is_not_silently_enabled (test_workbench.RuntimeTests.test_bad_configuration_is_not_silently_enabled) ... ok
+test_cancel_record_is_not_success (test_workbench.RuntimeTests.test_cancel_record_is_not_success) ... ok
+test_demo_executes_persists_and_checksum_verifies (test_workbench.RuntimeTests.test_demo_executes_persists_and_checksum_verifies) ... ok
+test_invalid_backend_json_is_a_failed_run (test_workbench.RuntimeTests.test_invalid_backend_json_is_a_failed_run) ... ok
+test_job_limit_and_refresh_during_execution (test_workbench.RuntimeTests.test_job_limit_and_refresh_during_execution) ... ok
+test_path_traversal_rejected (test_workbench.RuntimeTests.test_path_traversal_rejected) ... ok
+test_schema_change_requires_new_form (test_workbench.RuntimeTests.test_schema_change_requires_new_form) ... ok
+test_unavailable_backend_never_uses_demo (test_workbench.RuntimeTests.test_unavailable_backend_never_uses_demo) ... ok
+test_authenticated_http_uses_shared_runtime (test_workbench.WebTests.test_authenticated_http_uses_shared_runtime) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 1.845s
+
+OK

@@ -1,0 +1,268 @@
+{
+  "review_date": "2026-10-07",
+  "repositories": {
+    "QEC": {
+      "commit": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "commit_date": "2026-10-06T07:08:30Z"
+    },
+    "RIVET": {
+      "commit": "64454066afe1de6a020a376045a7b9bea4a934c2",
+      "commit_date": "2026-09-27T16:34:58Z"
+    },
+    "QSOL-CONTROL": {
+      "commit": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "commit_date": "2026-08-20T15:35:43Z"
+    },
+    "PROVENANCE": {
+      "commit": "e801c8201e1f0eac00774362cf722798d6006f36",
+      "commit_date": "2026-09-29T20:02:05Z"
+    },
+    "QSOL-MACH": {
+      "commit": "d0c4017d2b2a230659a97ab8f6ecca56fb3076ed",
+      "commit_date": "2026-10-06T09:15:58Z"
+    }
+  },
+  "reviewed_files": [
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": ".github/workflows/tui-install.yml",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/.github/workflows/tui-install.yml",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/.github/workflows/tui-install.yml",
+      "sha256": "653b3e727539f5a0f0fa5e9f3416dd9e1ecbe94a86933180517c2b40c91166d9",
+      "bytes": 3490
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "USAGE.md",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/USAGE.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/USAGE.md",
+      "sha256": "d48ade06e43c7f6a0260799da8178b7a535eb835980bf1a9fb06c99c115c7136",
+      "bytes": 3735
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "pyproject.toml",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/pyproject.toml",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/pyproject.toml",
+      "sha256": "02a6d01fbc66b0eaacaf5b7ac06a8f3e34fb81c617f8d28bb9259d85f4f82ae4",
+      "bytes": 1833
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "src/qec/benchmark/ququart_battery/cli.py",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/src/qec/benchmark/ququart_battery/cli.py",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/src/qec/benchmark/ququart_battery/cli.py",
+      "sha256": "7720835c0f2b9810da455313c428256ba4315b67340a7d6ac666fa281b227a25",
+      "bytes": 1741
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/Cargo.toml",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/Cargo.toml",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/Cargo.toml",
+      "sha256": "e0e7f5df6b4162f4dcda92b7f6a7708e858f236b3846e436eec42950937218a5",
+      "bytes": 266
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/build.rs",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/build.rs",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/build.rs",
+      "sha256": "ca7722b601e358f4ef474da4b0bc9233474db78082697c22ee26c8a4ed9a292d",
+      "bytes": 1275
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/install.sh",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/install.sh",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/install.sh",
+      "sha256": "7830ad4a0c8f6213d0b31b9f9154b9db6f11600ef4d98514a813f28472965739",
+      "bytes": 5140
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/src/app.rs",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/app.rs",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/app.rs",
+      "sha256": "ada46fa3b24bf6d43beec1e682d623a5ef779704881153af61ff0259554eac58",
+      "bytes": 50118
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/src/commands.rs",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/commands.rs",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/commands.rs",
+      "sha256": "6ec4256d870e88d6f513ea0ac70db8ab0819204eb2189c4b18d7396ff6b5c99b",
+      "bytes": 6787
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/src/main.rs",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/main.rs",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/main.rs",
+      "sha256": "e77389aef24e86848ef0b288a8303e8258d0d507788ef194482712bcd2c92980",
+      "bytes": 9128
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "7103836d731a869dc82b077bc0b920a76072f08e",
+      "path": "tui/src/ui.rs",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/ui.rs",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/7103836d731a869dc82b077bc0b920a76072f08e/tui/src/ui.rs",
+      "sha256": "7b56e59efb6d912f52cde14acdd5bdfab59648a23009ff73a4ec8156ac6999e5",
+      "bytes": 39252
+    },
+    {
+      "repository": "QSOLKCB/QEC",
+      "ref": "v173.0",
+      "path": "tui/src/commands.rs",
+      "source_url": "https://github.com/QSOLKCB/QEC/blob/v173.0/tui/src/commands.rs",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QEC/v173.0/tui/src/commands.rs",
+      "sha256": "f61973c5aad059ff8411373b943a6fc7f9edc14e793362d64c9432e6a32c16c4",
+      "bytes": 12617
+    },
+    {
+      "repository": "QSOLKCB/RIVET",
+      "ref": "64454066afe1de6a020a376045a7b9bea4a934c2",
+      "path": "README.md",
+      "source_url": "https://github.com/QSOLKCB/RIVET/blob/64454066afe1de6a020a376045a7b9bea4a934c2/README.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/RIVET/64454066afe1de6a020a376045a7b9bea4a934c2/README.md",
+      "sha256": "0279b98c8b4dc57f5ddb65d684dd4206a1470a580e5c1746a44f02c1d397230b",
+      "bytes": 8998
+    },
+    {
+      "repository": "QSOLKCB/RIVET",
+      "ref": "64454066afe1de6a020a376045a7b9bea4a934c2",
+      "path": "UI-v1.md",
+      "source_url": "https://github.com/QSOLKCB/RIVET/blob/64454066afe1de6a020a376045a7b9bea4a934c2/UI-v1.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/RIVET/64454066afe1de6a020a376045a7b9bea4a934c2/UI-v1.md",
+      "sha256": "155247b673267e941db1cc45cdeb399a9a76eb45dd71e749d77cadc19241f51d",
+      "bytes": 5503
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "README.md",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/README.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/README.md",
+      "sha256": "6b063545c59ef8696a5287c5c3a95fd14a24f27d8999038a57f2d4e4b91c3d7d",
+      "bytes": 20204
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "ai/agent-api-contract.json",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/ai/agent-api-contract.json",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/ai/agent-api-contract.json",
+      "sha256": "831fcb45d5a3555f1581965a65a5841c7e6fba213dc7a84c3f40a86e6c996587",
+      "bytes": 5380
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "api/dispatcher.py",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/api/dispatcher.py",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/api/dispatcher.py",
+      "sha256": "bee067842ad0920e7ee233df1f8bbf2a4e7c9f54fa6ec8e84d369be4afccfb34",
+      "bytes": 13922
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "api/stdio.py",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/api/stdio.py",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/api/stdio.py",
+      "sha256": "ef8f81bc940cb3ff94b766a7fd615bf50132fd817831280bdafa5f089a80f370",
+      "bytes": 2499
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "docs/AGENT-API.md",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/docs/AGENT-API.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/docs/AGENT-API.md",
+      "sha256": "44333555f886faa297db21f5ebb2d122c98ba16abc4ebd8f9551afcec9001eac",
+      "bytes": 10205
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "schema/agent-api-request.schema.json",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/schema/agent-api-request.schema.json",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/schema/agent-api-request.schema.json",
+      "sha256": "e8681cd715696d51ed7cfc4e659af7cb8ff7a1c290bc0f54636c1921e7d4522c",
+      "bytes": 1405
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "schema/agent-api-response.schema.json",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/schema/agent-api-response.schema.json",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/schema/agent-api-response.schema.json",
+      "sha256": "21b3b1cc197cdb3d580a44e0faf7ff5f6b864ce6d84dd78f4084185bcee88fc1",
+      "bytes": 1858
+    },
+    {
+      "repository": "QSOLKCB/QSOL-CONTROL",
+      "ref": "55c3fbee6435d4a6206aa946579f36724698a20b",
+      "path": "tools/agent_api.py",
+      "source_url": "https://github.com/QSOLKCB/QSOL-CONTROL/blob/55c3fbee6435d4a6206aa946579f36724698a20b/tools/agent_api.py",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-CONTROL/55c3fbee6435d4a6206aa946579f36724698a20b/tools/agent_api.py",
+      "sha256": "1b2305d1859db8c6a4b115ebb8653ca67a53924dd9e024174d533eb5a5935c1b",
+      "bytes": 2010
+    },
+    {
+      "repository": "QSOLKCB/PROVENANCE",
+      "ref": "e801c8201e1f0eac00774362cf722798d6006f36",
+      "path": "README.md",
+      "source_url": "https://github.com/QSOLKCB/PROVENANCE/blob/e801c8201e1f0eac00774362cf722798d6006f36/README.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/PROVENANCE/e801c8201e1f0eac00774362cf722798d6006f36/README.md",
+      "sha256": "f3dc0499454bc76de5a544d84be151db8a0743791f948b0f077f6946a3ea1a17",
+      "bytes": 10542
+    },
+    {
+      "repository": "QSOLKCB/PROVENANCE",
+      "ref": "e801c8201e1f0eac00774362cf722798d6006f36",
+      "path": "docs/ADAPTERS.md",
+      "source_url": "https://github.com/QSOLKCB/PROVENANCE/blob/e801c8201e1f0eac00774362cf722798d6006f36/docs/ADAPTERS.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/PROVENANCE/e801c8201e1f0eac00774362cf722798d6006f36/docs/ADAPTERS.md",
+      "sha256": "2c47dccba0b024bb1561530d9d15e8fe9ec500860d7ddf24122698c361afd03c",
+      "bytes": 4993
+    },
+    {
+      "repository": "QSOLKCB/QSOL-MACH",
+      "ref": "d0c4017d2b2a230659a97ab8f6ecca56fb3076ed",
+      "path": "README.md",
+      "source_url": "https://github.com/QSOLKCB/QSOL-MACH/blob/d0c4017d2b2a230659a97ab8f6ecca56fb3076ed/README.md",
+      "raw_url": "https://raw.githubusercontent.com/QSOLKCB/QSOL-MACH/d0c4017d2b2a230659a97ab8f6ecca56fb3076ed/README.md",
+      "sha256": "1d9c195fc4b5f62d2eac293a492402be1ba450dbeab0699bb61692691c1890f4",
+      "bytes": 2677
+    }
+  ],
+  "qec_latest_release_observed": {
+    "tag": "v173.0",
+    "published_at": "2026-09-23T22:25:46Z",
+    "target_commitish": "2c94351e667bc05aba26fe101dcf41fa8d4c9735",
+    "assets": [],
+    "url": "https://github.com/QSOLKCB/QEC/releases/tag/v173.0"
+  },
+  "external_references": [
+    "https://github.com/browsh-org/browsh",
+    "https://www.brow.sh/docs/introduction/",
+    "https://textual.textualize.io/",
+    "https://github.com/Textualize/textual-serve",
+    "https://spec.openapis.org/oas/latest.html",
+    "https://docs.ollama.com/api/generate",
+    "https://docs.ollama.com/api/tags"
+  ]
+}

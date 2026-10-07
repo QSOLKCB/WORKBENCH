@@ -1,0 +1,48 @@
+name: Phase 0
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify checkout manifest
+        run: python tools/verify_bundle.py
+      - name: Behavior and adapter fixtures
+        run: python -m unittest discover -s tests -v
+      - name: Browser form and history regressions
+        run: node --test tests/browser_values.mjs
+      - name: Python and browser syntax
+        run: |
+          python -m compileall -q src tests tools workbench.py
+          node --check src/qsol_workbench/static/app.js
+          node --check tools/browser_smoke.mjs
+      - name: CLI discovery and known-result smoke
+        run: |
+          python workbench.py discover
+          python workbench.py --store "$RUNNER_TEMP/workbench-runs" run demo.experiment --params '{"steps":3,"seed":7,"delay":0}' > "$RUNNER_TEMP/workbench-demo.json"
+          python -c 'import json, os; r=json.load(open(os.environ["RUNNER_TEMP"]+"/workbench-demo.json")); assert r["status"] == "succeeded" and r["result"]["total"] == 42 and r["result"]["demo"] is True'
+      - name: Rebuild deterministic bundle and verify extraction
+        if: matrix.python == '3.14'
+        run: |
+          python tools/build_bundle.py
+          git diff --exit-code -- MANIFEST.sha256
+          python tools/check_archive.py ../"$(basename "$PWD")".zip

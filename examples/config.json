@@ -1,0 +1,14 @@
+{
+  "demo": {"enabled": true},
+  "qec": {
+    "enabled": false,
+    "python": "/absolute/path/to/QEC/.venv/bin/python",
+    "cwd": "/absolute/path/to/QEC"
+  },
+  "control": {
+    "enabled": false,
+    "argv": ["python3", "tools/agent_api.py", "--root", "/absolute/path/to/control-store"],
+    "cwd": "/absolute/path/to/QSOL-CONTROL"
+  },
+  "ollama": {"enabled": false, "url": "http://127.0.0.1:11434"}
+}

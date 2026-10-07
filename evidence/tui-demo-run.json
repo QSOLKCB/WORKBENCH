@@ -1,0 +1,80 @@
+{
+  "protocol": "qsol-workbench-run/1",
+  "id": "520c3a060a3d42bc8a5daac4ec5bce01",
+  "workbench_version": "0.1.0",
+  "action": "demo.experiment",
+  "capability": {
+    "id": "demo.experiment",
+    "title": "Demo experiment",
+    "description": "Deterministic sample with live progress; no QEC engine.",
+    "fields": [
+      {
+        "name": "label",
+        "type": "string",
+        "label": "Label",
+        "default": "First experiment"
+      },
+      {
+        "name": "steps",
+        "type": "integer",
+        "label": "Steps",
+        "default": 5,
+        "minimum": 1,
+        "maximum": 100
+      },
+      {
+        "name": "seed",
+        "type": "integer",
+        "label": "Seed",
+        "default": 7,
+        "minimum": 0,
+        "maximum": 1000000
+      },
+      {
+        "name": "delay",
+        "type": "number",
+        "label": "Delay",
+        "default": 0.1,
+        "minimum": 0,
+        "maximum": 5
+      }
+    ],
+    "backend": {
+      "kind": "demo",
+      "version": "1",
+      "python": "/usr/bin/python3"
+    },
+    "effect": "local-compute",
+    "schema_sha256": "f0fd0eea5be9e057e0fe8ce3a4d366b29b2f324705b9965c6670505a11ffb249"
+  },
+  "parameters": {
+    "label": "First experiment",
+    "steps": 5,
+    "seed": 7,
+    "delay": 0.1
+  },
+  "status": "succeeded",
+  "created_at": "2026-10-07T05:23:19.525509+00:00",
+  "execution": {
+    "argv": [
+      "/usr/bin/python3",
+      "/home/trent/plan/qsol-workbench-handoff/src/qsol_workbench/worker.py",
+      "demo"
+    ],
+    "cwd": null
+  },
+  "stdout": "{\"demo\": true, \"label\": \"First experiment\", \"total\": 105, \"steps\": 5, \"seed\": 7}\n",
+  "stderr": "DEMO step 1/5\nDEMO step 2/5\nDEMO step 3/5\nDEMO step 4/5\nDEMO step 5/5\n",
+  "result": {
+    "demo": true,
+    "label": "First experiment",
+    "total": 105,
+    "steps": 5,
+    "seed": 7
+  },
+  "error": null,
+  "started_at": "2026-10-07T05:23:19.526164+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-10-07T05:23:20.079688+00:00",
+  "record_sha256": "e4a470ad66c0ceff142a47042136a16762c179419453a492f2d0688d8672d27d"
+}
